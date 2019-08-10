@@ -1,0 +1,17 @@
+{
+    "stats" : {
+        "runs_this_day" : 0
+    },
+    "current_values" : {
+        "timestamp" : "0",
+        "ping_ms" : 0,
+        "ping_ms_days_avg" : 0,
+        "download_mbit" : 0,
+        "download_mbit_days_avg" : 0,
+        "upload_mbit" : 0,
+        "upload_mbit_days_avg" : 0
+    },
+    "avg" : {
+
+    }
+}
