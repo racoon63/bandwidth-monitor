@@ -1,1 +1,5 @@
 env
+__pycache__
+daily.json.template
+speedtest-monitor.log
+test.py

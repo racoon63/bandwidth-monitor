@@ -1,0 +1,27 @@
+{
+    "stats": {
+        "runs_this_day": 60,
+        "day_in_month": "12",
+        "month_in_year": "08",
+        "year": "2019"
+    },
+    "current": {
+        "timestamp": "2019-08-11T21:59:28.282578Z",
+        "ping_ms": 12.49,
+        "download_mbit": 14.18,
+        "upload_mbit": 9.77
+    },
+    "min_max": {
+        "ping_max": 18.95,
+        "ping_min": 11.32,
+        "download_max": 31.08,
+        "download_min": 14.18,
+        "upload_max": 10.43,
+        "upload_min": 7.53
+    },
+    "avg": {
+        "ping_ms_days_avg": 0,
+        "download_mbit_days_avg": 0,
+        "upload_mbit_days_avg": 0
+    }
+}

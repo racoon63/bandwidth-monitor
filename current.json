@@ -1,0 +1,32 @@
+[
+    {
+        "timestamp": "2019-08-11T21:55:27.774280Z",
+        "ping_ms": 12.33,
+        "download_mbit": 22.75,
+        "upload_mbit": 10.35
+    },
+    {
+        "timestamp": "2019-08-11T21:56:27.335468Z",
+        "ping_ms": 12.4,
+        "download_mbit": 23.69,
+        "upload_mbit": 9.58
+    },
+    {
+        "timestamp": "2019-08-11T21:57:27.244108Z",
+        "ping_ms": 18.95,
+        "download_mbit": 17.51,
+        "upload_mbit": 9.6
+    },
+    {
+        "timestamp": "2019-08-11T21:58:27.253861Z",
+        "ping_ms": 11.9,
+        "download_mbit": 15.84,
+        "upload_mbit": 9.79
+    },
+    {
+        "timestamp": "2019-08-11T21:59:28.282578Z",
+        "ping_ms": 12.49,
+        "download_mbit": 14.18,
+        "upload_mbit": 9.77
+    }
+]

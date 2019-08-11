@@ -1,0 +1,7 @@
+{
+    "monthly_avg" : {
+        "ping_ms_monthly_avg" : 0,
+        "download_mbit_monthly_avg" : 0,
+        "upload_mbit_monthly_avg" : 0
+    }
+}
