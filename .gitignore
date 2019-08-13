@@ -1,6 +1,8 @@
-env/
 **/__pycache__
 .vscode/
+data/
+env/
+logs/
 test.py
 *.json
 daily.json.template
