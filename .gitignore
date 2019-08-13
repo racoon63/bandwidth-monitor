@@ -3,3 +3,8 @@ __pycache__
 daily.json.template
 speedtest-monitor.log
 test.py
+.vscode
+current.json
+daily.json
+monthly.json
+yearly.json
