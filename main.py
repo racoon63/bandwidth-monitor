@@ -1,5 +1,7 @@
 #!/usr/bin/env python3.7
 
+__author__ = 'racoon <racoon63@gmx.net>'
+
 import json
 import logging
 import subprocess
@@ -9,7 +11,7 @@ from speedtest_json.handler import handler
 
 if __name__ == "__main__":    
     starttime = time.time()
-    logging.basicConfig(filename='speedtest-monitor.log', format='%(asctime)s %(levelname)-8s %(message)s', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
+    logging.basicConfig(filename='speedtest-monitor.log', format='[%(asctime)s] %(levelname)s: %(message)s', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
 
     while True:
         try:
