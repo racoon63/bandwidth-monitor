@@ -25,12 +25,12 @@ def update_daily(file, timestamp, ping, download, upload):
     file['current']['download_mbit'] = download
     file['current']['upload_mbit']   = upload
     
-    if ping < file['min_max']['ping_min']: file['min_max']['ping_min'] = ping
-    if ping > file['min_max']['ping_max']: file['min_max']['ping_max'] = ping
+    if ping < file['min_max']['ping_min']: file['min_max']['ping_min']             = ping
+    if ping > file['min_max']['ping_max']: file['min_max']['ping_max']             = ping
     if download < file['min_max']['download_min']: file['min_max']['download_min'] = download
     if download > file['min_max']['download_max']: file['min_max']['download_max'] = download
-    if upload < file['min_max']['upload_min']: file['min_max']['upload_min'] = upload
-    if upload > file['min_max']['upload_max']: file['min_max']['upload_max'] = upload
+    if upload < file['min_max']['upload_min']: file['min_max']['upload_min']       = upload
+    if upload > file['min_max']['upload_max']: file['min_max']['upload_max']       = upload
 
     current = read_current()
     
