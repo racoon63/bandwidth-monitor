@@ -10,7 +10,7 @@ import subprocess
 class Speedtest(object):
 
     def __init__(self):
-        stats = subprocess.Popen(['speedtest-cli', '--json'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        stats = subprocess.Popen(['speedtest-cli', '--secure', '--json'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout,stderr = stats.communicate()
         
         logging.debug(stderr)
