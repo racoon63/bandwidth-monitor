@@ -4,6 +4,7 @@ __author__ = 'racoon <racoon63@gmx.net>'
 
 import json
 import logging
+import sys
 import time
 
 def read_daily():
@@ -32,7 +33,7 @@ def update_daily(file, timestamp, ping, download, upload):
     if download < file['min_max']['download_min']: file['min_max']['download_min'] = download
     if download > file['min_max']['download_max']: file['min_max']['download_max'] = download
     if upload < file['min_max']['upload_min']: file['min_max']['upload_min']       = upload
-    if upload > file['min_max']['upload_max']: file['min_max']['upload_max']     = upload
+    if upload > file['min_max']['upload_max']: file['min_max']['upload_max']       = upload
 
     current = read_current()
     
