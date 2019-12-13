@@ -5,5 +5,5 @@ env/
 logs/
 test.py
 *.json
-daily.json.template
-speedtest-monitor.log
+templates/
+.devcontainer/
