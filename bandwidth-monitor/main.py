@@ -9,7 +9,7 @@ import time
 
 from speedtest import Speedtest
 
-from bandwidth-monitor import data
+import data
 #from bandwidth-monitor import config
 #from bandwidth-monitor import daily
 #from bandwidth-monitor import monthly
@@ -24,6 +24,8 @@ if __name__ == "__main__":
 
     logging.info('Bandwidth-Monitor service started.')
     
+    d = data.Data('../data/data.json')
+
     while True:
         try:
             starttime = time.time()
@@ -41,6 +43,10 @@ if __name__ == "__main__":
             c_hour   = time.gmtime().tm_hour
             c_minute = time.gmtime().tm_min
             c_second = time.gmtime().tm_sec
+
+            data_object = d.create_data_object(timestamp, ping, download, upload)
+            d.append(data_object)
+            d.write()
 
             '''
             # handles current values into current.json
@@ -61,6 +67,7 @@ if __name__ == "__main__":
 
             logging.info("Wrote values to file successfully!")
             '''
+
             time.sleep(60.0 - ((time.time() - starttime) % 60.0))
 
         except KeyboardInterrupt:
