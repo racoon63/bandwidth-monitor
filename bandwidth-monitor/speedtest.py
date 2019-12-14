@@ -10,6 +10,9 @@ import subprocess
 class Speedtest(object):
 
     def __init__(self):
+        
+        logging.info('Measure latency and bandwidth')
+
         stats = subprocess.Popen(['speedtest-cli', '--secure', '--json'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout,stderr = stats.communicate()
         
