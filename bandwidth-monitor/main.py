@@ -10,14 +10,10 @@ import time
 from speedtest import Speedtest
 
 import data
-#from bandwidth-monitor import config
-#from bandwidth-monitor import daily
-#from bandwidth-monitor import monthly
-#from bandwidth-monitor import yearly
 
 if __name__ == "__main__":    
     
-    logging.basicConfig(filename='../logs/bandwidth-monitor.log', 
+    logging.basicConfig(#filename='/bwm/log/bandwidth-monitor.log', 
                         format='[%(asctime)s] %(levelname)s: %(message)s', 
                         level=logging.INFO, 
                         datefmt='%Y-%m-%d %H:%M:%S')
