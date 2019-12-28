@@ -27,7 +27,7 @@ The data will be stored relatively to the bandwidth-monitor directory: `../data/
 
 ## Missing
 
-* Configure service
+* Configuration handler
 * Implementing database drivers
   * tinyDB
   * mongoDB
