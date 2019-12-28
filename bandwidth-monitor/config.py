@@ -190,6 +190,6 @@ class Config(object):
     @speedtestServer.setter
     def speedtestServer(self):
 
-    def checkConfig(self):
+    def validate(self):
 
         logging.debug("Finished reading config file")
