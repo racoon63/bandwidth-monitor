@@ -68,4 +68,4 @@ if __name__ == "__main__":
 
         except KeyboardInterrupt:
             logging.info('Bandwidth-Monitor was stopped by user.')
-            sys.exit('Bandwidth-Monitor was stopped by user.')
+            sys.exit()
