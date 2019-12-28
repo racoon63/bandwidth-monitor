@@ -4,12 +4,21 @@ __author__ = 'racoon63 <racoon63@gmx.net>'
 
 import json
 import logging
+import os
 import sys
 import time
 
 from speedtest import Speedtest
 
 import data
+
+def config():
+    
+    data_path = os.path.dirname(os.path.abspath(__file__))
+    
+
+
+    return
 
 if __name__ == "__main__":    
     
