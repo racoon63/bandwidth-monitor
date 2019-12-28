@@ -7,3 +7,4 @@ test.py
 *.json
 templates/
 .devcontainer/
+daily.py
