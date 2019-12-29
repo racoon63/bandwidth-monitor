@@ -17,30 +17,29 @@ class Data(object):
     
     def read(self):
         try:
-            logging.info('Reading data file ' + self.data_path)
+            logging.debug('Reading data file ' + self.data_path)
             with open(self.data_path, 'r') as f:
                 self.data = json.load(f)
         except FileNotFoundError:
-            logging.error('Could not find data file ' + self.data_path)
+            logging.error('Could not find data file: ' + self.data_path)
             self.create()
             self.read()
         except json.decoder.JSONDecodeError:
-            logging.fatal('Could not read data file because data is not of valid JSON format or another unknown reason')
+            logging.critical('Could not read data file because data is not of valid JSON format or another unknown reason')
         else:
-            logging.info('Read successfully')
+            logging.info('Read data file successfully')
             return
 
     def write(self):
         try:
-            logging.info('Writing data to file')
+            logging.debug('Writing data to data file')
             with open(self.data_path, 'w') as f:
-                #data = json.loads(self.data)
                 json.dump(self.data, f, indent=4)
         except Exception as e:
             logging.error('Could not write data to data file ' + self.data_path)
             print(e)
         else:
-            logging.info('Wrote data to file successfully')
+            logging.debug('Wrote data to file successfully')
             return
     
     def create(self):
@@ -50,15 +49,15 @@ class Data(object):
             with open(self.data_path, 'w') as f: 
                 json.dump(data, f)
         except:
-            logging.fatal('Could not create data file ' + self.data_path + '. Exiting')
-            sys.exit('Could not create file for data. Exiting.')
+            logging.critical('Could not create data file ' + self.data_path + '. Exiting')
+            sys.exit()
         else:
             logging.info('Created data file successfully')
             return
 
     def create_data_object(self, timestamp, ping, download, upload):
         try:
-            logging.info('Creating new data object')
+            logging.debug('Creating new data object')
             data_object = {
                 "timestamp" : timestamp, 
                 "ping" : ping, 
@@ -68,12 +67,12 @@ class Data(object):
         except:
             logging.error('Could not create new data object')
         else:
-            logging.info('Created new object successfully ')
+            logging.debug('Created new object successfully')
             return data_object
 
     def append(self, data_object):
         try:
-            logging.info('Appending data')
+            logging.debug('Appending data')
             if self.data == None:
                 self.data = [data_object]
             else:
@@ -81,7 +80,7 @@ class Data(object):
         except:
             logging.error('Could not update data')
         else:
-            logging.info('Updated data successfully')
+            logging.debug('Updated data successfully')
             return
 
 
