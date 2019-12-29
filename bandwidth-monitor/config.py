@@ -93,6 +93,9 @@ class Config(object):
             sys.exit("Exiting")
 
 
+    def update(self):
+        
+
     def create(self):
         try:
             if "SPEEDTEST_SERVER" in os.environ:
@@ -192,7 +195,7 @@ class Config(object):
     @speedtestServer.setter
     def speedtestServer(self):
         pass
-    
+
     def validate(self):
 
         logging.debug("Finished reading config file")
