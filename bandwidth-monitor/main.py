@@ -8,34 +8,29 @@ import os
 import sys
 import time
 
-from speedtest import Speedtest
-
+import config
 import data
+import speedtest
 
-def config():
-    
-    data_path = os.path.dirname(os.path.abspath(__file__))
-    
-
-
-    return
 
 if __name__ == "__main__":    
     
+    loglevel = logging.INFO
+    
     logging.basicConfig(#filename='/bwm/log/bandwidth-monitor.log', 
                         format='[%(asctime)s] %(levelname)s: %(message)s', 
-                        level=logging.INFO, 
+                        level=loglevel, 
                         datefmt='%Y-%m-%d %H:%M:%S')
 
+    d = data.Data('../data/data.json')
+    
     logging.info('Bandwidth-Monitor service started.')
     
-    d = data.Data('../data/data.json')
-
     while True:
         try:
             starttime = time.time()
             
-            speedtest = Speedtest()
+            speedtest = speedtest.Speedtest()
 
             timestamp = speedtest.timestamp
             ping      = speedtest.ping
@@ -52,26 +47,6 @@ if __name__ == "__main__":
             data_object = d.create_data_object(timestamp, ping, download, upload)
             d.append(data_object)
             d.write()
-
-            '''
-            # handles current values into current.json
-            current_data = handler.read_current()
-            handler.write_current(current_data, timestamp, ping, download, upload)
-
-            # handles data for the whole day in daily.json
-            daily_data = handler.read_daily()
-
-            # if day of daily.json is not current day then data have to be exported and daily resetted
-            if time.strftime("%d") != daily_data['stats']['day_in_month']:
-                handler.export_daily(daily_data)
-                handler.reset_daily()
-                handler.reset_current()
-
-            daily_data = handler.update_daily(daily_data, timestamp, ping, download, upload)
-            handler.write_daily(daily_data)
-
-            logging.info("Wrote values to file successfully!")
-            '''
 
             time.sleep(60.0 - ((time.time() - starttime) % 60.0))
 
