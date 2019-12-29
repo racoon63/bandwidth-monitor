@@ -34,7 +34,7 @@ class Config(object):
             self.config = configparser.ConfigParser()
 
             if self.config_exists:
-                self.read()            
+                self.read()
             else:
                 self.create()
 
@@ -46,6 +46,7 @@ class Config(object):
 
         except Exception as err:
             logging.critical(err)
+            logging.critical("Dunno what happened but be pepe with you")
             print("""
                 ⠄⢀⣀⣤⣴⣶⣶⣤⣄⡀⠄⠄⣀⣤⣤⣤⣤⡀⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄
                 ⣴⣏⣹⣿⠿⠿⠿⠿⢿⣿⣄⢿⣿⣿⣿⣿⣿⣋⣷⡄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄
@@ -75,6 +76,7 @@ class Config(object):
             return os.environ[env_name]
         else:
             logging.debug("Environment variable '{}' is not set.".format(env_name))
+            logging.debug("Fallback to default value.")
             return
 
 
@@ -116,12 +118,10 @@ class Config(object):
             logging.error(err)
 
         else:
-            logging.debug("Finished reading config file.")
-            self.validate()
-            self.update()
-
-        finally:
-            return
+            logging.debug("Read config file successfully.")
+            if self.validate():
+                self.update()
+                return
 
 
     def validate(self):
@@ -144,18 +144,10 @@ class Config(object):
             return True
 
 
-    def write(self):
-        try:
-            with open(self.config_path, 'w') as config:
-                config.write(self.config)
-        
-        except Exception:
-            logging.critical("Could not write config to file.")
-            sys.exit(1)
-
-
     def update(self):
         
+        logging.debug("Updating config values with config and environment variable values.")
+
         try:
 
             if self.config.has_option("General", "speedtest-server"):
@@ -217,6 +209,10 @@ class Config(object):
         except Exception:
             pass
 
+        else:
+            logging.debug("Updated config values sucessfully.")
+            return
+
 
     def create(self):
         try:
@@ -234,7 +230,8 @@ class Config(object):
             if self.envval("INTERVAL"):
                 self.config["General"]["interval"] = self.envval("INTERVAL")
             else:
-                self.config["General"]["interval"] = self.interval
+                
+                self.config["General"]["interval"] = str(self.interval)
 
             if self.envval("DBTYPE"):
                 self.config["Database"]["type"] = self.envval("DBTYPE")
@@ -281,5 +278,25 @@ class Config(object):
             sys.exit(1)
 
         else:
+            logging.debug("Generated config successfully.")
             self.write()
+            self.config_exists = self.check()
             self.read()
+
+
+    def write(self):
+        try:
+            
+            logging.debug("Writing config to file.")
+            
+            with open(self.config_path, "w") as config:
+                self.config.write(config)
+        
+        except Exception as err:
+            logging.critical("Could not write config to file.")
+            logging.critical(err)
+            sys.exit(1)
+
+        else:
+            logging.debug("Wrote config to file successfully.")
+            return
