@@ -35,11 +35,17 @@ class Config(object):
 
             if self.config_exists:
                 self.read()
+                self.validate()
+                self.update()
             else:
                 self.create()
-
+                self.write()
+                self.config_exists = self.check()
+                
                 if self.config_exists:
-                    self.config = self.read()
+                    self.read()
+                    self.validate()
+                    self.update()
                 else:
                     logging.critical("Could not create and read config file.")
                     sys.exit(1)
@@ -64,19 +70,18 @@ class Config(object):
                 ⢭⣭⣝⣛⣛⣛⣛⣛⣛⣛⣿⣿⡿⢛⣋⡉⠁⠄⠄⠄⠄⠄⢸⣿⢸⣿⣧⡅⠄⠄
                 ⣶⣶⣶⣭⣭⣭⣭⣭⣭⣵⣶⣶⣶⣿⣿⣿⣦⡀⠄⠄⠄⠄⠈⠡⣿⣿⡯⠁⠄⠄
                 """)
-            logging.critical(err)
             sys.exit(1)
 
 
     def envval(self, env_name):
 
         if env_name in os.environ:
-            logging.debug("Environment variable '{}' is set.".format(env_name))
-            logging.debug("Environment variable '{}' is: {}".format(env_name, os.environ[env_name]))
+            #logging.debug("Environment variable '{}' is set.".format(env_name))
+            #logging.debug("Environment variable '{}' is: {}".format(env_name, os.environ[env_name]))
             return os.environ[env_name]
         else:
-            logging.debug("Environment variable '{}' is not set.".format(env_name))
-            logging.debug("Fallback to default value.")
+            #logging.debug("Environment variable '{}' is not set.".format(env_name))
+            #logging.debug("Fallback to default value.")
             return
 
 
@@ -119,9 +124,7 @@ class Config(object):
 
         else:
             logging.debug("Read config file successfully.")
-            if self.validate():
-                self.update()
-                return
+            return
 
 
     def validate(self):
@@ -130,10 +133,37 @@ class Config(object):
         
         try:
             
-            for section in ['General', 'Database']:
-                logging.debug("Check if section is present: {}".format(section))
+            for section in ["Database"]:
+                logging.debug("Check if required section is present: {}".format(section))
                 self.config.has_section(section)
         
+            logging.debug("Check if database type option is present.")
+            
+            if not self.config.has_option("Database", "type"):
+                raise Exception
+            
+            logging.debug("Check if database type is either tinydb or mongodb.")
+            
+            if self.config["Database"]["type"] != "tinydb" or not self.config["Database"]["type"] != "mongodb":
+                raise Exception
+
+            logging.debug("Check if database type is tinydb.")
+            
+            if self.config["Database"]["type"] == "tinydb":
+            
+                logging.debug("Check if option datapath is present.")
+                if not self.config.has_option("Database", "datapath"):
+                    raise Exception
+
+            logging.debug("Check if database type is mongodb")
+            
+            if self.config["Database"] == "mongodb":
+            
+                logging.debug("Check if required database variables are present.")
+                
+                if not self.config.has_option("Database", "host") and not self.config.has_option("Database", "user") and not self.config.has_option("Database", "password"):
+                    raise Exception
+
         except Exception as err:
             logging.critical(err)
             logging.critical("Config is not valid. Exiting...")
@@ -215,7 +245,9 @@ class Config(object):
 
 
     def create(self):
+        
         try:
+            
             logging.debug("Trying to generate config file.")
             
             for section in ["General", "Database", "Logging"]:
@@ -230,7 +262,6 @@ class Config(object):
             if self.envval("INTERVAL"):
                 self.config["General"]["interval"] = self.envval("INTERVAL")
             else:
-                
                 self.config["General"]["interval"] = str(self.interval)
 
             if self.envval("DBTYPE"):
@@ -239,12 +270,14 @@ class Config(object):
                 self.config["Database"]["type"] = self.dbtype
 
             if self.dbtype == "tinydb":
+                
                 if self.envval("DATAPATH"):
                     self.config["Database"]["datapath"] = self.envval("DATAPATH")
                 else:
                     self.config['Database']['datapath'] = self.datapath
             
             if self.dbtype == "mongodb":
+                
                 if self.envval("DBHOST"):
                     self.config['Database']['dbhost'] = self.dbhost
                 else:
@@ -279,9 +312,7 @@ class Config(object):
 
         else:
             logging.debug("Generated config successfully.")
-            self.write()
-            self.config_exists = self.check()
-            self.read()
+            return
 
 
     def write(self):
