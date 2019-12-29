@@ -31,6 +31,7 @@ The data will be stored relatively to the bandwidth-monitor directory in: `../da
 * Implementing database drivers
   * tinyDB
   * mongoDB
+* Implement webUI possibility
 
 ## Maintainer
 
