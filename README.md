@@ -4,10 +4,11 @@ Bandwidth-Monitor is a tool with which you can use to measure and monitor your l
 
 ## Usage
 
-Firstly get this repository:
+Firstly get this repository and switch into its directory:
 
 ```bash
 git clone https://github.com/racoon63/bandwidth-monitor.git
+cd bandwidth-monitor/
 ```
 
 Install the dependencies:
@@ -19,11 +20,10 @@ pip3 install -r requirements.txt
 Afterwards you can start the service with:
 
 ```bash
-cd bandwidth-monitor/
-python3 main.py
+python3 bandwidth-monitor/main.py
 ```
 
-The data will be stored relatively to the bandwidth-monitor directory: `../data/data.json`
+The data will be stored relatively to the bandwidth-monitor directory in: `../data/data.json`
 
 ## Missing
 
