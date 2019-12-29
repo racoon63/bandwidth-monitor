@@ -46,6 +46,25 @@ class Config(object):
 
         except Exception as err:
             logging.critical(err)
+            print("""
+                ⠄⢀⣀⣤⣴⣶⣶⣤⣄⡀⠄⠄⣀⣤⣤⣤⣤⡀⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄
+                ⣴⣏⣹⣿⠿⠿⠿⠿⢿⣿⣄⢿⣿⣿⣿⣿⣿⣋⣷⡄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄
+                ⣿⢟⣩⣶⣾⣿⣿⣿⣶⣮⣭⡂⢛⣭⣭⣭⣭⣭⣍⣛⣂⡀⠄⠄⠄⠄⠄⠄⠄⠄
+                ⣿⣿⣿⣿⡿⢟⣫⣭⣷⣶⣾⣭⣼⡻⢛⣛⣭⣭⣶⣶⣬⣭⣅⡀⠄⠄⠄⠄⠄⠄
+                ⣿⡿⢏⣵⣾⣿⣿⣿⡿⢉⡉⠙⢿⣇⢻⣿⣿⣿⣿⡟⠉⠉⢻⡷⠄⠄⠄⠄⠄⠄
+                ⣿⣷⣾⣍⣛⢿⣿⣿⣿⣤⣁⣤⣿⢏⠸⣿⣿⣿⣿⣷⣬⣥⣾⠁⣿⣿⣷⠄⠄⠄
+                ⣿⣿⣿⣿⣭⣕⣒⠿⠭⠭⠭⡷⢖⣫⣶⣶⣬⣭⣭⣭⣭⣥⡶⢣⣿⣿⣿⠄⠄⠄
+                ⣿⣿⣿⣿⣿⣿⣿⡿⣟⣛⣭⣾⣿⣿⣿⣝⡛⣿⢟⣛⣛⣁⣀⣸⣿⣿⣿⣀⣀⣀
+                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+                ⣿⡿⢛⣛⣛⣛⣙⣛⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣬⣭⣭⠽⣛⢻⣿⣿⣿⠛⠛⠛
+                ⣿⢰⣿⣿⣿⣿⣟⣛⣛⣶⠶⠶⠶⣦⣭⣭⣭⣭⣶⡶⠶⣾⠟⢸⣿⣿⣿⠄⠄⠄
+                ⡻⢮⣭⣭⣭⣭⣉⣛⣛⡻⠿⠿⠷⠶⠶⠶⠶⣶⣶⣾⣿⠟⢣⣬⣛⡻⢱⣇⠄⠄
+                ⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⠶⠒⠄⠄⠄⢸⣿⢟⣫⡥⡆⠄⠄
+                ⢭⣭⣝⣛⣛⣛⣛⣛⣛⣛⣿⣿⡿⢛⣋⡉⠁⠄⠄⠄⠄⠄⢸⣿⢸⣿⣧⡅⠄⠄
+                ⣶⣶⣶⣭⣭⣭⣭⣭⣭⣵⣶⣶⣶⣿⣿⣿⣦⡀⠄⠄⠄⠄⠈⠡⣿⣿⡯⠁⠄⠄
+                """)
+            logging.critical(err)
+            sys.exit(1)
 
 
     def envval(self, env_name):
@@ -103,6 +122,26 @@ class Config(object):
 
         finally:
             return
+
+
+    def validate(self):
+        
+        logging.debug("Validating config.")
+        
+        try:
+            
+            for section in ['General', 'Database']:
+                logging.debug("Check if section is present: {}".format(section))
+                self.config.has_section(section)
+        
+        except Exception as err:
+            logging.critical(err)
+            logging.critical("Config is not valid. Exiting...")
+            sys.exit(1)
+        
+        else:
+            logging.info("Config is valid.")
+            return True
 
 
     def write(self):
@@ -183,139 +222,64 @@ class Config(object):
         try:
             logging.debug("Trying to generate config file.")
             
-            logging.debug("Adding section 'General'.")
-            self.config.add_section("General")
+            for section in ["General", "Database", "Logging"]:
+                logging.debug("Adding section: {}.".format(section))
+                self.config.add_section(section)
 
-            logging.debug("Adding section 'Database'.")
-            self.config.add_section("Database")
-
-            logging.debug("Adding section 'Logging'.")
-            self.config.add_section("Logging")
-
-            if "SPEEDTEST_SERVER" in os.environ:
-                logging.debug("Environment variable 'SPEEDTEST_SERVER' is set.")
-                logging.debug("Environment variable 'SPEEDTEST_SERVER' is: " + os.environ["SPEEDTEST_SERVER"])
-                self.speedtest_server = os.environ["SPEEDTEST_SERVER"]
+            if self.envval("SPEEDTEST_SERVER"):
+                self.config["General"]["speedtest-server"] = self.envval("SPEEDTEST_SERVER")
             else:
-                logging.debug("Environment variable 'SPEEDTEST_SERVER' is not set.")
+                self.config["General"]["speedtest-server"] = self.speedtest_server
 
-            if "INTERVAL" in os.environ:
-                logging.debug("Environment variable 'INTERVAL' is set.")
-                logging.debug("Environment variable 'INTERVAL' is: " + os.environ["INTERVAL"])
-                self.interval = os.environ["INTERVAL"]
+            if self.envval("INTERVAL"):
+                self.config["General"]["interval"] = self.envval("INTERVAL")
             else:
-                logging.debug("Environment variable 'INTERVAL' is not set.")
+                self.config["General"]["interval"] = self.interval
 
-            self.config['General'] = {'speedtest-server': self.speedtest_server,
-                                 'interval': self.interval}
-
-            self.config['Database'] = {}
-
-            if "DATABASE" in os.environ:
-                logging.debug("Environment variable 'DATABASE' is set.")
-                logging.debug("Environment variable 'DATABASE' is: " + os.environ["DATABASE"])
-                self.database = os.environ["DATABASE"]
-                self.config['Database']['database'] = self.database
+            if self.envval("DBTYPE"):
+                self.config["Database"]["type"] = self.envval("DBTYPE")
             else:
-                logging.debug("Environment variable 'DATABASE' is not set.")
-                self.config['Database']['database'] = self.database
+                self.config["Database"]["type"] = self.dbtype
 
-            if self.database == "tinydb":
-                if "DATAPATH" in os.environ:
-                    logging.debug("Environment variable 'DATAPATH' is set.")
-                    logging.debug("Environment variable 'DATAPATH' is: " + os.environ["DATAPATH"])
-                    self.datapath = os.environ["DATAPATH"]
-                    self.config['Database']['datapath'] = self.datapath
+            if self.dbtype == "tinydb":
+                if self.envval("DATAPATH"):
+                    self.config["Database"]["datapath"] = self.envval("DATAPATH")
                 else:
-                    logging.debug("Environment variable 'DATAPATH' is not set.")
                     self.config['Database']['datapath'] = self.datapath
             
-            if self.database == "mongodb":
-                if "DBHOST" in os.environ:
-                    logging.debug("Environment variable 'DBHOST' is set.")
-                    logging.debug("Environment variable 'DBHOST' is: " + os.environ["DBHOST"])
-                    self.dbhost = os.environ["DBHOST"]
+            if self.dbtype == "mongodb":
+                if self.envval("DBHOST"):
                     self.config['Database']['dbhost'] = self.dbhost
                 else:
                     logging.critical("Environment variable 'DBHOST' is not set. Can not proceed.")
                     sys.exit(1)
                 
-                if "DBUSER" in os.environ:
-                    logging.debug("Environment variable 'DBUSER' is available.")
-                    logging.debug("Environment variable 'DBUSER' is: " + os.environ["DBUSER"])
-                    self.dbuser = os.environ["DBUSER"]
-                    self.config['Database']['dbuser'] = self.dbuser
+                if self.envval("DBUSER"):
+                    self.config['Database']['dbuser'] = self.dbhost
                 else:
                     logging.critical("Environment variable 'DBUSER' is not set. Can not proceed.")
                     sys.exit(1)
             
-                if "DBPASSWORD" in os.environ:
-                    logging.debug("Environment variable 'DBPASSWORD' is set.")
-                    logging.debug("Environment variable 'DBPASSWORD' is: Haha don't tell you here!")
-                    self.dbpassword = os.environ["DBPASSWORD"]
-                    self.config['Database']['dbpassword'] = self.dbpassword
+                if self.envval("DBPASSWORD"):
+                    self.config['Database']['dbpassword'] = self.dbhost
                 else:
                     logging.critical("Environment variable 'DBPASSWORD' is not set. Can not proceed.")
                     sys.exit(1)
             
-            self.config['Logging'] = {}
-
-            if "LOGLEVEL" in os.environ:
-                logging.debug("Environment variable 'LOGLEVEL' is set.")
-                logging.debug("Environment variable 'LOGLEVEL' is: " + os.environ["LOGLEVEL"])
-                self.loglevel = os.environ["LOGLEVEL"]
-                self.config['Logging']['loglevel'] = self.loglevel
+            if self.envval("LOGPATH"):
+                self.config["Logging"]["logpath"] = self.envval("LOGPATH")
             else:
-                logging.debug("Environment variable 'LOGLEVEL' is not set.")
-                config['Logging']['loglevel'] = self.loglevel
+                self.config["Logging"]["logpath"] = self.dbtype
 
-            if "LOGPATH" in os.environ:
-                logging.debug("Environment variable 'LOGPATH' is set.")
-                logging.debug("Environment variable 'LOGPATH' is: " + os.environ["LOGPATH"])
-                self.logpath = os.environ["LOGPATH"]
-                self.config['Logging']['logpath'] = self.logpath
+            if self.envval("LOGLEVEL"):
+                self.config["Logging"]["loglevel"] = self.envval("LOGLEVEL")
             else:
-                logging.debug("Environment variable 'LOGPATH' is not set.")
-                self.config['Logging']['logpath'] = self.logpath
+                self.config["Logging"]["loglevel"] = self.dbtype
 
         except Exception as err:
-            logging.fatal("Something went horribly wrong and I don't know what")
-            print("""
-                ⠄⢀⣀⣤⣴⣶⣶⣤⣄⡀⠄⠄⣀⣤⣤⣤⣤⡀⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄
-                ⣴⣏⣹⣿⠿⠿⠿⠿⢿⣿⣄⢿⣿⣿⣿⣿⣿⣋⣷⡄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄
-                ⣿⢟⣩⣶⣾⣿⣿⣿⣶⣮⣭⡂⢛⣭⣭⣭⣭⣭⣍⣛⣂⡀⠄⠄⠄⠄⠄⠄⠄⠄
-                ⣿⣿⣿⣿⡿⢟⣫⣭⣷⣶⣾⣭⣼⡻⢛⣛⣭⣭⣶⣶⣬⣭⣅⡀⠄⠄⠄⠄⠄⠄
-                ⣿⡿⢏⣵⣾⣿⣿⣿⡿⢉⡉⠙⢿⣇⢻⣿⣿⣿⣿⡟⠉⠉⢻⡷⠄⠄⠄⠄⠄⠄
-                ⣿⣷⣾⣍⣛⢿⣿⣿⣿⣤⣁⣤⣿⢏⠸⣿⣿⣿⣿⣷⣬⣥⣾⠁⣿⣿⣷⠄⠄⠄
-                ⣿⣿⣿⣿⣭⣕⣒⠿⠭⠭⠭⡷⢖⣫⣶⣶⣬⣭⣭⣭⣭⣥⡶⢣⣿⣿⣿⠄⠄⠄
-                ⣿⣿⣿⣿⣿⣿⣿⡿⣟⣛⣭⣾⣿⣿⣿⣝⡛⣿⢟⣛⣛⣁⣀⣸⣿⣿⣿⣀⣀⣀
-                ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-                ⣿⡿⢛⣛⣛⣛⣙⣛⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣬⣭⣭⠽⣛⢻⣿⣿⣿⠛⠛⠛
-                ⣿⢰⣿⣿⣿⣿⣟⣛⣛⣶⠶⠶⠶⣦⣭⣭⣭⣭⣶⡶⠶⣾⠟⢸⣿⣿⣿⠄⠄⠄
-                ⡻⢮⣭⣭⣭⣭⣉⣛⣛⡻⠿⠿⠷⠶⠶⠶⠶⣶⣶⣾⣿⠟⢣⣬⣛⡻⢱⣇⠄⠄
-                ⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⠶⠒⠄⠄⠄⢸⣿⢟⣫⡥⡆⠄⠄
-                ⢭⣭⣝⣛⣛⣛⣛⣛⣛⣛⣿⣿⡿⢛⣋⡉⠁⠄⠄⠄⠄⠄⢸⣿⢸⣿⣧⡅⠄⠄
-                ⣶⣶⣶⣭⣭⣭⣭⣭⣭⣵⣶⣶⣶⣿⣿⣿⣦⡀⠄⠄⠄⠄⠈⠡⣿⣿⡯⠁⠄⠄
-                """)
             logging.critical(err)
             sys.exit(1)
 
-
-    def validate(self):
-        
-        logging.debug("Validating config.")
-        
-        try:
-            
-            for section in ['General', 'Database']:
-                logging.debug("Check if section is present: {}".format(section))
-                self.config.has_section(section)
-        
-        except Exception as err:
-            logging.critical(err)
-            logging.critical("Config is not valid. Exiting...")
-            sys.exit(1)
-        
         else:
-            logging.info("Config is valid.")
-            return True
+            self.write()
+            self.read()
