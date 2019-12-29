@@ -17,16 +17,25 @@ if __name__ == "__main__":
     
     try:
         logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s', 
-                            level=logging.DEBUG,
+                            level=logging.INFO,
                             datefmt='%Y-%m-%d %H:%M:%S')
 
-        bwm_config = config.Config()
+        config = config.Config()
 
-        loglevel = bwm_config.loglevel
+        level = {
+            "debug": logging.DEBUG,
+            "info": logging.INFO,
+            "warning": logging.WARNING,
+            "error": logging.ERROR,
+            "critical": logging.CRITICAL
+        }
         
-        logging.basicConfig(#filename='/bwm/log/bandwidth-monitor.log', 
-                            format='[%(asctime)s] %(levelname)s: %(message)s', 
-                            level=loglevel, 
+        logpath  = config.logpath
+        loglevel = config.loglevel.lower()
+
+        logging.basicConfig(filename=logpath, 
+                            format='[%(asctime)s] %(levelname)s: %(message)s',
+                            level=level[loglevel],
                             datefmt='%Y-%m-%d %H:%M:%S')
 
         d = data.Data('../data/data.json')
@@ -35,6 +44,7 @@ if __name__ == "__main__":
     
     except Exception as err:
         logging.critical(err)
+        sys.exit(1)
 
     while True:
         try:
