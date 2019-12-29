@@ -15,17 +15,27 @@ import speedtest
 
 if __name__ == "__main__":    
     
-    loglevel = logging.INFO
-    
-    logging.basicConfig(#filename='/bwm/log/bandwidth-monitor.log', 
-                        format='[%(asctime)s] %(levelname)s: %(message)s', 
-                        level=loglevel, 
-                        datefmt='%Y-%m-%d %H:%M:%S')
+    try:
+        logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s', 
+                            level=logging.DEBUG,
+                            datefmt='%Y-%m-%d %H:%M:%S')
 
-    d = data.Data('../data/data.json')
+        bwm_config = config.Config()
+
+        loglevel = bwm_config.loglevel
+        
+        logging.basicConfig(#filename='/bwm/log/bandwidth-monitor.log', 
+                            format='[%(asctime)s] %(levelname)s: %(message)s', 
+                            level=loglevel, 
+                            datefmt='%Y-%m-%d %H:%M:%S')
+
+        d = data.Data('../data/data.json')
+        
+        logging.info('Bandwidth-Monitor service started.')
     
-    logging.info('Bandwidth-Monitor service started.')
-    
+    except Exception as err:
+        logging.critical(err)
+
     while True:
         try:
             starttime = time.time()
