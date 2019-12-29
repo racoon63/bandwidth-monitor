@@ -12,13 +12,13 @@ import config
 import data
 import speedtest
 
-
-if __name__ == "__main__":    
+def init():
     
     try:
+
         logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s', 
-                            level=logging.INFO,
-                            datefmt='%Y-%m-%d %H:%M:%S')
+                                level=logging.INFO,
+                                datefmt='%Y-%m-%d %H:%M:%S')
 
         config = config.Config()
 
@@ -39,12 +39,24 @@ if __name__ == "__main__":
                             datefmt='%Y-%m-%d %H:%M:%S')
 
         d = data.Data('../data/data.json')
-        
-        logging.info('Bandwidth-Monitor service started.')
+
+    except Exception as err:
+        logging.critical(err)
     
+    else:
+        return
+
+if __name__ == "__main__":    
+    
+    try:
+        init()
+
     except Exception as err:
         logging.critical(err)
         sys.exit(1)
+
+    else:
+        logging.info('Bandwidth-Monitor service started.')
 
     while True:
         try:
