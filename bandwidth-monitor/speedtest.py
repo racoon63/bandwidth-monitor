@@ -18,11 +18,11 @@ class Speedtest(object):
         
         logging.debug(stderr)
 
-        self.results = stdout.decode('utf-8')
+        self.results   = stdout.decode('utf-8')
         self.speedtest = json.loads(self.results)
 
-        self.json = self.speedtest
+        self.json      = self.speedtest
         self.timestamp = self.speedtest['timestamp']
-        self.ping = round(self.speedtest['ping'], 2)
-        self.download = round(((self.speedtest['download'] / 1024) / 1024), 2)
-        self.upload = round(((self.speedtest['upload'] / 1024) / 1024), 2)
+        self.ping      = round(self.speedtest['ping'], 2)
+        self.download  = round(((self.speedtest['download'] / 1024) / 1024), 2)
+        self.upload    = round(((self.speedtest['upload'] / 1024) / 1024), 2)
