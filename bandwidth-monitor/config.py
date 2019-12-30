@@ -203,38 +203,38 @@ class Config(object):
             
             if self.dbtype == "mongodb":
                 if self.config.has_option("Database", "host"):
-                    self.datapath = self.config["Database"]["host"]
+                    self.host = self.config["Database"]["host"]
                 elif self.envval("DBHOST"):
-                    self.datapath = self.envval("DBHOST")
+                    self.host = self.envval("DBHOST")
                 else:
                     logging.critical("No database host defined.")
                     sys.exit(1)
                 
                 if self.config.has_option("Database", "user"):
-                    self.datapath = self.config["Database"]["user"]
+                    self.user = self.config["Database"]["user"]
                 elif self.envval("DBUSER"):
-                    self.datapath = self.envval("DBUSER")
+                    self.user = self.envval("DBUSER")
                 else:
                     logging.critical("No database user defined.")
                     sys.exit(1)
 
                 if self.config.has_option("Database", "password"):
-                    self.datapath = self.config["Database"]["password"]
+                    self.password = self.config["Database"]["password"]
                 elif self.envval("DBPASSWORD"):
-                    self.datapath = self.envval("DBPASSWORD")
+                    self.password = self.envval("DBPASSWORD")
                 else:
                     logging.critical("No database password defined.")
                     sys.exit(1)
 
             if self.config.has_option("Logging", "logpath"):
-                self.dbtype = self.config["Logging"]["logpath"]
+                self.logpath = self.config["Logging"]["logpath"]
             if self.envval("LOGPATH"):
-                self.dbtype = self.envval("LOGPATH")
+                self.logpath = self.envval("LOGPATH")
 
             if self.config.has_option("Logging", "loglevel"):
-                self.dbtype = self.config["Logging"]["loglevel"]
+                self.loglevel = self.config["Logging"]["loglevel"]
             if self.envval("LOGLEVEL"):
-                self.dbtype = self.envval("LOGLEVEL")
+                self.loglevel = self.envval("LOGLEVEL")
 
         except Exception:
             pass
@@ -317,7 +317,6 @@ class Config(object):
 
     def write(self):
         try:
-            
             logging.debug("Writing config to file.")
             
             with open(self.config_path, "w") as config:
