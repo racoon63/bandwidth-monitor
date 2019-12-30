@@ -18,7 +18,7 @@ if __name__ == "__main__":
     try:
 
         if os.environ["LOGLEVEL"]:
-            loglevel = os.environ["LOGLEVEL"]
+            loglevel = os.environ["LOGLEVEL"].lower()
         else:
             loglevel = info
 
@@ -36,15 +36,22 @@ if __name__ == "__main__":
 
         conf = config.Config()
         
-        logpath  = conf.logpath
-        loglevel = conf.loglevel.lower()
+        speedtest_server = conf.speedtest_server
+        interval         = conf.interval
+        dbtype           = conf.dbtype
+        datapath         = conf.datapath
+        dbhost           = conf.dbhost
+        dbuser           = conf.dbuser
+        dbpassword       = conf.dbpassword
+        logpath          = conf.logpath
+        loglevel         = conf.loglevel.lower()
 
         logging.basicConfig(filename=logpath, 
                             format='[%(asctime)s] %(levelname)s: %(message)s',
                             level=level[loglevel],
                             datefmt='%Y-%m-%d %H:%M:%S')
 
-        d = data.Data('../data/data.json')
+        d = data.Data(datapath)
 
     except Exception as err:
         logging.critical(err)
