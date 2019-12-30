@@ -8,3 +8,4 @@ test.py
 templates/
 .devcontainer/
 archive/
+build.sh
