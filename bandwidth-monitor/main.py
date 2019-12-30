@@ -12,26 +12,32 @@ import config
 import data
 import speedtest
 
-def init():
+
+if __name__ == "__main__":    
     
     try:
 
-        logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s', 
-                                level=logging.INFO,
-                                datefmt='%Y-%m-%d %H:%M:%S')
-
-        config = config.Config()
+        if os.environ["LOGLEVEL"]:
+            loglevel = os.environ["LOGLEVEL"]
+        else:
+            loglevel = info
 
         level = {
-            "debug": logging.DEBUG,
-            "info": logging.INFO,
-            "warning": logging.WARNING,
-            "error": logging.ERROR,
+            "debug":    logging.DEBUG,
+            "info":     logging.INFO,
+            "warning":  logging.WARNING,
+            "error":    logging.ERROR,
             "critical": logging.CRITICAL
         }
+
+        logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s', 
+                            level=level[loglevel],
+                            datefmt='%Y-%m-%d %H:%M:%S')
+
+        conf = config.Config()
         
-        logpath  = config.logpath
-        loglevel = config.loglevel.lower()
+        logpath  = conf.logpath
+        loglevel = conf.loglevel.lower()
 
         logging.basicConfig(filename=logpath, 
                             format='[%(asctime)s] %(levelname)s: %(message)s',
@@ -44,30 +50,18 @@ def init():
         logging.critical(err)
     
     else:
-        return
-
-if __name__ == "__main__":    
-    
-    try:
-        init()
-
-    except Exception as err:
-        logging.critical(err)
-        sys.exit(1)
-
-    else:
         logging.info('Bandwidth-Monitor service started.')
 
     while True:
         try:
             starttime = time.time()
             
-            speedtest = speedtest.Speedtest()
+            bwtest = speedtest.Speedtest()
 
-            timestamp = speedtest.timestamp
-            ping      = speedtest.ping
-            download  = speedtest.download
-            upload    = speedtest.upload
+            timestamp = bwtest.timestamp
+            ping      = bwtest.ping
+            download  = bwtest.download
+            upload    = bwtest.upload
             
             c_year   = time.gmtime().tm_year
             c_month  = time.gmtime().tm_mon
@@ -84,4 +78,4 @@ if __name__ == "__main__":
 
         except KeyboardInterrupt:
             logging.info('Bandwidth-Monitor was stopped by user.')
-            sys.exit()
+            sys.exit(0)
