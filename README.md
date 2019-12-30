@@ -39,15 +39,15 @@ The service can be configured either by providing a `config.ini` configuration f
 
 |Name|Description|
 |---|---|
-|SPEEDTEST-SERVER|`auto` or the ID of your preferred speedtest-server.|
-|INTERVAL|An integer which shouldn't be less than 60.|
-|DBTYPE|`tinydb` or `mongodb`|
-|DATAPATH|This can be an absolute or a relative path.|
-|DBHOST|An IP address or a DNS name.|
-|DBUSER|Your db user if you choosed `mongodb` at `DBTYPE`|
-|DBPASSWORD|YOUR db password for your provided db user.|
-|LOGPATH|This can be an absolute or a relative path.|
-|LOGLEVEL|Your desired logelevel. The common loglevels are available: `debug`, `info`, `warning`, `error`, `critical`.|
+|**SPEEDTEST-SERVER**|`auto` or the ID of your preferred speedtest-server.|
+|**INTERVAL**|An integer which shouldn't be less than 60.|
+|**DBTYPE**|`tinydb` or `mongodb`|
+|**DATAPATH**|This can be an absolute or a relative path.|
+|**DBHOST**|An IP address or a DNS name.|
+|**DBUSER**|Your db user if you choosed `mongodb` at `DBTYPE`|
+|**DBPASSWORD**|YOUR db password for your provided db user.|
+|**LOGPATH**|This can be an absolute or a relative path.|
+|**LOGLEVEL**|Your desired logelevel. The common loglevels are available: `debug`, `info`, `warning`, `error`, `critical`.|
 
 ## Run
 
