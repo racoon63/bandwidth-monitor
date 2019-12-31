@@ -27,27 +27,27 @@ The service can be configured either by providing a `config.ini` configuration f
 
 |Parameter|Required|Values|Comments|
 |---|---|---|---|
-|**speedtest-server**|no|default: `auto`|If you want to use a specific speedtest-server you can enter its ID here. If no ID is provided, the service will determine the nearest server.|
-|**interval**|no|default: `60`|No value under 60 is allowed and recommended for now, beacause the data gathering takes some time to proceed.|
-|**type**|no|default: `tinydb`|TinyDB is a lightweight database which uses plain JSON files to store data. MongoDB is a document-oriented database in which you can store your data.|
-|**datapath**|yes|default: `../data/data.json`|The default path is relative to the `main.py` file.|
-|**host**|yes||Everything in the form of an IP address or FQDN/DNS name like `1.2.3.4` or `database.example.com`|
-|**user**|yes||For example: `root`|
-|**password**|yes||For example: `123456`|
+|**speedtest-server**|no |default: `auto`               |If you want to use a specific speedtest-server you can enter its ID here. If no ID is provided, the service will determine the nearest server.|
+|**interval**        |no |default: `60`                 |No value under 60 is allowed and recommended for now, beacause the data gathering takes some time to proceed.|
+|**type**            |no |default: `tinydb`             |TinyDB is a lightweight database which uses plain JSON files to store data. MongoDB is a document-oriented database in which you can store your data.|
+|**datapath**        |yes|default: `../data/data.json`  |The default path is relative to the `main.py` file.|
+|**host**            |yes|                              |Everything in the form of an IP address or FQDN/DNS name like `1.2.3.4` or `database.example.com`|
+|**user**            |yes|                              |For example: `root`|
+|**password**        |yes|                              |For example: `123456`|
 
 ### Environment Variables
 
 |Name|Description|
 |---|---|
-|**SPEEDTEST-SERVER**|`auto` or the ID of your preferred speedtest-server.|
-|**INTERVAL**|An integer which shouldn't be less than 60.|
-|**DBTYPE**|`tinydb` or `mongodb`|
-|**DATAPATH**|This can be an absolute or a relative path.|
-|**DBHOST**|An IP address or a DNS name.|
-|**DBUSER**|Your db user if you choosed `mongodb` at `DBTYPE`|
-|**DBPASSWORD**|YOUR db password for your provided db user.|
-|**LOGPATH**|This can be an absolute or a relative path.|
-|**LOGLEVEL**|Your desired logelevel. The common loglevels are available: `debug`, `info`, `warning`, `error`, `critical`.|
+|**SPEEDTEST-SERVER**   |`auto` or the ID of your preferred speedtest-server.|
+|**INTERVAL**           |An integer which shouldn't be less than 60.|
+|**DBTYPE**             |`tinydb` or `mongodb`|
+|**DATAPATH**           |This can be an absolute or a relative path.|
+|**DBHOST**             |An IP address or a DNS name.|
+|**DBUSER**             |Your db user if you choosed `mongodb` at `DBTYPE`|
+|**DBPASSWORD**         |YOUR db password for your provided db user.|
+|**LOGPATH**            |This can be an absolute or a relative path.|
+|**LOGLEVEL**           |Your desired logelevel. The common loglevels are available: `debug`, `info`, `warning`, `error`, `critical`.|
 
 ## Run
 
