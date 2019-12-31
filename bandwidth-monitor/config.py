@@ -31,7 +31,7 @@ class Config(object):
             self.config_path   = self.config_path()
             self.config_exists = self.check()
             
-            self.config = configparser.ConfigParser()
+            self.config = configparser.ConfigParser(empty_lines_in_values=False)
 
             if self.config_exists:
                 self.read()
@@ -54,21 +54,21 @@ class Config(object):
             logging.critical(err)
             logging.critical("Dunno what happened but be pepe with you")
             print("""
-                ⠄⢀⣀⣤⣴⣶⣶⣤⣄⡀⠄⠄⣀⣤⣤⣤⣤⡀⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄
-                ⣴⣏⣹⣿⠿⠿⠿⠿⢿⣿⣄⢿⣿⣿⣿⣿⣿⣋⣷⡄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄
-                ⣿⢟⣩⣶⣾⣿⣿⣿⣶⣮⣭⡂⢛⣭⣭⣭⣭⣭⣍⣛⣂⡀⠄⠄⠄⠄⠄⠄⠄⠄
-                ⣿⣿⣿⣿⡿⢟⣫⣭⣷⣶⣾⣭⣼⡻⢛⣛⣭⣭⣶⣶⣬⣭⣅⡀⠄⠄⠄⠄⠄⠄
-                ⣿⡿⢏⣵⣾⣿⣿⣿⡿⢉⡉⠙⢿⣇⢻⣿⣿⣿⣿⡟⠉⠉⢻⡷⠄⠄⠄⠄⠄⠄
-                ⣿⣷⣾⣍⣛⢿⣿⣿⣿⣤⣁⣤⣿⢏⠸⣿⣿⣿⣿⣷⣬⣥⣾⠁⣿⣿⣷⠄⠄⠄
-                ⣿⣿⣿⣿⣭⣕⣒⠿⠭⠭⠭⡷⢖⣫⣶⣶⣬⣭⣭⣭⣭⣥⡶⢣⣿⣿⣿⠄⠄⠄
+                 ⢀⣀⣤⣴⣶⣶⣤⣄⡀  ⣀⣤⣤⣤⣤⡀
+                ⣴⣏⣹⣿⠿⠿⠿⠿⢿⣿⣄⢿⣿⣿⣿⣿⣿⣋⣷⡄
+                ⣿⢟⣩⣶⣾⣿⣿⣿⣶⣮⣭⡂⢛⣭⣭⣭⣭⣭⣍⣛⣂⡀
+                ⣿⣿⣿⣿⡿⢟⣫⣭⣷⣶⣾⣭⣼⡻⢛⣛⣭⣭⣶⣶⣬⣭⣅⡀
+                ⣿⡿⢏⣵⣾⣿⣿⣿⡿⢉⡉⠙⢿⣇⢻⣿⣿⣿⣿⡟⠉⠉⢻⡷
+                ⣿⣷⣾⣍⣛⢿⣿⣿⣿⣤⣁⣤⣿⢏⠸⣿⣿⣿⣿⣷⣬⣥⣾⠁⣿⣿⣷
+                ⣿⣿⣿⣿⣭⣕⣒⠿⠭⠭⠭⡷⢖⣫⣶⣶⣬⣭⣭⣭⣭⣥⡶⢣⣿⣿⣿
                 ⣿⣿⣿⣿⣿⣿⣿⡿⣟⣛⣭⣾⣿⣿⣿⣝⡛⣿⢟⣛⣛⣁⣀⣸⣿⣿⣿⣀⣀⣀
                 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
                 ⣿⡿⢛⣛⣛⣛⣙⣛⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣬⣭⣭⠽⣛⢻⣿⣿⣿⠛⠛⠛
-                ⣿⢰⣿⣿⣿⣿⣟⣛⣛⣶⠶⠶⠶⣦⣭⣭⣭⣭⣶⡶⠶⣾⠟⢸⣿⣿⣿⠄⠄⠄
-                ⡻⢮⣭⣭⣭⣭⣉⣛⣛⡻⠿⠿⠷⠶⠶⠶⠶⣶⣶⣾⣿⠟⢣⣬⣛⡻⢱⣇⠄⠄
-                ⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⠶⠒⠄⠄⠄⢸⣿⢟⣫⡥⡆⠄⠄
-                ⢭⣭⣝⣛⣛⣛⣛⣛⣛⣛⣿⣿⡿⢛⣋⡉⠁⠄⠄⠄⠄⠄⢸⣿⢸⣿⣧⡅⠄⠄
-                ⣶⣶⣶⣭⣭⣭⣭⣭⣭⣵⣶⣶⣶⣿⣿⣿⣦⡀⠄⠄⠄⠄⠈⠡⣿⣿⡯⠁⠄⠄
+                ⣿⢰⣿⣿⣿⣿⣟⣛⣛⣶⠶⠶⠶⣦⣭⣭⣭⣭⣶⡶⠶⣾⠟⢸⣿⣿⣿
+                ⡻⢮⣭⣭⣭⣭⣉⣛⣛⡻⠿⠿⠷⠶⠶⠶⠶⣶⣶⣾⣿⠟⢣⣬⣛⡻⢱⣇
+                ⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⠶⠒    ⢸⣿⢟⣫⡥⡆
+                ⢭⣭⣝⣛⣛⣛⣛⣛⣛⣛⣿⣿⡿⢛⣋⡉⠁      ⢸⣿⢸⣿⣧⡅
+                ⣶⣶⣶⣭⣭⣭⣭⣭⣭⣵⣶⣶⣶⣿⣿⣿⣦⡀     ⠈⠡⣿⣿⡯⠁
                 """)
             sys.exit(1)
 
@@ -165,7 +165,7 @@ class Config(object):
                     raise Exception
 
         except Exception as err:
-            logging.critical(err)
+            #logging.critical(err)
             logging.critical("Config is not valid. Exiting...")
             sys.exit(1)
         
@@ -180,29 +180,29 @@ class Config(object):
 
         try:
 
-            if self.config.has_option("General", "speedtest-server"):
+            if self.config.has_option("General", "speedtest-server") and self.config["General"]["speedtest-server"] != "":
                 self.speedtest_server = self.config["General"]["speedtest-server"]
             if self.envval("SPEEDTEST_SERVER"):
                 self.speedtest_server = self.envval("SPEEDTEST_SERVER")
 
-            if self.config.has_option("General", "interval"):
+            if self.config.has_option("General", "interval") and self.config["General"]["interval"] != "":
                 self.interval = self.config["General"]["interval"]
             if self.envval("INTERVAL"):
                 self.interval = self.envval("INTERVAL")
             
-            if self.config.has_option("Database", "type"):
+            if self.config.has_option("Database", "type") and self.config["Database"]["type"] != "":
                 self.dbtype = self.config["Database"]["type"]
             if self.envval("DBTYPE"):
                 self.dbtype = self.envval("DBTYPE")
 
             if self.dbtype == "tinydb":
-                if self.config.has_option("Database", "datapath"):
+                if self.config.has_option("Database", "datapath") and self.config["Database"]["datapath"] != "":
                     self.datapath = self.config["Database"]["datapath"]
                 if self.envval("DATAPATH"):
                     self.datapath = self.envval("DATAPATH")
             
             if self.dbtype == "mongodb":
-                if self.config.has_option("Database", "host"):
+                if self.config.has_option("Database", "host") and self.config["Database"]["host"] != "":
                     self.host = self.config["Database"]["host"]
                 elif self.envval("DBHOST"):
                     self.host = self.envval("DBHOST")
@@ -210,7 +210,7 @@ class Config(object):
                     logging.critical("No database host defined.")
                     sys.exit(1)
                 
-                if self.config.has_option("Database", "user"):
+                if self.config.has_option("Database", "user") and self.config["Database"]["user"] != "":
                     self.user = self.config["Database"]["user"]
                 elif self.envval("DBUSER"):
                     self.user = self.envval("DBUSER")
@@ -218,7 +218,7 @@ class Config(object):
                     logging.critical("No database user defined.")
                     sys.exit(1)
 
-                if self.config.has_option("Database", "password"):
+                if self.config.has_option("Database", "password") and self.config["Database"]["password"] != "":
                     self.password = self.config["Database"]["password"]
                 elif self.envval("DBPASSWORD"):
                     self.password = self.envval("DBPASSWORD")
@@ -226,18 +226,18 @@ class Config(object):
                     logging.critical("No database password defined.")
                     sys.exit(1)
 
-            if self.config.has_option("Logging", "logpath"):
+            if self.config.has_option("Logging", "logpath") and self.config["Logging"]["logpath"] != "":
                 self.logpath = self.config["Logging"]["logpath"]
             if self.envval("LOGPATH"):
                 self.logpath = self.envval("LOGPATH")
 
-            if self.config.has_option("Logging", "loglevel"):
+            if self.config.has_option("Logging", "loglevel") and self.config["Logging"]["loglevel"] != "":
                 self.loglevel = self.config["Logging"]["loglevel"]
             if self.envval("LOGLEVEL"):
                 self.loglevel = self.envval("LOGLEVEL")
 
-        except Exception:
-            pass
+        except Exception as err:
+            logging.error(err)
 
         else:
             logging.debug("Updated config values sucessfully.")
