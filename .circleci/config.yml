@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run: 
           name: Install dependencies
-          command: pip3 install -r requirments.txt
+          command: pip3 install -r requirements.txt
       - run:
           name: Run bandwidth-monitor service
           command: python3 bandwidth-monitor/main.py &
