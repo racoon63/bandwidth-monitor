@@ -15,6 +15,9 @@ jobs:
           name: Store PID in variable
           command: bwm_pid=$!
       - run:
+          name: Output PID
+          command: echo $bwm_pid
+      - run:
           name: Wait for bandwidth-monitor to init and measure once
           command: sleep 15
       - run:
