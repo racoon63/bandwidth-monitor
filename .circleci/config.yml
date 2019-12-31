@@ -13,16 +13,16 @@ jobs:
           command: python3 bandwidth-monitor/main.py &
       - run:
           name: Store PID in variable
-          command: bwm_pid=$!
+          command: export BWM_ID=$!
       - run:
           name: Output PID
-          command: echo $bwm_pid
+          command: echo $BWM_ID
       - run:
           name: Wait for bandwidth-monitor to init and measure once
           command: sleep 15
       - run:
           name: Terminate bandwidth-monitor service
-          command: kill -s SIGINT $bwm_pid
+          command: kill -s SIGINT $BWM_ID
       - run:
           name: Output logs
           command: cat log/bwm.log
