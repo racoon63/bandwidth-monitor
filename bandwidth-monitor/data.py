@@ -4,6 +4,7 @@ __author__ = 'racoon63 <racoon63@gmx.net>'
 
 import copy
 import logging
+import os
 import sys
 import time
 
@@ -12,8 +13,10 @@ import json
 class Data(object):
     
     def __init__(self, path):
-        self.data_path = path
-        self.data = self.read()
+        
+        self.workdir   = os.path.dirname(os.path.abspath(__file__)) + "/"
+        self.data_path = self.workdir + path
+        self.data      = self.read()
     
     def read(self):
         try:
@@ -49,10 +52,10 @@ class Data(object):
             with open(self.data_path, 'w') as f: 
                 json.dump(data, f)
         except:
-            logging.critical('Could not create data file ' + self.data_path + '. Exiting')
+            logging.critical('Could not create data file: {}. Exiting'.format(self.data_path))
             sys.exit()
         else:
-            logging.info('Created data file successfully')
+            logging.info('Created data file successfully at: {}'.format(self.data_path))
             return
 
     def create_data_object(self, timestamp, ping, download, upload):
@@ -65,7 +68,7 @@ class Data(object):
                 "upload" : upload
             }
         except:
-            logging.error('Could not create new data object')
+            logging.debug('Could not create new data object')
         else:
             logging.debug('Created new object successfully')
             return data_object
