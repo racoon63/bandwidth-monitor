@@ -17,12 +17,12 @@ if __name__ == "__main__":
     
     try:
 
-        if os.environ["LOGLEVEL"]:
+        if "LOGLEVEL" in os.environ:
             loglevel = os.environ["LOGLEVEL"].lower()
         else:
-            loglevel = info
+            loglevel = "info"
 
-        level = {
+        lvl = {
             "debug":    logging.DEBUG,
             "info":     logging.INFO,
             "warning":  logging.WARNING,
@@ -31,7 +31,7 @@ if __name__ == "__main__":
         }
 
         logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s', 
-                            level=level[loglevel],
+                            level=lvl[loglevel],
                             datefmt='%Y-%m-%d %H:%M:%S')
 
         conf = config.Config()
@@ -48,18 +48,20 @@ if __name__ == "__main__":
 
         logging.basicConfig(filename=logpath, 
                             format='[%(asctime)s] %(levelname)s: %(message)s',
-                            level=level[loglevel],
+                            level=lvl[loglevel],
                             datefmt='%Y-%m-%d %H:%M:%S')
 
         d = data.Data(datapath)
 
     except Exception as err:
         logging.critical(err)
+        sys.exit(1)
     
     else:
         logging.info('Bandwidth-Monitor service started.')
 
     while True:
+        
         try:
             starttime = time.time()
             
@@ -86,3 +88,7 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             logging.info('Bandwidth-Monitor was stopped by user.')
             sys.exit(0)
+
+        except Exception as err:
+            logging.critical(err)
+            sys.exit(1)
