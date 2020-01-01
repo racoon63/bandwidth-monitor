@@ -13,9 +13,25 @@ import data
 import speedtest
 
 
+def init(workdir):
+
+    datadir = workdir + "../data"
+    logdir  = workdir + "../log"
+
+    if not os.path.exists(datadir):
+        os.makedirs(datadir, exist_ok=True)
+
+    if not os.path.exists(logdir):
+        os.makedirs(logdir, exist_ok=True)
+
+
 if __name__ == "__main__":    
     
     try:
+
+        workdir = os.path.dirname(os.path.abspath(__file__)) + "/"
+
+        init(workdir)
 
         if "LOGLEVEL" in os.environ:
             loglevel = os.environ["LOGLEVEL"].lower()
