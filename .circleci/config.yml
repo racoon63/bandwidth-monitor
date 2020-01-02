@@ -2,6 +2,7 @@ version: 2
 jobs:
   build:
     machine: true
+    executor: my-executor
     steps:
       - checkout
       - run: mkdir docker
@@ -20,6 +21,7 @@ jobs:
             - bwm.tar
   test:
     machine: true
+    executor: my-executor
     steps:
       - attach_workspace:
           at: docker
