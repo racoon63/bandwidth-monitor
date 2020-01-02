@@ -4,6 +4,7 @@ __author__ = 'racoon63 <racoon63@gmx.net>'
 
 import copy
 import logging
+import os
 import sys
 import time
 
@@ -12,9 +13,13 @@ import json
 class Data(object):
     
     def __init__(self, path):
+        
+        #self.workdir   = os.path.dirname(os.path.abspath(__file__)) + "/"
         self.data_path = path
-        self.data = self.read()
-    
+        self.data      = None
+        self.read()
+
+
     def read(self):
         try:
             logging.debug('Reading data file ' + self.data_path)
@@ -30,6 +35,7 @@ class Data(object):
             logging.info('Read data file successfully')
             return
 
+
     def write(self):
         try:
             logging.debug('Writing data to data file')
@@ -41,7 +47,8 @@ class Data(object):
         else:
             logging.debug('Wrote data to file successfully')
             return
-    
+
+
     def create(self):
         try:
             logging.info('Creating new data file ' + self.data_path)
@@ -49,11 +56,12 @@ class Data(object):
             with open(self.data_path, 'w') as f: 
                 json.dump(data, f)
         except:
-            logging.critical('Could not create data file ' + self.data_path + '. Exiting')
+            logging.critical('Could not create data file: {} because of unsufficient permissions or path does not exist. Exiting'.format(self.data_path))
             sys.exit()
         else:
-            logging.info('Created data file successfully')
+            logging.info('Created data file successfully at: {}'.format(self.data_path))
             return
+
 
     def create_data_object(self, timestamp, ping, download, upload):
         try:
@@ -65,10 +73,11 @@ class Data(object):
                 "upload" : upload
             }
         except:
-            logging.error('Could not create new data object')
+            logging.debug('Could not create new data object')
         else:
             logging.debug('Created new object successfully')
             return data_object
+
 
     def append(self, data_object):
         try:
