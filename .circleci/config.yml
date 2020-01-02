@@ -15,7 +15,7 @@ jobs:
       
       - run:
           name: Export docker container image
-          command: docker save --output ~/bwm/docker/bwm.tar racoon/bandwidth-monitor && ls -l docker
+          command: docker save --output ~/bwm/docker/bwm.tar racoon/bandwidth-monitor
       
       - persist_to_workspace:
           root: ~/bwm/docker
@@ -44,7 +44,7 @@ jobs:
 
       - run:
           name: Test if data was created
-          command: if test -f data/bwm.json; then echo "success"; else echo "fail"; fi
+          command: if test -f data/data.json; then echo "success"; else echo "fail"; fi
 
 workflows:
   version: 2
