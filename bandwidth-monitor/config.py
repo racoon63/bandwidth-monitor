@@ -152,17 +152,18 @@ class Config(object):
             if self.config["Database"]["type"] == "tinydb":
             
                 logging.debug("Check if option datapath is present.")
+                
                 if not self.config.has_option("Database", "datapath"):
                     raise Exception
 
-            logging.debug("Check if database type is mongodb")
-            
-            if self.config["Database"] == "mongodb":
-            
-                logging.debug("Check if required database variables are present.")
+            else:
+                logging.debug("Check if database type is mongodb")
                 
-                if not self.config.has_option("Database", "host") and not self.config.has_option("Database", "user") and not self.config.has_option("Database", "password"):
-                    raise Exception
+                if self.config["Database"] == "mongodb":
+                    logging.debug("Check if required database variables are present.")
+                    
+                    if not self.config.has_option("Database", "host") and not self.config.has_option("Database", "user") and not self.config.has_option("Database", "password"):
+                        raise Exception
 
         except Exception as err:
             #logging.critical(err)
@@ -201,7 +202,7 @@ class Config(object):
                 if self.envval("DATAPATH"):
                     self.datapath = self.envval("DATAPATH")
             
-            if self.dbtype == "mongodb":
+            elif self.dbtype == "mongodb":
                 if self.config.has_option("Database", "host") and self.config["Database"]["host"] != "":
                     self.host = self.config["Database"]["host"]
                 elif self.envval("DBHOST"):
@@ -276,7 +277,7 @@ class Config(object):
                 else:
                     self.config['Database']['datapath'] = self.datapath
             
-            if self.dbtype == "mongodb":
+            elif self.dbtype == "mongodb":
                 
                 if self.envval("DBHOST"):
                     self.config['Database']['dbhost'] = self.dbhost
