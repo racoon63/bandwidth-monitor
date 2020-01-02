@@ -4,13 +4,16 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: mkdir /tmp/nwm
+      - run: mkdir /tmp/bwm
+
       - run: 
           name: Building docker image
           command: docker build -t racoon/bandwidth-monitor .
+      
       - run:
           name: Export docker container image
           command: docker save --output /tmp/bwm/bwm.tar racoon/bandwidth-monitor
+      
       - persist_to_workspace:
           root: /tmp/bwm
           paths: 
