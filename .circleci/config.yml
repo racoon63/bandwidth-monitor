@@ -26,13 +26,13 @@ jobs:
     machine: true
     steps:
       - checkout
-      
+
       - attach_workspace:
           at: ~/bwm/docker
 
       - run:
           name: Import bandwidth-monitor image
-          command: docker load docker/bwm.tar racoon/bandwidth-monitor
+          command: docker load -i docker/bwm.tar
 
       - run:
           name: Run a instance of bandwidth-monitor image
