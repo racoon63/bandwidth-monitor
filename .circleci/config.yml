@@ -4,7 +4,7 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: mkdir /tmp/bwm
+      - run: mkdir docker
 
       - run: 
           name: Building docker image
@@ -12,21 +12,21 @@ jobs:
       
       - run:
           name: Export docker container image
-          command: docker save --output /tmp/bwm/bwm.tar racoon/bandwidth-monitor
+          command: docker save --output docker/bwm.tar racoon/bandwidth-monitor
       
       - persist_to_workspace:
-          root: /tmp/bwm
+          root: docker
           paths: 
             - bwm.tar
   test:
     machine: true
     steps:
       - attach_workspace:
-          at: /tmp/bwm
+          at: docker
 
       - run:
           name: Import bandwidth-monitor image
-          command: docker import /tmp/bwm/bwm.tar racoon/bandwidth-monitor
+          command: docker import docker/bwm.tar racoon/bandwidth-monitor
 
       - run:
           name: Run a instance of bandwidth-monitor image
