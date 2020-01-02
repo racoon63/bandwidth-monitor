@@ -15,7 +15,7 @@ jobs:
       
       - run:
           name: Export docker container image
-          command: docker save --output docker/bwm.tar racoon/bandwidth-monitor && ls -l docker
+          command: docker save --output ~/bwm/docker/bwm.tar racoon/bandwidth-monitor && ls -l docker
       
       - persist_to_workspace:
           root: ~/bwm/docker
@@ -32,7 +32,7 @@ jobs:
 
       - run:
           name: Import bandwidth-monitor image
-          command: docker load -i docker/bwm.tar
+          command: docker load -i ~/bwm/docker/bwm.tar
 
       - run:
           name: Run a instance of bandwidth-monitor image
