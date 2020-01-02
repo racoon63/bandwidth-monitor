@@ -8,10 +8,11 @@ executors:
 
 jobs:
   build:
-    machine: true
     executor: my-executor
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run: mkdir docker
 
       - run: 
