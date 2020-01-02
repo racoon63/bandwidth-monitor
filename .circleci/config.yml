@@ -1,31 +1,37 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: python:3.7-alpine
+    machine: true
     steps:
       - checkout
       - run: 
-          name: Install dependencies
-          command: pip3 install -r requirements.txt
+          name: Building docker image
+          command: docker build -t racoon/bandwidth-monitor .
       - run:
-          name: Run bandwidth-monitor service
-          command: python3 bandwidth-monitor/main.py &
+          name: Export docker container image
+          command: docker save --output /tmp/bwm.tar racoon/bandwidth-monitor
+    persist_to_workspace:
+      root: /tmp
+      path: 
+        - bwm.tar
+  test:
+    machine: true
+    steps:
       - run:
-          name: Store PID in variable
-          command: export BWM_ID=$!
+          name: Import bandwidth-monitor image
+          command: docker import /tmp/bwm.tar racoon/bandwidth-monitor
+
       - run:
-          name: Output PID
-          command: echo $BWM_ID
+          name: Run a instance of bandwidth-monitor image
+          command: docker run -d --rm --name bwm -e LOGLEVEL="debug" -e DBTYPE="tinydb" -v $PWD:/bwm/data racoon/bandwidth-monitor
+
       - run:
-          name: Wait for bandwidth-monitor to init and measure once
+          name: Wait until the first measure was made
           command: sleep 15
+
       - run:
-          name: Terminate bandwidth-monitor service
-          command: kill -s SIGINT $BWM_ID
-      - run:
-          name: Output logs
-          command: cat log/bwm.log
+          name: Test if data was created
+          command: if test -f data/bwm.json; then echo "success"; else echo "fail"; fi
 
 workflows:
   version: 2
