@@ -1,6 +1,6 @@
 # Bandwidth-Monitor
 
-[Docker-Build]:https://img.shields.io/docker/cloud/build/racoon/bandwidth-monitor
+![Docker-Build](https://img.shields.io/docker/cloud/build/racoon/bandwidth-monitor)
 
 Bandwidth-Monitor is a tool with which you can use to measure and monitor your latency and bandwidth. Bandwidth-Monitor automatically creates statistics from your measured data and displays it over a webUI.
 
