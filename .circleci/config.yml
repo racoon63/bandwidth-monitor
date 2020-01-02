@@ -6,7 +6,6 @@ jobs:
     machine: true
     steps:
       - checkout
-      - setup_remote_docker
       
       - run: mkdir docker
 
@@ -26,6 +25,8 @@ jobs:
   test:
     machine: true
     steps:
+      - checkout
+      
       - attach_workspace:
           at: ~/bwm/docker
 
