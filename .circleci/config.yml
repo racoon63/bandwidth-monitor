@@ -1,18 +1,13 @@
-version: 2.1
-
-executors:
-  my-executor:
-    docker:
-      - image: buildpack-deps:jessie
-    working_directory: /tmp/bwm
+version: 2
 
 jobs:
   build:
-    executor: my-executor
+    working_directory: ~/bwm
+    machine: true
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
+      
       - run: mkdir docker
 
       - run: 
@@ -21,18 +16,18 @@ jobs:
       
       - run:
           name: Export docker container image
-          command: docker save --output docker/bwm.tar racoon/bandwidth-monitor
+          command: docker save --output docker/bwm.tar racoon/bandwidth-monitor && ls -l docker
       
       - persist_to_workspace:
-          root: docker
+          root: ~/bwm/docker
           paths: 
             - bwm.tar
+  
   test:
     machine: true
-    executor: my-executor
     steps:
       - attach_workspace:
-          at: docker
+          at: ~/bwm/docker
 
       - run:
           name: Import bandwidth-monitor image
@@ -55,4 +50,6 @@ workflows:
   build:
     jobs:
       - build
-      - test
+      - test:
+          requires:
+            - build
