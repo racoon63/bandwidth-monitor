@@ -21,7 +21,7 @@ class Config(object):
             self.interval         = 60
             
             self.dbtype           = "tinydb"
-            self.datapath         = self.workdir + "../data/data.json"
+            self.datapath         = self.workdir + "../data/bwm.json"
             self.dbhost           = None
             self.dbuser           = None
             self.dbpassword       = None
