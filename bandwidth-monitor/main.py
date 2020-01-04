@@ -50,9 +50,13 @@ if __name__ == "__main__":
             "critical": logging.CRITICAL
         }
 
-        logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s', 
+        logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s',
                             level=level[loglevel],
-                            datefmt='%Y-%m-%d %H:%M:%S')
+                            datefmt='%Y-%m-%d %H:%M:%S',
+                            handlers=[
+                                logging.FileHandler(logpath),
+                                logging.StreamHandler()
+                            ])
 
         conf = config.Config()
         
@@ -66,10 +70,13 @@ if __name__ == "__main__":
         logpath          = conf.logpath
         loglevel         = conf.loglevel.lower()
 
-        logging.basicConfig(filename=logpath, 
-                            format='[%(asctime)s] %(levelname)s: %(message)s',
+        logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s',
                             level=level[loglevel],
-                            datefmt='%Y-%m-%d %H:%M:%S')
+                            datefmt='%Y-%m-%d %H:%M:%S',
+                            handlers=[
+                                logging.FileHandler(logpath),
+                                logging.StreamHandler()
+                            ])
 
         d = data.Data(datapath)
 
