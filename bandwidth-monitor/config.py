@@ -217,45 +217,78 @@ class Config(object):
         try:
             logging.debug("Validating config")
 
-            for section in ["Database"]:
-                logging.debug("Check if required section is present: {}".format(section))
-                
-                if self.config.has_section(section):
-                    logging.debug("Section {} is present".format(section))
-        
-            logging.debug("Check if option database type is present")
-            
-            if not self.config.has_option("Database", "type"):
-                raise Exception
-            else:
-                logging.debug("Database type option is present")
+            if self.config.has_section("General"):
 
-            logging.debug("Check if option database type is either tinydb or mongodb")
+                if self.config.has_option("General", "speedtest-server") and self.config["General"]["speedtest-server"] != "":
 
-            if self.config["Database"]["type"] or "tinydb" or self.config["Database"]["type"] == "mongodb":
+                    if self.config["General"]["speedtest-server"] != "auto":
+                        
+                        if int(self.config["General"]["speedtest-server"]) == 0 or int(self.config["General"]["speedtest-server"]) > 50000:
+                            logging.debug("speedtest-server ID is not valid. ID is: {}".format(self.config["General"]["speedtest-server"]))
+                            raise Exception  
                 
-                if self.config["Database"]["type"] == "tinydb":
-                    logging.debug("Database type is: tinydb")
-                    logging.debug("Check if option datapath is present")
+                else:
+                    logging.debug("The option speedtest-server is not present or empty")
                 
-                    if not self.config.has_option("Database", "datapath"):
-                        logging.debug("The required option datapath is not present")
+                if self.config.has_option("General", "interval") and self.config["General"]["interval"] != "":
+
+                    if int(self.config["General"]["interval"]) < 30:
+                        logging.debug("The interval is lower than 30.")
+                        raise Exception 
+                
+                else:
+                    logging.debug("The option interval is not present or empty")
+
+            if self.config.has_section("Database"):
+
+                if self.config.has_option("Database", "type") and self.config["Database"]["type"] != "":
+
+                    if self.config["Database"]["type"] == "tinydb" or self.config["Database"]["type"] == "mongodb":
+
+                        if self.config["Database"]["type"] == "tinydb":
+                            logging.debug("Database type is: tinydb")
+                            logging.debug("Check if option datapath is present")
+
+                            if not self.config.has_option("Database", "datapath") or self.config["Database"]["datapath"] == "":
+                                logging.debug("The required option datapath is not present")
+                                raise Exception
+
+                        elif self.config["Database"]["type"] == "mongodb":
+                            logging.debug("Database type is mongodb")
+                            logging.debug("Check if required database variables host, user and password are present")
+
+                            if not self.config.has_option("Database", "host") or self.config["Database"]["host"] == "":
+                                logging.debug("The required option host is not present")
+                                raise Exception
+
+                            if not self.config.has_option("Database", "user") or self.config["Database"]["user"] == "":
+                                logging.debug("The required option user is not present")
+                                raise Exception
+
+                            if not self.config.has_option("Database", "password") or self.config["Database"]["password"] == "":
+                                logging.debug("The required option password is not present")
+                                raise Exception
+
+                    else:
+                        logging.debug("The database type is neither tinydb nor mongodb")
                         raise Exception
 
-                if self.config["Database"]["type"] == "mongodb":
-                    logging.debug("Database type is mongodb")
-                    logging.debug("Check if required database variables host, user and password are present")
-                    
-                    if not self.config.has_option("Database", "host") or not self.config.has_option("Database", "user") or not self.config.has_option("Database", "password"):
-                        logging.debug("One of the required options are not present: host, user or password")
-                        raise Exception
-            
+                else:
+                    logging.debug("The option database type is not present or empty")
+                    raise Exception
+
             else:
-                logging.debug("The database type is neither tinydb nor mongodb")
-                logging.debug("Database type is: {}".format(self.config["Database"]["type"]))
+                logging.debug("The section Database is not present")
                 raise Exception
+
+            if self.config.has_section("Logging"):
+
+                if self.config["Logging"]["loglevel"].lower() != "info" and self.config["Logging"]["loglevel"].lower() != "warning" and self.config["Logging"]["loglevel"].lower() != "error" and self.config["Logging"]["loglevel"].lower() != "critical" and self.config["Logging"]["loglevel"].lower() != "debug":
+                    logging.debug("No valid loglevel was specified. Allowed loglevel are: info, warning, error, critical, debug")
+                    raise Exception
                 
-        except Exception:
+        except Exception as err:
+            logging.critical(err)
             logging.critical("Config is not valid. Exiting")
             sys.exit(1)
         
