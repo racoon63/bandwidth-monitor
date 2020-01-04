@@ -77,8 +77,20 @@ if __name__ == "__main__":
                                 logging.FileHandler(logpath),
                                 logging.StreamHandler()
                             ])
+        """
+        if dbtype == "tinydb":
+            from database import tinydb
 
-        d = data.Data(datapath)
+            db = tinydb.Tinydb(datapath)
+
+        elif dbtype == "mongodb":
+            from database import mongodb
+
+            db = mongodb.Mongodb(dbhost, dbuser, dbpassword)
+
+        else:"""
+        db = data.Data(datapath)
+        test = speedtest.Speedtest(speedtest_server)
 
     except Exception as err:
         logging.critical(err)
@@ -92,12 +104,12 @@ if __name__ == "__main__":
         try:
             starttime = time.time()
             
-            bwtest = speedtest.Speedtest()
+            test.run()
 
-            timestamp = bwtest.timestamp
-            ping      = bwtest.ping
-            download  = bwtest.download
-            upload    = bwtest.upload
+            timestamp = test.timestamp
+            ping      = test.ping
+            download  = test.download
+            upload    = test.upload
             
             c_year   = time.gmtime().tm_year
             c_month  = time.gmtime().tm_mon
@@ -106,11 +118,11 @@ if __name__ == "__main__":
             c_minute = time.gmtime().tm_min
             c_second = time.gmtime().tm_sec
 
-            data_object = d.create_data_object(timestamp, ping, download, upload)
-            d.append(data_object)
-            d.write()
+            data_object = db.create_data_object(timestamp, ping, download, upload)
+            db.append(data_object)
+            db.write()
 
-            time.sleep(60.0 - ((time.time() - starttime) % 60.0))
+            time.sleep(interval - ((time.time() - starttime) % interval))
 
         except KeyboardInterrupt:
             logging.info('Bandwidth-Monitor was stopped by user')
