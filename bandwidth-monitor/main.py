@@ -28,7 +28,6 @@ def init(workdir):
 if __name__ == "__main__":    
     
     try:
-
         workdir = os.path.dirname(os.path.abspath(__file__)) + "/"
 
         init(workdir)
@@ -37,8 +36,13 @@ if __name__ == "__main__":
             loglevel = os.environ["LOGLEVEL"].lower()
         else:
             loglevel = "info"
-
-        lvl = {
+        
+        if "LOGPATH" in os.environ:
+            logpath = os.environ["LOGPATH"].lower()
+        else:
+            logpath = "../log/bwm.log"
+        
+        level = {
             "debug":    logging.DEBUG,
             "info":     logging.INFO,
             "warning":  logging.WARNING,
@@ -47,7 +51,7 @@ if __name__ == "__main__":
         }
 
         logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s', 
-                            level=lvl[loglevel],
+                            level=level[loglevel],
                             datefmt='%Y-%m-%d %H:%M:%S')
 
         conf = config.Config()
@@ -64,7 +68,7 @@ if __name__ == "__main__":
 
         logging.basicConfig(filename=logpath, 
                             format='[%(asctime)s] %(levelname)s: %(message)s',
-                            level=lvl[loglevel],
+                            level=level[loglevel],
                             datefmt='%Y-%m-%d %H:%M:%S')
 
         d = data.Data(datapath)
@@ -74,7 +78,7 @@ if __name__ == "__main__":
         sys.exit(1)
     
     else:
-        logging.info('Bandwidth-Monitor service started.')
+        logging.info('Bandwidth-Monitor service started')
 
     while True:
         
@@ -102,7 +106,7 @@ if __name__ == "__main__":
             time.sleep(60.0 - ((time.time() - starttime) % 60.0))
 
         except KeyboardInterrupt:
-            logging.info('Bandwidth-Monitor was stopped by user.')
+            logging.info('Bandwidth-Monitor was stopped by user')
             sys.exit(0)
 
         except Exception as err:
