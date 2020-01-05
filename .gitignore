@@ -2,10 +2,12 @@
 .vscode/
 data/
 env/
-logs/
+log/
+temp/
 test.py
 *.json
 templates/
 .devcontainer/
 archive/
 build.sh
+devenv.sh

@@ -13,7 +13,9 @@ import data
 import speedtest
 
 
-def init(workdir):
+def init():
+
+    workdir = os.path.dirname(os.path.abspath(__file__)) + "/"
 
     datadir = workdir + "../data"
     logdir  = workdir + "../log"
@@ -25,20 +27,30 @@ def init(workdir):
         os.makedirs(logdir, exist_ok=True)
 
 
+def leading_zero(number):
+    
+    if len(str(number)) == 1:
+        return "{}{}".format(0, number)
+    else:
+        return number
+
 if __name__ == "__main__":    
     
     try:
-
-        workdir = os.path.dirname(os.path.abspath(__file__)) + "/"
-
-        init(workdir)
+        
+        init()
 
         if "LOGLEVEL" in os.environ:
             loglevel = os.environ["LOGLEVEL"].lower()
         else:
             loglevel = "info"
-
-        lvl = {
+        
+        if "LOGPATH" in os.environ:
+            logpath = os.environ["LOGPATH"].lower()
+        else:
+            logpath = "../log/bwm.log"
+        
+        level = {
             "debug":    logging.DEBUG,
             "info":     logging.INFO,
             "warning":  logging.WARNING,
@@ -46,9 +58,13 @@ if __name__ == "__main__":
             "critical": logging.CRITICAL
         }
 
-        logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s', 
-                            level=lvl[loglevel],
-                            datefmt='%Y-%m-%d %H:%M:%S')
+        logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s',
+                            level=level[loglevel],
+                            datefmt='%Y-%m-%d %H:%M:%S',
+                            handlers=[
+                                logging.FileHandler(logpath),
+                                logging.StreamHandler()
+                            ])
 
         conf = config.Config()
         
@@ -62,47 +78,64 @@ if __name__ == "__main__":
         logpath          = conf.logpath
         loglevel         = conf.loglevel.lower()
 
-        logging.basicConfig(filename=logpath, 
-                            format='[%(asctime)s] %(levelname)s: %(message)s',
-                            level=lvl[loglevel],
-                            datefmt='%Y-%m-%d %H:%M:%S')
+        logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s',
+                            level=level[loglevel],
+                            datefmt='%Y-%m-%d %H:%M:%S',
+                            handlers=[
+                                logging.FileHandler(logpath),
+                                logging.StreamHandler()
+                            ])
+        """
+        if dbtype == "tinydb":
+            from database import tinydb
 
-        d = data.Data(datapath)
+            db = tinydb.Tinydb(datapath)
+
+        elif dbtype == "mongodb":
+            from database import mongodb
+
+            db = mongodb.Mongodb(dbhost, dbuser, dbpassword)
+
+        else:"""
+        db = data.Data(datapath)
+        test = speedtest.Speedtest(speedtest_server)
 
     except Exception as err:
         logging.critical(err)
         sys.exit(1)
     
     else:
-        logging.info('Bandwidth-Monitor service started.')
+        logging.info('Bandwidth-Monitor service started')
 
     while True:
         
         try:
             starttime = time.time()
             
-            bwtest = speedtest.Speedtest()
+            test.run()
 
-            timestamp = bwtest.timestamp
-            ping      = bwtest.ping
-            download  = bwtest.download
-            upload    = bwtest.upload
+            timestamp = test.timestamp
+            ping      = test.ping
+            download  = test.download
+            upload    = test.upload
             
-            c_year   = time.gmtime().tm_year
-            c_month  = time.gmtime().tm_mon
-            c_day    = time.gmtime().tm_mday
-            c_hour   = time.gmtime().tm_hour
-            c_minute = time.gmtime().tm_min
-            c_second = time.gmtime().tm_sec
+            c_year   = leading_zero(time.gmtime().tm_year)
+            c_month  = leading_zero(time.gmtime().tm_mon)
+            c_day    = leading_zero(time.gmtime().tm_mday)
+            c_hour   = leading_zero(time.gmtime().tm_hour)
+            c_minute = leading_zero(time.gmtime().tm_min)
+            c_second = leading_zero(time.gmtime().tm_sec)
 
-            data_object = d.create_data_object(timestamp, ping, download, upload)
-            d.append(data_object)
-            d.write()
+            ts = "{}-{}-{}-{}-{}-{}".format(c_year, c_month, c_day, c_hour, c_minute, c_second)
 
-            time.sleep(60.0 - ((time.time() - starttime) % 60.0))
+            data_object = db.create_data_object(ts, ping, download, upload)
+            db.append(data_object)
+            db.write()
+
+            time.sleep(interval - ((time.time() - starttime) % interval))
 
         except KeyboardInterrupt:
-            logging.info('Bandwidth-Monitor was stopped by user.')
+            logging.info('Bandwidth-Monitor was stopped by user')
             sys.exit(0)
 
         except Exception as err:

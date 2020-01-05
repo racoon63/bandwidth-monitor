@@ -29,13 +29,13 @@ The service can be configured either by providing a `config.ini` configuration f
 
 |Parameter|Required|Values|Comments|
 |---|---|---|---|
-|**speedtest-server**|no |default: `auto`               |If you want to use a specific speedtest-server you can enter its ID here. If no ID is provided, the service will determine the nearest server.|
-|**interval**        |no |default: `60`                 |No value under 60 is allowed and recommended for now, beacause the data gathering takes some time to proceed.|
-|**type**            |no |default: `tinydb`             |TinyDB is a lightweight database which uses plain JSON files to store data. MongoDB is a document-oriented database in which you can store your data.|
-|**datapath**        |yes|default: `../data/data.json`  |The default path is relative to the `main.py` file.|
-|**host**            |yes|                              |Everything in the form of an IP address or FQDN/DNS name like `1.2.3.4` or `database.example.com`|
-|**user**            |yes|                              |For example: `root`|
-|**password**        |yes|                              |For example: `123456`|
+|**speedtest-server**|no |default: `auto`<br><1-50000>              |If you want to use a specific speedtest-server you can enter its ID here. If no ID is provided, the service will determine the nearest server. To get an overview of speedtest-server see [here](https://c.speedtest.net/speedtest-servers-static.php)|
+|**interval**        |no |default: `60`                             |No value under 30 is allowed and recommended for now, because the data gathering takes some time to proceed.|
+|**type**            |no |default: `tinydb`<br>tinydb<br>mongodb    |TinyDB is a lightweight database which uses plain JSON files to store data. MongoDB is a document-oriented database in which you can store your data.|
+|**datapath**        |yes|default: `../data/data.json`              |The default path is relative to the `main.py` file.|
+|**host**            |yes|                                          |Everything in the form of an IP address or FQDN/DNS name like `1.2.3.4` or `database.example.com`|
+|**user**            |yes|                                          |For example: `root`|
+|**password**        |yes|                                          |For example: `123456`|
 
 ### Environment Variables
 
@@ -102,6 +102,7 @@ docker run -d \
 
 ## Missing
 
+* Config (-file) hashing
 * Implementing database drivers
   * tinyDB
   * mongoDB
