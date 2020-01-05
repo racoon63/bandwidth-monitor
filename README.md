@@ -102,6 +102,7 @@ docker run -d \
 
 ## Missing
 
+* Config (-file) hashing
 * Implementing database drivers
   * tinyDB
   * mongoDB
