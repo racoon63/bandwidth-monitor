@@ -44,7 +44,7 @@ jobs:
 
       - run:
           name: Test if data was created
-          command: test -f ~/bwm/data/data.json
+          command: test -f ~/bwm/data/bwm.json
 
 workflows:
   version: 2
