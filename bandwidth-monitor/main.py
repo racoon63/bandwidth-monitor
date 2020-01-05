@@ -13,7 +13,9 @@ import data
 import speedtest
 
 
-def init(workdir):
+def init():
+
+    workdir = os.path.dirname(os.path.abspath(__file__)) + "/"
 
     datadir = workdir + "../data"
     logdir  = workdir + "../log"
@@ -35,9 +37,8 @@ def leading_zero(number):
 if __name__ == "__main__":    
     
     try:
-        workdir = os.path.dirname(os.path.abspath(__file__)) + "/"
-
-        init(workdir)
+        
+        init()
 
         if "LOGLEVEL" in os.environ:
             loglevel = os.environ["LOGLEVEL"].lower()
