@@ -25,6 +25,13 @@ def init(workdir):
         os.makedirs(logdir, exist_ok=True)
 
 
+def leading_zero(number):
+    
+    if len(str(number)) == 1:
+        return "{}{}".format(0, number)
+    else:
+        return number
+
 if __name__ == "__main__":    
     
     try:
@@ -111,14 +118,16 @@ if __name__ == "__main__":
             download  = test.download
             upload    = test.upload
             
-            c_year   = time.gmtime().tm_year
-            c_month  = time.gmtime().tm_mon
-            c_day    = time.gmtime().tm_mday
-            c_hour   = time.gmtime().tm_hour
-            c_minute = time.gmtime().tm_min
-            c_second = time.gmtime().tm_sec
+            c_year   = leading_zero(time.gmtime().tm_year)
+            c_month  = leading_zero(time.gmtime().tm_mon)
+            c_day    = leading_zero(time.gmtime().tm_mday)
+            c_hour   = leading_zero(time.gmtime().tm_hour)
+            c_minute = leading_zero(time.gmtime().tm_min)
+            c_second = leading_zero(time.gmtime().tm_sec)
 
-            data_object = db.create_data_object(timestamp, ping, download, upload)
+            ts = "{}-{}-{}-{}-{}-{}".format(c_year, c_month, c_day, c_hour, c_minute, c_second)
+
+            data_object = db.create_data_object(ts, ping, download, upload)
             db.append(data_object)
             db.write()
 
