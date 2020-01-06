@@ -62,7 +62,7 @@ if __name__ == "__main__":
         if "LOGLEVEL" in os.environ:
             loglevel = os.environ["LOGLEVEL"].lower()
         else:
-            loglevel = "debug"
+            loglevel = "info"
         
         if "LOGPATH" in os.environ:
             logpath = os.environ["LOGPATH"]
