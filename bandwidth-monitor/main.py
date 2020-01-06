@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.7
 
-__author__ = 'racoon63 <racoon63@gmx.net>'
+__author__ = "racoon63 <racoon63@gmx.net>"
 
 import json
 import logging
@@ -13,9 +13,7 @@ import data
 import speedtest
 
 
-def init():
-
-    workdir = os.path.dirname(os.path.abspath(__file__)) + "/"
+def init(workdir):
 
     datadir = workdir + "../data"
     logdir  = workdir + "../log"
@@ -34,21 +32,42 @@ def leading_zero(number):
     else:
         return number
 
+
+def create_data_object(timestamp, ping, download, upload):
+
+    try:
+        logging.debug("Creating new data object")
+        data_object = {
+            "timestamp" : timestamp, 
+            "ping" : ping, 
+            "download" : download, 
+            "upload" : upload
+        }
+
+    except:
+        logging.debug("Could not create new data object")
+
+    else:
+        logging.debug("Created new object successfully")
+        return data_object
+
+
 if __name__ == "__main__":    
     
     try:
-        
-        init()
+        workdir = os.path.dirname(os.path.abspath(__file__)) + "/"
+
+        init(workdir)
 
         if "LOGLEVEL" in os.environ:
             loglevel = os.environ["LOGLEVEL"].lower()
         else:
-            loglevel = "info"
+            loglevel = "debug"
         
         if "LOGPATH" in os.environ:
-            logpath = os.environ["LOGPATH"].lower()
+            logpath = os.environ["LOGPATH"]
         else:
-            logpath = "../log/bwm.log"
+            logpath = workdir + "../log/bwm.log"
         
         level = {
             "debug":    logging.DEBUG,
@@ -58,9 +77,9 @@ if __name__ == "__main__":
             "critical": logging.CRITICAL
         }
 
-        logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s',
+        logging.basicConfig(format="[%(asctime)s] %(levelname)s: %(message)s",
                             level=level[loglevel],
-                            datefmt='%Y-%m-%d %H:%M:%S',
+                            datefmt="%Y-%m-%d %H:%M:%S",
                             handlers=[
                                 logging.FileHandler(logpath),
                                 logging.StreamHandler()
@@ -69,7 +88,7 @@ if __name__ == "__main__":
         conf = config.Config()
         
         speedtest_server = conf.speedtest_server
-        interval         = conf.interval
+        interval         = int(conf.interval)
         dbtype           = conf.dbtype
         datapath         = conf.datapath
         dbhost           = conf.dbhost
@@ -85,31 +104,24 @@ if __name__ == "__main__":
                                 logging.FileHandler(logpath),
                                 logging.StreamHandler()
                             ])
-        """
-        if dbtype == "tinydb":
-            from database import tinydb
 
-            db = tinydb.Tinydb(datapath)
+        if dbtype == "tinydb":
+            #from database import tinydb
+
+            #db = tinydb.Tinydb(datapath)
+            db = data.Data(datapath)
 
         elif dbtype == "mongodb":
             from database import mongodb
 
             db = mongodb.Mongodb(dbhost, dbuser, dbpassword)
 
-        else:"""
-        db = data.Data(datapath)
         test = speedtest.Speedtest(speedtest_server)
 
-    except Exception as err:
-        logging.critical(err)
-        sys.exit(1)
-    
-    else:
-        logging.info('Bandwidth-Monitor service started')
+        logging.info("Bandwidth-Monitor started successfully")
 
-    while True:
-        
-        try:
+        while True:
+
             starttime = time.time()
             
             test.run()
@@ -128,16 +140,15 @@ if __name__ == "__main__":
 
             ts = "{}-{}-{}-{}-{}-{}".format(c_year, c_month, c_day, c_hour, c_minute, c_second)
 
-            data_object = db.create_data_object(ts, ping, download, upload)
-            db.append(data_object)
-            db.write()
+            data_object = create_data_object(ts, ping, download, upload)
+            db.insert(data_object)
 
             time.sleep(interval - ((time.time() - starttime) % interval))
 
-        except KeyboardInterrupt:
-            logging.info('Bandwidth-Monitor was stopped by user')
-            sys.exit(0)
+    except KeyboardInterrupt:
+        logging.info("Bandwidth-Monitor was stopped by user")
+        sys.exit(0)
 
-        except Exception as err:
-            logging.critical(err)
-            sys.exit(1)
+    except Exception as err:
+        logging.exception(err)
+        sys.exit(1)

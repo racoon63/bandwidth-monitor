@@ -40,9 +40,11 @@ class Data(object):
             return
 
 
-    def write(self):
+    def insert(self, object):
 
         try:
+            self._append(object)
+            
             logging.debug("Writing data to data file")
             with open(self.data_path, "w") as f:
                 json.dump(self.data, f, indent=4)
@@ -73,26 +75,10 @@ class Data(object):
             return
 
 
-    def create_data_object(self, timestamp, ping, download, upload):
-        
-        try:
-            logging.debug("Creating new data object")
-            data_object = {
-                "timestamp" : timestamp, 
-                "ping" : ping, 
-                "download" : download, 
-                "upload" : upload
-            }
-        
-        except:
-            logging.debug("Could not create new data object")
-        
-        else:
-            logging.debug("Created new object successfully")
-            return data_object
 
 
-    def append(self, data_object):
+
+    def _append(self, data_object):
         
         try:
             logging.debug("Appending data")
