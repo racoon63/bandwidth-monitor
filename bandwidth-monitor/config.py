@@ -253,6 +253,8 @@ class Config(object):
                                 logging.debug("The required option datapath is not present")
                                 raise Exception
 
+                            logging.debug("All required options are present")
+
                         elif self.config["Database"]["type"] == "mongodb":
                             logging.debug("Database type is mongodb")
                             logging.debug("Check if required database variables host, user and password are present")
@@ -260,14 +262,22 @@ class Config(object):
                             if not self.config.has_option("Database", "host") or self.config["Database"]["host"] == "":
                                 logging.debug("The required option host is not present")
                                 raise Exception
+                            else:
+                                logging.debug("Option database host is present")
 
                             if not self.config.has_option("Database", "user") or self.config["Database"]["user"] == "":
                                 logging.debug("The required option user is not present")
                                 raise Exception
+                            else:
+                                logging.debug("Option database user is present")
 
                             if not self.config.has_option("Database", "password") or self.config["Database"]["password"] == "":
                                 logging.debug("The required option password is not present")
                                 raise Exception
+                            else:
+                                logging.debug("Option database password is present")
+
+                            logging.debug("All required options are present")
 
                     else:
                         logging.debug("The database type is neither tinydb nor mongodb")
@@ -300,13 +310,13 @@ class Config(object):
     def _is_option_set(self, section, name):
 
         try:
-            logging.debug("Check if option '{}' in section '{}' is present and set in config.".format(name, section))
+            logging.debug("Check if option '{}' in section '{}' in config file is present and set".format(name, section))
             
-            if self.config.has_option(section, name) and self.config[section][name] == "":
-                logging.debug("Option '{}' is set".format(name))
+            if self.config.has_option(section, name) and self.config[section][name] != "":
+                logging.debug("Option '{}' is set and not empty".format(name))
                 return True
             else:
-                logging.debug("Option '{}' is not set".format(name))
+                logging.debug("Option '{}' is not set or empty".format(name))
                 return False
 
         except Exception as err:
