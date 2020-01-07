@@ -105,7 +105,6 @@ docker run -d \
 * Config (-file) hashing
 * Implementing database drivers
   * tinyDB
-  * mongoDB
 * Implement webUI possibility
 
 ## Maintainer
