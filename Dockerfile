@@ -9,6 +9,5 @@ RUN mkdir /bwm/data
 RUN mkdir /bwm/log
 
 RUN pip install -r /bwm/requirements.txt
-RUN ln -sf /dev/stdout /bwm/log/bwm.log
 
 ENTRYPOINT [ "python3", "main.py" ]

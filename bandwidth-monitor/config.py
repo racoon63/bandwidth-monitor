@@ -148,29 +148,29 @@ class Config(object):
             else:
                 self.config["Database"]["type"] = self.dbtype
 
-            if self.dbtype == "tinydb":
+            if self.config["Database"]["type"] == "tinydb":
 
                 if self._is_env_set("DATAPATH"):
                     self.config["Database"]["datapath"] = self._get_env_val("DATAPATH")
                 else:
-                    self.config['Database']['datapath'] = self.datapath
+                    self.config["Database"]["datapath"] = self.datapath
 
-            elif self.dbtype == "mongodb":
+            elif self.config["Database"]["type"] == "mongodb":
 
                 if self._is_env_set("DBHOST"):
-                    self.config['Database']['dbhost'] = self.dbhost
+                    self.config["Database"]["host"] = self._get_env_val("DBHOST")
                 else:
                     logging.critical("Environment variable 'DBHOST' is not set. Can not proceed")
                     sys.exit(1)
 
                 if self._is_env_set("DBUSER"):
-                    self.config['Database']['dbuser'] = self.dbhost
+                    self.config["Database"]["user"] = self._get_env_val("DBUSER")
                 else:
                     logging.critical("Environment variable 'DBUSER' is not set. Can not proceed")
                     sys.exit(1)
 
                 if self._is_env_set("DBPASSWORD"):
-                    self.config['Database']['dbpassword'] = self.dbhost
+                    self.config["Database"]["password"] = self._get_env_val("DBPASSWORD")
                 else:
                     logging.critical("Environment variable 'DBPASSWORD' is not set. Can not proceed")
                     sys.exit(1)
@@ -178,12 +178,12 @@ class Config(object):
             if self._is_env_set("LOGPATH"):
                 self.config["Logging"]["logpath"] = self._get_env_val("LOGPATH")
             else:
-                self.config["Logging"]["logpath"] = self.dbtype
+                self.config["Logging"]["logpath"] = self.logpath
 
             if self._is_env_set("LOGLEVEL"):
                 self.config["Logging"]["loglevel"] = self._get_env_val("LOGLEVEL")
             else:
-                self.config["Logging"]["loglevel"] = self.dbtype
+                self.config["Logging"]["loglevel"] = self.loglevel
 
         except Exception as err:
             logging.critical(err)
@@ -249,33 +249,52 @@ class Config(object):
                             logging.debug("Database type is: tinydb")
                             logging.debug("Check if option datapath is present")
 
-                            if not self.config.has_option("Database", "datapath") or self.config["Database"]["datapath"] == "":
-                                logging.debug("The required option datapath is not present")
+                            if not self.config.has_option("Database", "datapath"):
+                                logging.debug("The required option 'tinydb' is not present")
+                                raise Exception
+                                
+                            if self.config["Database"]["datapath"] == "":
+                                logging.debug("The required option datapath is empty")
                                 raise Exception
 
                             logging.debug("All required options are present")
 
                         elif self.config["Database"]["type"] == "mongodb":
-                            logging.debug("Database type is mongodb")
+                            logging.debug("Database type is: mongodb")
                             logging.debug("Check if required database variables host, user and password are present")
 
-                            if not self.config.has_option("Database", "host") or self.config["Database"]["host"] == "":
-                                logging.debug("The required option host is not present")
+                            if not self.config.has_option("Database", "host"):
+                                logging.debug("The required option 'host' is not present")
                                 raise Exception
-                            else:
-                                logging.debug("Option database host is present")
 
-                            if not self.config.has_option("Database", "user") or self.config["Database"]["user"] == "":
-                                logging.debug("The required option user is not present")
+                            if self.config["Database"]["host"] == "":
+                                logging.debug("The required option host is empty")
                                 raise Exception
+                                
                             else:
-                                logging.debug("Option database user is present")
+                                logging.debug("Option database host is present and not empty")
 
-                            if not self.config.has_option("Database", "password") or self.config["Database"]["password"] == "":
+                            if not self.config.has_option("Database", "user"):
+                                logging.debug("The required option 'user' is not present")
+                                raise Exception
+
+                            if self.config["Database"]["user"] == "":
+                                logging.debug("The required option user is empty")
+                                raise Exception
+                                
+                            else:
+                                logging.debug("Option database user is present and not empty")
+
+                            if not self.config.has_option("Database", "password"):
                                 logging.debug("The required option password is not present")
                                 raise Exception
+
+                            if self.config["Database"]["password"] == "":
+                                logging.debug("The required option password is empty")
+                                raise Exception
+                            
                             else:
-                                logging.debug("Option database password is present")
+                                logging.debug("Option database password is present and not empty")
 
                             logging.debug("All required options are present")
 
@@ -295,6 +314,7 @@ class Config(object):
 
                 if self.config["Logging"]["loglevel"].lower() != "info" and self.config["Logging"]["loglevel"].lower() != "warning" and self.config["Logging"]["loglevel"].lower() != "error" and self.config["Logging"]["loglevel"].lower() != "critical" and self.config["Logging"]["loglevel"].lower() != "debug":
                     logging.debug("No valid loglevel was specified. Allowed loglevel are: info, warning, error, critical, debug")
+                    logging.debug("Set loglevel is: {}".format(self.config["Logging"]["loglevel"].lower()))
                     raise Exception
                 
         except Exception as err:

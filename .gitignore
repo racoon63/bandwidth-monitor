@@ -11,3 +11,4 @@ templates/
 archive/
 build.sh
 devenv.sh
+init.sh
