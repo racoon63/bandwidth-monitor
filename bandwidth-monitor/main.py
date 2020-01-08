@@ -106,10 +106,10 @@ if __name__ == "__main__":
                             ])
 
         if dbtype == "tinydb":
-            #from database import tinydb
+            from database import tinydb
 
-            #db = tinydb.Tinydb(datapath)
-            db = data.Data(datapath)
+            db = tinydb.Tinydb(datapath)
+            #db = data.Data(datapath)
 
         elif dbtype == "mongodb":
             from database import mongodb
