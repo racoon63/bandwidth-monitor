@@ -103,8 +103,6 @@ docker run -d \
 ## Missing
 
 * Config (-file) hashing
-* Implementing database drivers
-  * tinyDB
 * Implement webUI possibility
 
 ## Maintainer
