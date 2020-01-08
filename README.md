@@ -2,11 +2,11 @@
 
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/racoon/bandwidth-monitor)
 
-Bandwidth-Monitor is a tool with which you can use to measure and monitor your latency and bandwidth. Bandwidth-Monitor automatically creates statistics from your measured data and displays it over a webUI.
+Bandwidth-Monitor is a tool to measure and monitor your latency and bandwidth. This tool stores the measured data in JSON or in a MongoDB database. Bandwidth-Monitor automatically creates statistics from your measured data and displays it over a webUI. You can use Bandwidth-Monitor e.g. to determine the average internet-speed or measure the bandwidth from your Notebook at a certain place.
 
 ## Prerequisites
 
-When you want to run this service directly from your CLI, first get this repository and switch into its directory:
+When you want to run this service directly from your CLI, first clone this repository and switch into its directory:
 
 ```bash
 git clone https://github.com/racoon63/bandwidth-monitor.git
@@ -21,7 +21,7 @@ pip3 install -r requirements.txt
 
 Create a `config.ini` according to the [config](#config) section.
 
-The data will be stored relatively to the bandwidth-monitor directory in: `../data/data.json`
+When you didn't define a datapath, the data will be stored relatively to the bandwidth-monitor directory in: `../data/data.json`
 
 ## Configuration
 
@@ -69,7 +69,7 @@ To run this service in a docker container you can
 * create a `config.ini` and map it into the docker container or
 * just create a volume and run a new docker instance.
 
-To build the `Dockerfile` by yourself run:
+To build the `Dockerfile` by yourself just run:
 
 ```bash
 docker build -t <YOUR-TAG> .
@@ -96,8 +96,16 @@ docker run -d \
            -e DBTYPE="tinydb" \
            -e DATAPATH="/bwm/data/bwm.json" \
            -e LOGPATH="/bwm/log/bwm.log" \
-           -e LOGLEVEL="error" \
+           -e LOGLEVEL="info" \
            racoon/bandwidth-monitor:latest
+```
+
+### Docker-Compose
+
+If you want to store your data in a MongoDB database and run everything in a container environment you can use the `docker-compose.yml` file to start the services. Run it with:
+
+```bash
+docker-compose up -d
 ```
 
 ## Missing
