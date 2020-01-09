@@ -4,6 +4,13 @@
 
 Bandwidth-Monitor is a tool to measure and monitor your latency and bandwidth. This tool stores the measured data in JSON or in a MongoDB database. Bandwidth-Monitor automatically creates statistics from your measured data and displays it over a webUI. You can use Bandwidth-Monitor e.g. to determine the average internet-speed or measure the bandwidth from your Notebook at a certain place.
 
+## Tested Platforms
+
+|OS|Python Version|Docker Version|
+|---|---|---|
+|mac OS Mojave (10.14.6)|3.7.3|19.03.5|
+|Ubuntu 18.04.3|3.6.8|18.09.7|
+
 ## Prerequisites
 
 When you want to run this service directly from your CLI, first clone this repository and switch into its directory:
