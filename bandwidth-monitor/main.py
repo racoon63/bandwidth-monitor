@@ -106,15 +106,15 @@ if __name__ == "__main__":
                             ])
 
         if dbtype == "tinydb":
-            from database import tinydb
+            from database import tiny
 
-            db = tinydb.Tinydb(datapath)
+            db = tiny.Tiny(datapath)
             #db = data.Data(datapath)
 
         elif dbtype == "mongodb":
             from database import mongodb
 
-            db = mongodb.Mongodb(dbhost, dbuser, dbpassword)
+            db = mongo.Mongo(dbhost, dbuser, dbpassword)
 
         test = speedtest.Speedtest(speedtest_server)
 
