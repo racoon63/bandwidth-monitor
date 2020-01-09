@@ -45,7 +45,8 @@ class Speedtest(object):
                 logging.debug(stderr)
 
         except Exception as err:
-            logging.error(err)
+            logging.exception(err)
+            logging.error("Could not measure bandwidth")
 
         else:
             self._set_stats()
