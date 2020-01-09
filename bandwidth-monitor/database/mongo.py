@@ -5,7 +5,7 @@ __author__ = "racoon63 <racoon63@gmx.net>"
 import logging
 import pymongo
 
-class Mongodb(object):
+class Mongo(object):
 
     def __init__(self, host, username, password):
 

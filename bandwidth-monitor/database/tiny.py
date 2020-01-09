@@ -3,10 +3,10 @@
 __author__ = "racoon63 <racoon63@gmx.net>"
 
 import logging
-from tinydb import TinyDB, Query
+from tinydb import TinyDB
 
 
-class Tinydb(object):
+class Tiny(object):
 
     def __init__(self, datapath):
         
