@@ -10,6 +10,7 @@ Bandwidth-Monitor is a tool to measure and monitor your latency and bandwidth. T
 |---|---|---|
 |mac OS Mojave (10.14.6)|3.7.3|19.03.5|
 |Ubuntu 18.04.3|3.6.8|18.09.7|
+|rancherOS 4.14.114|3.5.3|Not working yet|
 
 ## Prerequisites
 
