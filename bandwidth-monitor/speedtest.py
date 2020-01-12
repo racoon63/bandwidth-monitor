@@ -50,6 +50,7 @@ class Speedtest(object):
 
         else:
             self._set_stats()
+            logging.info("Measurement finished")
             return
 
 

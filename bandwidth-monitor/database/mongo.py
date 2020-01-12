@@ -130,7 +130,7 @@ class Mongo(object):
             logging.exception(err)
 
         else:
-            logging.debug("Inserted data successfully")
+            logging.info("Recorded data successfully")
             logging.debug("Object ID: {}".format(identifier.inserted_id))
             self._close(client)
             return

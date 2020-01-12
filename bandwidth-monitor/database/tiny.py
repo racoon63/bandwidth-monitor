@@ -48,7 +48,7 @@ class Tiny(object):
             logging.error("Could not write data to database")
 
         else:
-            logging.debug("Wrote data to database successfully")
+            logging.debug("Recorded data successfully")
             return
 
     def close(self, session):
