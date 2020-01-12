@@ -304,7 +304,7 @@ class Config(object):
                     raise ValueError("No valid loglevel was specified. Allowed loglevel are: info, warning, error, critical, debug")
 
         except ValueError as ve:
-            logging.exception(ve)
+            logging.critical(ve)
             sys.exit(1)    
         
         except Exception as err:
