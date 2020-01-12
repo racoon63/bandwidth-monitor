@@ -23,7 +23,7 @@ class Tiny(object):
 
         try:
             logging.debug("Creating database session")
-            return TinyDB(self.datapath, indent=4)
+            return TinyDB(self.datapath, indent=4, sort_keys=True)
 
         except Exception as err:
             logging.debug("Could not create database session")
@@ -48,7 +48,7 @@ class Tiny(object):
             logging.error("Could not write data to database")
 
         else:
-            logging.debug("Recorded data successfully")
+            logging.info("Recorded data successfully")
             return
 
     def close(self, session):
