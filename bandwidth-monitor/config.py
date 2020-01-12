@@ -224,8 +224,7 @@ class Config(object):
                     if self.config["General"]["speedtest-server"] != "auto":
                         
                         if int(self.config["General"]["speedtest-server"]) == 0 or int(self.config["General"]["speedtest-server"]) > 50000:
-                            logging.debug("speedtest-server ID is not valid. ID is: {}".format(self.config["General"]["speedtest-server"]))
-                            raise Exception  
+                            raise ValueError("speedtest-server ID is not valid. ID is: {}".format(self.config["General"]["speedtest-server"]))
                 
                 else:
                     logging.debug("The option speedtest-server is not present or empty")
@@ -233,8 +232,7 @@ class Config(object):
                 if self.config.has_option("General", "interval") and self.config["General"]["interval"] != "":
 
                     if int(self.config["General"]["interval"]) < 30:
-                        logging.debug("The interval is lower than 30.")
-                        raise Exception 
+                        raise ValueError("The interval is lower than 30.")
                 
                 else:
                     logging.debug("The option interval is not present or empty")
@@ -250,12 +248,10 @@ class Config(object):
                             logging.debug("Check if option datapath is present")
 
                             if not self.config.has_option("Database", "datapath"):
-                                logging.debug("The required option 'tinydb' is not present")
-                                raise Exception
+                                raise ValueError("The required option 'tinydb' is not present")
                                 
                             if self.config["Database"]["datapath"] == "":
-                                logging.debug("The required option datapath is empty")
-                                raise Exception
+                                raise ValueError("The required option datapath is empty")
 
                             logging.debug("All required options are present")
 
@@ -264,34 +260,28 @@ class Config(object):
                             logging.debug("Check if required database variables host, user and password are present")
 
                             if not self.config.has_option("Database", "host"):
-                                logging.debug("The required option 'host' is not present")
-                                raise Exception
+                                raise ValueError("The required option 'host' is not present")
 
                             if self.config["Database"]["host"] == "":
-                                logging.debug("The required option host is empty")
-                                raise Exception
+                                raise ValueError("The required option host is empty")
                                 
                             else:
                                 logging.debug("Option database host is present and not empty")
 
                             if not self.config.has_option("Database", "user"):
-                                logging.debug("The required option 'user' is not present")
-                                raise Exception
+                                raise ValueError("The required option 'user' is not present")
 
                             if self.config["Database"]["user"] == "":
-                                logging.debug("The required option user is empty")
-                                raise Exception
+                                raise ValueError("The required option user is empty")
                                 
                             else:
                                 logging.debug("Option database user is present and not empty")
 
                             if not self.config.has_option("Database", "password"):
-                                logging.debug("The required option password is not present")
-                                raise Exception
+                                raise ValueError("The required option password is not present")
 
                             if self.config["Database"]["password"] == "":
-                                logging.debug("The required option password is empty")
-                                raise Exception
+                                ("The required option password is empty")
                             
                             else:
                                 logging.debug("Option database password is present and not empty")
@@ -299,26 +289,26 @@ class Config(object):
                             logging.debug("All required options are present")
 
                     else:
-                        logging.debug("The database type is neither tinydb nor mongodb")
-                        raise Exception
+                        raise ValueError("The database type is neither tinydb nor mongodb")
 
                 else:
-                    logging.debug("The option database type is not present or empty")
-                    raise Exception
+                    raise ValueError("The option database type is not present or empty")
 
             else:
-                logging.debug("The section Database is not present")
-                raise Exception
+                raise ValueError("The section Database is not present")
 
             if self.config.has_section("Logging"):
 
                 if self.config["Logging"]["loglevel"].lower() != "info" and self.config["Logging"]["loglevel"].lower() != "warning" and self.config["Logging"]["loglevel"].lower() != "error" and self.config["Logging"]["loglevel"].lower() != "critical" and self.config["Logging"]["loglevel"].lower() != "debug":
-                    logging.debug("No valid loglevel was specified. Allowed loglevel are: info, warning, error, critical, debug")
                     logging.debug("Set loglevel is: {}".format(self.config["Logging"]["loglevel"].lower()))
-                    raise Exception
-                
+                    raise ValueError("No valid loglevel was specified. Allowed loglevel are: info, warning, error, critical, debug")
+
+        except ValueError as ve:
+            logging.exception(ve)
+            sys.exit(1)    
+        
         except Exception as err:
-            logging.critical(err)
+            logging.exception(err)
             logging.critical("Config is not valid. Exiting")
             sys.exit(1)
         
