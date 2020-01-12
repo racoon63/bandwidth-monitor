@@ -52,7 +52,7 @@ The service can be configured either by providing a `config.ini` configuration f
 |Name|Description|
 |---|---|
 |`SPEEDTEST-SERVER`   |`auto` or the ID of your preferred speedtest-server.|
-|`INTERVAL`           |An integer which shouldn't be less than 60.|
+|`INTERVAL`           |An integer which shouldn't be less than 60 and every value under 30 isn't allowed.|
 |`DBTYPE`             |`tinydb` or `mongodb`.|
 |`DATAPATH`           |This can be an absolute or a relative path.|
 |`DBHOST`             |An IP address or a DNS name in the form: `1.2.3.4` or `mongo.example.com`.|
