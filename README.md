@@ -2,7 +2,7 @@
 
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/racoon/bandwidth-monitor)
 
-Bandwidth-Monitor is a tool to measure and monitor your latency and bandwidth. This tool stores the measured data in JSON or in a MongoDB database. Bandwidth-Monitor automatically creates statistics from your measured data and displays it over a webUI. You can use Bandwidth-Monitor e.g. to determine the average internet-speed or measure the bandwidth from your Notebook at a certain place.
+Bandwidth-Monitor is a tool to measure and monitor your latency and bandwidth. This tool stores the measured data in JSON or in a MongoDB database. You can use Bandwidth-Monitor e.g. to determine the average internet-speed or measure the bandwidth from your Notebook at a certain place. It relies on the `speedtest-cli` python library.
 
 ## Tested Platforms
 
@@ -11,6 +11,7 @@ Bandwidth-Monitor is a tool to measure and monitor your latency and bandwidth. T
 |mac OS Mojave (10.14.6)|3.7.3|19.03.5|
 |Ubuntu 18.04.3|3.6.8|18.09.7|
 |rancherOS on ARM (rpi3) 4.14.114|3.5.3|Not working yet|
+|Raspbian 10 (kernel: 4.19.75-v7+)|Python 3.7.3|Not yet tested|
 
 ## Prerequisites
 
@@ -24,7 +25,7 @@ cd bandwidth-monitor/
 Install the dependencies with:
 
 ```bash
-pip3 install -r requirements.txt
+sudo pip3 install -r requirements.txt
 ```
 
 Create a `config.ini` according to the [config](#config) section.
