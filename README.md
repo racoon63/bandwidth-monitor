@@ -1,6 +1,7 @@
 # Bandwidth-Monitor
 
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/racoon/bandwidth-monitor)
+![Docker Image Name](https://img.shields.io/badge/docker%20image-racoon%2Fbandwidth--monitor-blue)
 
 Bandwidth-Monitor is a tool to measure and monitor your latency and bandwidth. This tool stores the measured data in JSON or in a MongoDB database. You can use Bandwidth-Monitor e.g. to determine the average internet-speed or measure the bandwidth from your Notebook at a certain place. It relies on the `speedtest-cli` python library.
 
