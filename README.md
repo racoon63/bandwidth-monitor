@@ -67,10 +67,10 @@ After all the requirements have been met you can run the service either directly
 
 ### CLI
 
-To run this tool directly from your command-line, run the following command from the root directory of this cloned repository on your local machine:
+To run this tool directly from your command-line, switch into the `bandwidth-monitor` directory (where the `main.py` is placed) and run the following command on your machine to start the bandwidth-monitor:
 
 ```bash
-python3 bandwidth-monitor/main.py
+python3 main.py
 ```
 
 ### Docker
@@ -124,6 +124,7 @@ docker-compose up -d
 
 * Config (-file) hashing
 * Implement webUI possibility
+* Info about successful measurement
 
 ## Maintainer
 
