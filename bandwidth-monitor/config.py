@@ -305,6 +305,7 @@ class Config(object):
 
         except ValueError as ve:
             logging.critical(ve)
+            logging.critical("Config is not valid. Exiting")
             sys.exit(1)    
         
         except Exception as err:
