@@ -75,9 +75,6 @@ class Data(object):
             return
 
 
-
-
-
     def _append(self, data_object):
         
         try:
