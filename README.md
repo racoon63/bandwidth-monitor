@@ -81,6 +81,26 @@ loglevel = info
 
 Or you just use the config skeleton [here](https://github.com/racoon63/bandwidth-monitor/blob/master/config.ini).
 
+You can find a config example below:
+
+```bash
+[General]
+speedtest-server = 15431
+interval = 75
+
+[Database]
+type = mongodb
+host = 1.2.3.4
+user = my-mongodb-username
+password = 123456
+
+[Logging]
+logpath = /var/log/bwm
+loglevel = info
+```
+
+Or you just use the config skeleton [here](https://github.com/racoon63/bandwidth-monitor/blob/master/config.ini).
+
 ## Run
 
 After all the requirements have been met you can run the service either directly from the CLI or create a docker container for it.
