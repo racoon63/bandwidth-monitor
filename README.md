@@ -65,6 +65,8 @@ logpath = /var/log/bwm
 loglevel = info
 ```
 
+Or you just use the config skeleton [here](https://github.com/racoon63/bandwidth-monitor/blob/master/config.ini).
+
 ### Environment Variables
 
 |Name|Description|
@@ -78,8 +80,6 @@ loglevel = info
 |`DBPASSWORD`         |Your MongoDB password for your provided db user.|
 |`LOGPATH`            |This can be an absolute or a relative path.|
 |`LOGLEVEL`           |Your desired logelevel. The common loglevels are available: `debug`, `info`, `warning`, `error`, `critical`.|
-
-Or you just use the config skeleton [here](https://github.com/racoon63/bandwidth-monitor/blob/master/config.ini).
 
 ## Run
 
