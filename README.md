@@ -47,21 +47,7 @@ The service can be configured either by providing a `config.ini` configuration f
 |`user`            |yes, if `type` is `mongodb` |                                               |For example: `root`|
 |`password`        |yes, if `type` is `mongodb` |                                               |For example: `123456`|
 
-### Environment Variables
-
-|Name|Description|
-|---|---|
-|`SPEEDTEST-SERVER`   |`auto` or the ID of your preferred speedtest-server.|
-|`INTERVAL`           |An integer which shouldn't be less than 60 and every value under 30 isn't allowed.|
-|`DBTYPE`             |`tinydb` or `mongodb`.|
-|`DATAPATH`           |This can be an absolute or a relative path.|
-|`DBHOST`             |An IP address or a DNS name in the form: `1.2.3.4` or `mongo.example.com`.|
-|`DBUSER`             |Your MongoDB user if you choosed `mongodb` at `DBTYPE`.|
-|`DBPASSWORD`         |Your MongoDB password for your provided db user.|
-|`LOGPATH`            |This can be an absolute or a relative path.|
-|`LOGLEVEL`           |Your desired logelevel. The common loglevels are available: `debug`, `info`, `warning`, `error`, `critical`.|
-
-You can find a config example below:
+You'll find a config example below:
 
 ```bash
 [General]
@@ -78,6 +64,20 @@ password = 123456
 logpath = /var/log/bwm
 loglevel = info
 ```
+
+### Environment Variables
+
+|Name|Description|
+|---|---|
+|`SPEEDTEST-SERVER`   |`auto` or the ID of your preferred speedtest-server.|
+|`INTERVAL`           |An integer which shouldn't be less than 60 and every value under 30 isn't allowed.|
+|`DBTYPE`             |`tinydb` or `mongodb`.|
+|`DATAPATH`           |This can be an absolute or a relative path.|
+|`DBHOST`             |An IP address or a DNS name in the form: `1.2.3.4` or `mongo.example.com`.|
+|`DBUSER`             |Your MongoDB user if you choosed `mongodb` at `DBTYPE`.|
+|`DBPASSWORD`         |Your MongoDB password for your provided db user.|
+|`LOGPATH`            |This can be an absolute or a relative path.|
+|`LOGLEVEL`           |Your desired logelevel. The common loglevels are available: `debug`, `info`, `warning`, `error`, `critical`.|
 
 Or you just use the config skeleton [here](https://github.com/racoon63/bandwidth-monitor/blob/master/config.ini).
 
