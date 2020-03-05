@@ -29,7 +29,7 @@ Install the dependencies with:
 sudo pip3 install -r requirements.txt
 ```
 
-Create a `config.ini` according to the [config](#config) section.
+Create a `config.ini` according to the [configuration](#configuration) section.
 
 When you didn't define a datapath, the data will be stored relatively to the bandwidth-monitor directory in: `../data/data.json`
 
@@ -60,6 +60,26 @@ The service can be configured either by providing a `config.ini` configuration f
 |`DBPASSWORD`         |Your MongoDB password for your provided db user.|
 |`LOGPATH`            |This can be an absolute or a relative path.|
 |`LOGLEVEL`           |Your desired logelevel. The common loglevels are available: `debug`, `info`, `warning`, `error`, `critical`.|
+
+You can find a config example below:
+
+```bash
+[General]
+speedtest-server = 15431
+interval = 75
+
+[Database]
+type = mongodb
+host = 1.2.3.4
+user = my-mongodb-username
+password = 123456
+
+[Logging]
+logpath = /var/log/bwm
+loglevel = info
+```
+
+Or you just use the config skeleton [here](https://github.com/racoon63/bandwidth-monitor/blob/master/config.ini).
 
 ## Run
 
