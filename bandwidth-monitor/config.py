@@ -3,6 +3,7 @@
 __author__ = 'racoon63 <racoon63@gmx.net>'
 
 import configparser
+import hashlib
 import logging
 import os
 import sys
@@ -77,6 +78,19 @@ class Config(object):
                 ⣶⣶⣶⣭⣭⣭⣭⣭⣭⣵⣶⣶⣶⣿⣿⣿⣦⡀     ⠈⠡⣿⣿⡯⠁
                 """)
             sys.exit(1)
+
+
+    def get_file_hash(self, path):
+
+        BLOCK_SIZE = 65536 # = 64 bytes
+
+        file_hash = hashlib.sha256()
+        with open(path, 'rb') as f:
+            fb = f.read(BLOCK_SIZE)
+            while len(fb) > 0:
+                file_hash.update(fb)
+                fb = f.read(BLOCK_SIZE)
+        return file_hash.hexdigest()
 
 
     def _config_path(self):
