@@ -142,9 +142,15 @@ docker-compose up -d
 
 ## Missing
 
-* Config (-file) hashing
-* Implement webUI possibility
+* config fle changes on the fly
+* Monitoring over web interface (e.g. Grafana)
 * Info about successful measurement
+
+## Known bugs
+
+* When no internet connection is available:
+  * json decoder expects JSON instead of None object
+  * last known values are written to data destination over and over again
 
 ## Maintainer
 
