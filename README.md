@@ -148,9 +148,7 @@ docker-compose up -d
 
 ## Known bugs
 
-* When no internet connection is available:
-  * json decoder expects JSON instead of None object
-  * last known values are written to data destination over and over again
+* Time values of logger and data is not the same
 
 ## Maintainer
 
