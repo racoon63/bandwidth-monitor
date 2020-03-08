@@ -2,6 +2,7 @@
 
 __author__ = 'racoon63 <racoon63@gmx.net>'
 
+import socket
 import json
 import logging
 import subprocess
@@ -88,3 +89,20 @@ class Speedtest(object):
             logging.debug("Set speedtest results")
         finally:
             return
+
+    def has_connectivity(self):
+        url = "google.com"
+        port = 80
+        socket.setdefaulttimeout(5)
+
+        try:            
+            ip = socket.gethostbyname(url)
+            s = socket.create_connection((ip, port))
+            s.close()
+        except Exception:
+            logging.error("Bandwidth-Monitor can not connect to the internet. Please make sure there is an active internet connection")
+            return False        
+        else:
+            return True
+            
+            

@@ -65,6 +65,16 @@ class Main(object):
         else:
             return number
 
+    def _get_timestamp(self):
+        c_year   = self._leading_zero(time.gmtime().tm_year)
+        c_month  = self._leading_zero(time.gmtime().tm_mon)
+        c_day    = self._leading_zero(time.gmtime().tm_mday)
+        c_hour   = self._leading_zero(time.gmtime().tm_hour)
+        c_minute = self._leading_zero(time.gmtime().tm_min)
+        c_second = self._leading_zero(time.gmtime().tm_sec)
+
+        return "{}-{}-{}-{}-{}-{}".format(c_year, c_month, c_day, c_hour, c_minute, c_second)
+
     def run(self):
 
         try:
@@ -76,24 +86,22 @@ class Main(object):
                 starttime = time.time()
                 
                 test = Speedtest(self.conf.speedtest_server)
-                test.run()
+                if test.has_connectivity():
+                    test.run()
 
-                timestamp = test.timestamp # is not used yet because of too complicate time format
-                ping      = test.ping
-                download  = test.download
-                upload    = test.upload
-                
-                c_year   = self._leading_zero(time.gmtime().tm_year)
-                c_month  = self._leading_zero(time.gmtime().tm_mon)
-                c_day    = self._leading_zero(time.gmtime().tm_mday)
-                c_hour   = self._leading_zero(time.gmtime().tm_hour)
-                c_minute = self._leading_zero(time.gmtime().tm_min)
-                c_second = self._leading_zero(time.gmtime().tm_sec)
+                    timestamp = test.timestamp # is not used yet because of too complicate time format
+                    ping      = test.ping
+                    download  = test.download
+                    upload    = test.upload
 
-                ts = "{}-{}-{}-{}-{}-{}".format(c_year, c_month, c_day, c_hour, c_minute, c_second)
+                    ts = self._get_timestamp()
 
-                data = Data(ts, ping, download, upload)
-                self.db.insert(data.create())
+                    data = Data(ts, ping, download, upload)
+                    self.db.insert(data.create())
+                else:
+                    ts = self._get_timestamp()
+                    data = Data(ts, None, 0.0, 0.0)
+                    self.db.insert(data.create())
 
                 time.sleep(self.conf.interval - ((time.time() - starttime) % self.conf.interval))
 
