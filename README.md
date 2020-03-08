@@ -31,7 +31,7 @@ sudo pip3 install -r requirements.txt
 
 Create a `config.ini` according to the [configuration](#configuration) section.
 
-When you didn't define a datapath, the data will be stored relatively to the bandwidth-monitor directory in: `../data/data.json`
+When you didn't define a datapath, the data will be stored relatively to the bandwidth-monitor directory in: `../data/bwm.json`
 
 ## Configuration
 
@@ -42,7 +42,7 @@ The service can be configured either by providing a `config.ini` configuration f
 |`speedtest-server`|no                          |<1-50000><br>**default:** `auto`               |If you want to use a specific speedtest-server you can enter its ID here. If no ID is provided, the service will determine the nearest server. To get an overview of speedtest-server see [here](https://c.speedtest.net/speedtest-servers-static.php)|
 |`interval`        |no                          |**default:** `60`                              |No value under 30 is allowed and recommended for now, because the data gathering takes some time to proceed.|
 |`type`            |yes                         |`tinydb`<br>`mongodb`<br>**default:** `tinydb` |TinyDB is a lightweight database which uses plain JSON files to store data. MongoDB is a document-oriented database in which you can store your data.|
-|`datapath`        |yes, if `type` is `tinydb`  |**default:** `../data/bwm.json`               |The default path is relative to the `main.py` file.|
+|`datapath`        |yes, if `type` is `tinydb`  |**default:** `data/bwm.json`               |The default path is relative to the `main.py` file.|
 |`host`            |yes, if `type` is `mongodb` |                                               |Everything in the form of an IP address or FQDN/DNS name like `1.2.3.4` or `database.example.com`|
 |`user`            |yes, if `type` is `mongodb` |                                               |For example: `root`|
 |`password`        |yes, if `type` is `mongodb` |                                               |For example: `123456`|

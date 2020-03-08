@@ -18,9 +18,7 @@ class Tiny(object):
 
         self.close(db)
 
-
     def open(self):
-
         try:
             logging.debug("Creating database session")
             return TinyDB(self.datapath, indent=4, sort_keys=True)
@@ -28,9 +26,7 @@ class Tiny(object):
         except Exception as err:
             logging.debug("Could not create database session")
 
-
     def insert(self, data):
-
         try:
             db = self.open()
             
@@ -52,7 +48,6 @@ class Tiny(object):
             return
 
     def close(self, session):
-
         try:
             session.close()
 
