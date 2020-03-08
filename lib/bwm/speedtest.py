@@ -7,6 +7,9 @@ import json
 import logging
 import subprocess
 
+class NoInternetConnection(Exception):
+   """Base class for other exceptions"""
+   pass
 
 class Speedtest(object):
 
@@ -40,25 +43,33 @@ class Speedtest(object):
 
     def run(self):
         try:
-            logging.info("Measuring ...")
-            
-            if self.speedtest_server == "auto":
-                self.stats = subprocess.Popen(["speedtest-cli", "--secure", "--json"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            if not self._has_connectivity():
+                raise NoInternetConnection("No internet connection")
             else:
-                self.stats = subprocess.Popen(["speedtest-cli", "--secure", "--json", "--server", self.speedtest_server], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                logging.info("Measuring ...")
+                if self.speedtest_server == "auto":
+                    self.stats = subprocess.Popen(["speedtest-cli", "--secure", "--json"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                else:
+                    self.stats = subprocess.Popen(["speedtest-cli", "--secure", "--json", "--server", self.speedtest_server], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
-            stdout,stderr = self.stats.communicate()
-            self.results   = stdout.decode("utf-8")
-            self.speedtest = json.loads(self.results)
+                stdout,stderr = self.stats.communicate()
+                self.results   = stdout.decode("utf-8")
+                self.speedtest = json.loads(self.results)
 
-            if stderr:
-                logging.debug(stderr)
-        except Exception as err:
-            logging.exception(err)
+                if stderr:
+                    logging.debug(stderr)
+        except NoInternetConnection as err:
+            logging.error(err)
             logging.error("Could not measure bandwidth")
+            self._set_up_down_zero()
+        except Exception as err:
+            logging.error("Could not measure bandwidth")
+            logging.exception(err)
+            self._set_up_down_zero()
         else:
             self._set_stats()
             logging.info("Finished measurement")
+        finally:
             return
 
     def _set_stats(self):
@@ -90,7 +101,7 @@ class Speedtest(object):
         finally:
             return
 
-    def has_connectivity(self):
+    def _has_connectivity(self):
         url = "google.com"
         port = 80
         socket.setdefaulttimeout(5)
@@ -100,9 +111,11 @@ class Speedtest(object):
             s = socket.create_connection((ip, port))
             s.close()
         except Exception:
-            logging.error("Bandwidth-Monitor can not connect to the internet. Please make sure there is an active internet connection")
             return False        
         else:
             return True
             
-            
+    def _set_up_down_zero(self):
+        self.download  = 0.0
+        self.upload    = 0.0
+        return

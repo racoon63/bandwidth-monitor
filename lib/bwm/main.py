@@ -76,32 +76,18 @@ class Main(object):
         return "{}-{}-{}-{}-{}-{}".format(c_year, c_month, c_day, c_hour, c_minute, c_second)
 
     def run(self):
-
         try:
-
             logging.info("Bandwidth-Monitor started successfully")
-
             while True:
 
                 starttime = time.time()
                 
                 test = Speedtest(self.conf.speedtest_server)
-                if test.has_connectivity():
-                    test.run()
+                test.run()
 
-                    timestamp = test.timestamp # is not used yet because of too complicate time format
-                    ping      = test.ping
-                    download  = test.download
-                    upload    = test.upload
-
-                    ts = self._get_timestamp()
-
-                    data = Data(ts, ping, download, upload)
-                    self.db.insert(data.create())
-                else:
-                    ts = self._get_timestamp()
-                    data = Data(ts, None, 0.0, 0.0)
-                    self.db.insert(data.create())
+                ts = self._get_timestamp()
+                data = Data(ts, test.ping, test.download, test.upload)
+                self.db.insert(data.create())
 
                 time.sleep(self.conf.interval - ((time.time() - starttime) % self.conf.interval))
 
