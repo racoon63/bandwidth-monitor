@@ -19,12 +19,12 @@ class Main(object):
     def __init__(self, workdir):
         
         self.workdir = workdir
-        self._create_tree()
+        self._create_dir_tree()
         self.conf = Config(self.workdir)
         self.logger = Logger(self.conf.loglevel)
         self.db = self.conf.dbdriver
 
-    def _create_tree(self):
+    def _create_dir_tree(self):
         """ Creates all needed directories before bwm can start. """
 
         logdir  = self.workdir + "/log"
@@ -57,15 +57,13 @@ class Main(object):
 
         return
 
-
-    def _leading_zero(number):
+    def _leading_zero(self, number):
         """ Helper function to create a clean time format. """
 
         if len(str(number)) == 1:
             return "{}{}".format(0, number)
         else:
             return number
-        
 
     def run(self):
 
@@ -85,19 +83,19 @@ class Main(object):
                 download  = test.download
                 upload    = test.upload
                 
-                c_year   = leading_zero(time.gmtime().tm_year)
-                c_month  = leading_zero(time.gmtime().tm_mon)
-                c_day    = leading_zero(time.gmtime().tm_mday)
-                c_hour   = leading_zero(time.gmtime().tm_hour)
-                c_minute = leading_zero(time.gmtime().tm_min)
-                c_second = leading_zero(time.gmtime().tm_sec)
+                c_year   = self._leading_zero(time.gmtime().tm_year)
+                c_month  = self._leading_zero(time.gmtime().tm_mon)
+                c_day    = self._leading_zero(time.gmtime().tm_mday)
+                c_hour   = self._leading_zero(time.gmtime().tm_hour)
+                c_minute = self._leading_zero(time.gmtime().tm_min)
+                c_second = self._leading_zero(time.gmtime().tm_sec)
 
                 ts = "{}-{}-{}-{}-{}-{}".format(c_year, c_month, c_day, c_hour, c_minute, c_second)
 
                 data = Data(ts, ping, download, upload)
                 self.db.insert(data.create())
 
-                time.sleep(interval - ((time.time() - starttime) % interval))
+                time.sleep(self.conf.interval - ((time.time() - starttime) % self.conf.interval))
 
         except KeyboardInterrupt:
             logging.info("Bandwidth-Monitor was stopped by user")

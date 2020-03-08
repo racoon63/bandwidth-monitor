@@ -20,9 +20,9 @@ class Defaults:
         self.dbtype           = "tinydb"
         self.datapath         = workdir + "/data/bwm.json"
         self.dbdriver         = tiny.Tiny(self.datapath)
-        self.dbhost           = None
-        self.dbuser           = None
-        self.dbpassword       = None
+        self.dbhost           = ""
+        self.dbuser           = ""
+        self.dbpassword       = ""
         
         self.loglevel         = "info"
         self.logpath          = workdir + "/log/bwm.log"
@@ -31,30 +31,30 @@ class Config(object):
 
     def __init__(self, workdir):
        
-            self.workdir     = workdir
-            self.defaults    = Defaults(self.workdir)
-            self.config_path = self._config_path()
-            self.config      = configparser.ConfigParser(empty_lines_in_values=False)
+        self.workdir     = workdir
+        self.defaults    = Defaults(self.workdir)
+        self.config_path = self._config_path()
+        self.config      = configparser.ConfigParser(empty_lines_in_values=False)
 
-            self.speedtest_server = None
-            self.interval         = None
-            
-            self.dbtype           = None
-            self.datapath         = None
-            self.dbdriver         = None
-            self.dbhost           = None
-            self.dbuser           = None
-            self.dbpassword       = None
-            
-            self.loglevel         = None
-            self.logpath          = None
+        self.speedtest_server = None
+        self.interval         = None
+        
+        self.dbtype           = None
+        self.datapath         = None
+        self.dbhost           = None
+        self.dbuser           = None
+        self.dbpassword       = None
+        self.dbdriver         = None
+        
+        self.loglevel         = None
+        self.logpath          = None
 
-            self._flow()
+        self._flow()
 
     def _flow(self):
         try:
             if not self._exists():
-                self._set_env_vals
+                self._set_env_vals()
                 if self._is_valid():
                     self._generate()
                     self._write()
@@ -70,10 +70,13 @@ class Config(object):
                 self._read()
                 self._set_config_vals()
                 self._set_env_vals()
-                self._validate()
+                if self._is_valid():
+                    pass
+            self._set_dbdriver()
+
 
         except Exception as err:
-            logging.critical(err)
+            logging.exception(err)
             logging.critical("Be pepe with you")
             print("""
                  ⢀⣀⣤⣴⣶⣶⣤⣄⡀  ⣀⣤⣤⣤⣤⡀
@@ -102,12 +105,11 @@ class Config(object):
                 return self.workdir + "/config.ini"
 
         except Exception as err:
-            logging.critical(err)
+            logging.exception(err)
 
     def _exists(self):
         try:
-            logging.debug("Check if config file exists")
-            logging.debug("Set config file path is: " + self.config_path)
+            logging.debug("Check if %s file exists", self.config_path)
 
             if os.path.exists(self.config_path) and os.path.isfile(self.config_path):
                 logging.info("Config file found")
@@ -117,7 +119,7 @@ class Config(object):
                 return False
         
         except Exception as err:
-            logging.error(err)
+            logging.exception(err)
 
         else:
             return False
@@ -128,7 +130,7 @@ class Config(object):
             self.config.read(self.config_path)
             
         except Exception as err:
-            logging.error(err)
+            logging.exception(err)
 
         else:
             logging.debug("Red config file successfully")
@@ -143,8 +145,8 @@ class Config(object):
                 self.config.add_section(section)
 
             self.config["General"]["speedtest-server"] = self.speedtest_server
-            self.config["General"]["interval"] = self.interval
-            self.config["Database"]["dbtype"] = self.dbtype
+            self.config["General"]["interval"] = str(self.interval)
+            self.config["Database"]["type"] = self.dbtype
             self.config["Database"]["datapath"] = self.datapath
             self.config["Database"]["dbhost"] = self.dbhost
             self.config["Database"]["dbuser"] = self.dbuser
@@ -153,7 +155,7 @@ class Config(object):
             self.config["Logging"]["loglevel"] = self.loglevel
 
         except Exception as err:
-            logging.critical(err)
+            logging.exception(err)
             sys.exit(1)
 
         else:
@@ -169,7 +171,7 @@ class Config(object):
         
         except Exception as err:
             logging.critical("Could not write config to file")
-            logging.critical(err)
+            logging.exception(err)
             sys.exit(1)
 
         else:
@@ -188,7 +190,7 @@ class Config(object):
                 return False
 
         except Exception as err:
-            logging.error(err)
+            logging.exception(err)
             sys.exit(1)
 
     def _get_option_val(self, section, name):
@@ -196,7 +198,7 @@ class Config(object):
             return self.config[section][name]
 
         except Exception as err:
-            logging.error(err)
+            logging.exception(err)
             sys.exit(1)
 
     def _set_config_vals(self):
@@ -231,7 +233,7 @@ class Config(object):
                 self.loglevel = self._get_option_val("Logging", "loglevel")
 
         except Exception as err:
-            logging.error(err)
+            logging.exception(err)
         
         else:
             logging.debug("Set config variables successfully")
@@ -250,13 +252,13 @@ class Config(object):
                 return False
     
         except Exception as err:
-            logging.error(err)
+            logging.exception(err)
 
     def _get_env_val(self, env_name):
         try:
             return os.environ[env_name]
         except Exception as err:
-            logging.error(err)
+            logging.exception(err)
 
     def _set_env_vals(self):
         try:
@@ -272,8 +274,8 @@ class Config(object):
             else:
                 self.interval = self.defaults.interval
 
-            if self._is_env_set("TYPE"):
-                self.dbtype = self._get_env_val("TYPE")
+            if self._is_env_set("DBTYPE"):
+                self.dbtype = self._get_env_val("DBTYPE")
             else:
                 self.dbtype = self.defaults.dbtype
 
@@ -308,13 +310,13 @@ class Config(object):
                 self.loglevel = self.defaults.loglevel
 
         except Exception as err:
-            logging.error(err)
+            logging.exception(err)
 
         else:
             logging.debug("Set environment variable values finished")
             return
 
-    # Feature request: #
+    # Feature request: https://github.com/racoon63/bandwidth-monitor/issues/13
     """def get_file_hash(self, path):
         BLOCK_SIZE = 65536 # = 64 bytes
 
@@ -330,8 +332,11 @@ class Config(object):
 
         try:
             logging.debug("Validate config")
-            if self.speedtest_server == "" or int(self.speedtest_server) < 0 or int(self.speedtest_server) > 50000:
-                raise ValueError("Speedtest-server is not valid.")
+
+            if self.speedtest_server == "auto" or int(self.speedtest_server) < 0 and int(self.speedtest_server) < 50000:
+                pass
+            else:
+                raise ValueError
 
             if self.interval == "" or self.interval < 30:
                 raise ValueError
@@ -354,8 +359,9 @@ class Config(object):
             if not self.loglevel in lvl:
                 raise ValueError
 
-        except ValueError:
-            logging.exception("Config is not valid")
+        except ValueError as err:
+            logging.exception(err)
+            logging.error("Config is not valid")
             return False
         
         else:
@@ -376,3 +382,12 @@ class Config(object):
             logging.debug("Set default values successfully")
         finally:
             return
+
+    def _set_dbdriver(self):
+        if self.dbtype == "tinydb":
+            self.dbdriver = tiny.Tiny(self.datapath)
+
+        if self.dbtype == "mongodb":
+            self.dbdriver = mongo.Mongo(self.dbhost, self.dbuser, self.dbpassword)
+        
+        return

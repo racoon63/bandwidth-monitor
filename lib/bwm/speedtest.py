@@ -39,7 +39,7 @@ class Speedtest(object):
 
     def run(self):
         try:
-            logging.info("Measure latency and bandwidth")
+            logging.info("Measuring ...")
             
             if self.speedtest_server == "auto":
                 self.stats = subprocess.Popen(["speedtest-cli", "--secure", "--json"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -57,7 +57,7 @@ class Speedtest(object):
             logging.error("Could not measure bandwidth")
         else:
             self._set_stats()
-            logging.info("Measurement finished")
+            logging.info("Finished measurement")
             return
 
     def _set_stats(self):
