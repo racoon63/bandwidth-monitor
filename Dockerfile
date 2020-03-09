@@ -1,13 +1,12 @@
 FROM python:3.7-alpine
 
-WORKDIR /bwm/bandwidth-monitor
+WORKDIR /bwm
 
 COPY requirements.txt /bwm/requirements.txt
-COPY bandwidth-monitor/ /bwm/bandwidth-monitor
-
-RUN mkdir /bwm/data
-RUN mkdir /bwm/log
+COPY bwm /bwm/bwm
+COPY lib/ /bwm/lib
+COPY config.ini /bwm/config.ini
 
 RUN pip install -r /bwm/requirements.txt
 
-ENTRYPOINT [ "python3", "main.py" ]
+ENTRYPOINT [ "python3", "bwm" ]
