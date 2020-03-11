@@ -28,7 +28,7 @@ jobs:
       - checkout
 
       - attach_workspace:
-          at: ~/docker
+          at: ~/bwm/docker
 
       - run:
           name: Import bandwidth-monitor image
