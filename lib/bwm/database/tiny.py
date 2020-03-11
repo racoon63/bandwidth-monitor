@@ -2,9 +2,9 @@
 
 __author__ = "racoon63 <racoon63@gmx.net>"
 
-import logging
 from tinydb import TinyDB
 
+from ..logger import log
 
 class Tiny(object):
 
@@ -20,17 +20,17 @@ class Tiny(object):
 
     def open(self):
         try:
-            logging.debug("Creating database session")
+            log.debug("Creating database session")
             return TinyDB(self.datapath, indent=4, sort_keys=True)
 
         except Exception as err:
-            logging.debug("Could not create database session")
+            log.debug("Could not create database session")
 
     def insert(self, data):
         try:
             db = self.open()
             
-            logging.debug("Trying to write data to database")
+            log.debug("Trying to write data to database")
             bwm_table = db.table(name="bwm")
             bwm_table.insert(data)
             
@@ -40,11 +40,11 @@ class Tiny(object):
             self.close(db)
 
         except Exception as err:
-            logging.exception(err)
-            logging.error("Could not write data to database")
+            log.exception(err)
+            log.error("Could not write data to database")
 
         else:
-            logging.info("Recorded data successfully")
+            log.info("Recorded data successfully")
             return
 
     def close(self, session):
@@ -52,4 +52,4 @@ class Tiny(object):
             session.close()
 
         except:
-            logging.debug("Could not close database session")
+            log.debug("Could not close database session")

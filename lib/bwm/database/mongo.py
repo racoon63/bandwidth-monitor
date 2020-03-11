@@ -2,8 +2,10 @@
 
 __author__ = "racoon63 <racoon63@gmx.net>"
 
-import logging
 import pymongo
+
+from ..logger import log
+
 
 class Mongo(object):
 
@@ -32,7 +34,7 @@ class Mongo(object):
             self._close(client)
 
         except Exception as err:
-            logging.debug()
+            log.debug()
 
         else:
             return
@@ -40,19 +42,19 @@ class Mongo(object):
     def _open(self):
 
         try:
-            logging.debug("Login to database server and create session")
+            log.debug("Login to database server and create session")
             client = pymongo.MongoClient(self.db_url, 
                                          username=self.username, 
                                          password=self.password,
                                          authMechanism='SCRAM-SHA-256')
         
         except Exception as err:
-            logging.debug("Could not create a connection to mongodb server")
-            logging.exception(err)
+            log.debug("Could not create a connection to mongodb server")
+            log.exception(err)
             sys.exit(1)
 
         else:
-            logging.debug("Login successful")
+            log.debug("Login successful")
             return client
 
     def _close(self, session):
@@ -61,27 +63,27 @@ class Mongo(object):
             session.close()
 
         except Exception as err:
-            logging.debug("Could not close database session properly")
-            logging.exception(err)
+            log.debug("Could not close database session properly")
+            log.exception(err)
 
         else:
-            logging.debug("Closed database session successfully")
+            log.debug("Closed database session successfully")
             return
 
 
     def _exist_db(self, client, db_name):
     
         try:
-            logging.debug("Check if database '{}' exists".format(db_name))
+            log.debug("Check if database '{}' exists".format(db_name))
             if db_name in client.list_database_names():
-                logging.debug("Database '{}' exists".format(db_name))
+                log.debug("Database '{}' exists".format(db_name))
                 return True
             else:
-                logging.debug("Database '{}' does not exist".format(db_name))
+                log.debug("Database '{}' does not exist".format(db_name))
                 return False
 
         except Exception as err:
-            logging.exception(err)
+            log.exception(err)
 
 
     def _create_db(self, client, db_name):
@@ -90,22 +92,22 @@ class Mongo(object):
             return client[db_name]
 
         except Exception as err:
-            logging.exception(err)
+            log.exception(err)
 
 
     def _exist_collection(self, db, collection_name):
 
         try:
-            logging.debug("Check if collection '{}' exists".format(collection_name))
+            log.debug("Check if collection '{}' exists".format(collection_name))
             if collection_name in db.list_collection_names():
-                logging.debug("Collection '{}' exists".format(collection_name))
+                log.debug("Collection '{}' exists".format(collection_name))
                 return True
             else:
-                logging.debug("Collection '{}' does not exist".format(collection_name))
+                log.debug("Collection '{}' does not exist".format(collection_name))
                 return False
         
         except Exception as err:
-            logging.exception(err)
+            log.exception(err)
 
 
     def _create_collection(self, db, collection_name):
@@ -114,7 +116,7 @@ class Mongo(object):
             return db[collection_name]
 
         except Exception as err:
-            logging.exception(err)
+            log.exception(err)
 
 
     def insert(self, data):
@@ -126,11 +128,11 @@ class Mongo(object):
             identifier      = collection_data.insert_one(data)
 
         except Exception as err:
-            logging.debug("Could not insert data into database")
-            logging.exception(err)
+            log.debug("Could not insert data into database")
+            log.exception(err)
 
         else:
-            logging.info("Recorded data successfully")
-            logging.debug("Object ID: {}".format(identifier.inserted_id))
+            log.info("Recorded data successfully")
+            log.debug("Object ID: {}".format(identifier.inserted_id))
             self._close(client)
             return
