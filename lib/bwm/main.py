@@ -7,7 +7,6 @@ import sys
 import time
 
 from .config import Config
-from .data import Data
 from .logger import log
 from .speedtest import Speedtest
 
