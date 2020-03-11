@@ -37,6 +37,7 @@ class Speedtest(object):
         self.server_latency   = None
         self.server_sponsor   = None
         self.server_url       = None
+        self.server_url2      = None
         
         self.client_country   = None
         self.client_ip        = None
@@ -74,6 +75,31 @@ class Speedtest(object):
             log.info("Finished measurement")
         finally:
             return
+
+    def get_stat_map(self):
+        return { 
+                    "timestamp": self.timestamp, 
+                    "ping": self.ping, 
+                    "download": self.download, 
+                    "upload": self.upload, 
+                    "server": {
+                        "city": self.server_city,
+                        "country": self.server_country,
+                        "host": self.server_host,
+                        "id": self.server_id,
+                        "latency": self.server_latency,
+                        "sponsor": self.server_sponsor,
+                        "url": self.server_url,
+                        "url2": self.server_url2
+                    },
+                    "client": {
+                        "country": self.client_country,
+                        "ip": self.client_ip,
+                        "isp": self.client_isp,
+                        "isp-rating": self.client_isprating,
+                        "rating": self.client_rating
+                    }
+                }
 
     def _set_stats(self):
         try:

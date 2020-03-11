@@ -83,8 +83,8 @@ class Main(object):
                 test.run()
 
                 ts = self._get_timestamp()
-                data = Data(ts, test.ping, test.download, test.upload)
-                self.db.insert(data.create())
+                data = test.get_stat_map()
+                self.db.insert(data)
 
                 time.sleep(self.conf.interval - ((time.time() - starttime) % self.conf.interval))
 
