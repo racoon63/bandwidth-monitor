@@ -1,47 +1,31 @@
 #!/usr/bin/env python3
 
+import datetime
 import logging
 import os
 
 
-class Logger(object):
-
-    def __init__(self, loglevel="info", logpath="../../log"):
-        
-        self.loglevel = loglevel
-        self.logpath = logpath
-
-        self.loglevel = self.get_env_loglevel()
-        self.logpath = self.get_env_logpath()
-        
-        level = {
-            "debug":    logging.DEBUG,
-            "info":     logging.INFO,
-            "warning":  logging.WARNING,
-            "error":    logging.ERROR,
-            "critical": logging.CRITICAL
-        }
-
-        logging.basicConfig(format="[%(asctime)s] %(levelname)s: %(message)s",
-                        level=level[loglevel],
-                        datefmt="%Y-%m-%d %H:%M:%S",
-                        handlers=[
-                            logging.FileHandler(logpath),
-                            logging.StreamHandler()
-                        ])
+log = logging.getLogger(__name__)
 
 
-    def get_env_loglevel(self):
+def setup(loglevel="info", logpath="log/bwm.log"):
+    
+    level = {
+        "debug":    logging.DEBUG,
+        "info":     logging.INFO,
+        "warning":  logging.WARNING,
+        "error":    logging.ERROR,
+        "critical": logging.CRITICAL
+    }
 
-        if "LOGLEVEL" in os.environ:
-            return os.environ["LOGLEVEL"].lower()
-        else:
-            return "info"
+    formatter = logging.Formatter('%(asctime)-22s %(levelname)-11s %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 
+    output_handler = logging.StreamHandler()
+    output_handler.setFormatter(formatter)
 
-    def get_env_logpath(self):
-
-        if "LOGPATH" in os.environ:
-            return os.environ["LOGPATH"]
-        else:
-            return "../../log/bwm.log"
+    file_handler = logging.FileHandler(logpath)
+    file_handler.setFormatter(formatter)
+    
+    log.setLevel(level[loglevel.lower()])
+    log.addHandler(output_handler)
+    log.addHandler(file_handler)

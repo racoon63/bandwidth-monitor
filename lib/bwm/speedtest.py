@@ -4,8 +4,11 @@ __author__ = 'racoon63 <racoon63@gmx.net>'
 
 import socket
 import json
-import logging
 import subprocess
+import sys
+
+from .logger import log
+
 
 class NoInternetConnection(Exception):
    """Base class for other exceptions"""
@@ -46,7 +49,7 @@ class Speedtest(object):
             if not self._has_connectivity():
                 raise NoInternetConnection("No internet connection")
             else:
-                logging.info("Measuring ...")
+                log.info("Measuring ...")
                 if self.speedtest_server == "auto":
                     self.stats = subprocess.Popen(["speedtest-cli", "--secure", "--json"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                 else:
@@ -57,18 +60,18 @@ class Speedtest(object):
                 self.speedtest = json.loads(self.results)
 
                 if stderr:
-                    logging.debug(stderr)
+                    log.debug(stderr)
         except NoInternetConnection as err:
-            logging.error(err)
-            logging.error("Could not measure bandwidth")
+            log.error(err)
+            log.error("Could not measure bandwidth")
             self._set_up_down_zero()
         except Exception as err:
-            logging.error("Could not measure bandwidth")
-            logging.exception(err)
+            log.error("Could not measure bandwidth")
+            log.exception(err)
             self._set_up_down_zero()
         else:
             self._set_stats()
-            logging.info("Finished measurement")
+            log.info("Finished measurement")
         finally:
             return
 
@@ -95,9 +98,9 @@ class Speedtest(object):
             self.client_isprating = self.speedtest["client"]["isprating"]
             self.client_rating    = self.speedtest["client"]["rating"]
         except Exception as err:
-            logging.error("Could not set speedtest results")
+            log.error("Could not set speedtest results")
         else:
-            logging.debug("Set speedtest results")
+            log.debug("Set speedtest results")
         finally:
             return
 
