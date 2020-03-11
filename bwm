@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+
+import os
+
+from lib.bwm import logger
+from lib.bwm import main
+
+
+if __name__ == "__main__":
+    
+    workdir = os.path.dirname(os.path.abspath(__file__))
+
+    logger.setup("INFO", "log/bwm.log")
+    # logging.basicConfig(format="%(asctime)s %(levelname)s: %(message)s",
+    #                     level=logging.DEBUG,
+    #                     datefmt="%Y-%m-%dT%H:%M:%SZ%Z",
+    #                     handlers=[
+    #                         logging.FileHandler(workdir + "/bwm.log"),
+    #                         logging.StreamHandler()
+    #                     ])
+
+    
+    bandwidth_monitor = main.Main(workdir)
+    bandwidth_monitor.run()
