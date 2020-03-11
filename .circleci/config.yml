@@ -2,7 +2,7 @@ version: 2
 
 jobs:
   build:
-    working_directory: ~/bwm
+    working_directory: ~/
     machine: true
     steps:
       - checkout
@@ -15,10 +15,10 @@ jobs:
       
       - run:
           name: Export docker container image
-          command: docker save --output ~/bwm/docker/bwm.tar racoon/bandwidth-monitor
+          command: docker save --output ~/docker/bwm.tar racoon/bandwidth-monitor
       
       - persist_to_workspace:
-          root: ~/bwm/docker
+          root: ~/docker
           paths: 
             - bwm.tar
   
@@ -28,23 +28,23 @@ jobs:
       - checkout
 
       - attach_workspace:
-          at: ~/bwm/docker
+          at: ~/docker
 
       - run:
           name: Import bandwidth-monitor image
-          command: docker load -i ~/bwm/docker/bwm.tar
+          command: docker load -i ~/docker/bwm.tar
 
       - run:
           name: Run a instance of bandwidth-monitor image
-          command: docker run -d --rm --name bwm -e LOGLEVEL="debug" -e DBTYPE="tinydb" -v ~/bwm/data:/bwm/data racoon/bandwidth-monitor
+          command: docker run -d --rm --name bwm -e LOGLEVEL="debug" -e DBTYPE="tinydb" -v ~/data:/bwm/data racoon/bandwidth-monitor
 
       - run:
-          name: Wait until the first measure was made
+          name: Wait until the first measurement was made
           command: sleep 15
 
       - run:
           name: Test if data was created
-          command: test -f ~/bwm/data/bwm.json
+          command: test -f ~/data/bwm.json
 
 workflows:
   version: 2
