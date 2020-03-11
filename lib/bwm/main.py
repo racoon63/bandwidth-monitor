@@ -63,14 +63,14 @@ class Main(object):
             return number
 
     def _get_timestamp(self):
-        c_year   = self._leading_zero(time.gmtime().tm_year)
-        c_month  = self._leading_zero(time.gmtime().tm_mon)
-        c_day    = self._leading_zero(time.gmtime().tm_mday)
-        c_hour   = self._leading_zero(time.gmtime().tm_hour)
-        c_minute = self._leading_zero(time.gmtime().tm_min)
-        c_second = self._leading_zero(time.gmtime().tm_sec)
+        c_year   = self._leading_zero(time.localtime().tm_year)
+        c_month  = self._leading_zero(time.localtime().tm_mon)
+        c_day    = self._leading_zero(time.localtime().tm_mday)
+        c_hour   = self._leading_zero(time.localtime().tm_hour)
+        c_minute = self._leading_zero(time.localtime().tm_min)
+        c_second = self._leading_zero(time.localtime().tm_sec)
 
-        return "{}{}{}Z{}:{}:{}Z".format(c_year, c_month, c_day, c_hour, c_minute, c_second)
+        return "{}-{}-{} {}:{}:{}".format(c_year, c_month, c_day, c_hour, c_minute, c_second)
 
     def run(self):
         try:
@@ -78,7 +78,7 @@ class Main(object):
             while True:
 
                 starttime = time.time()
-                
+
                 test = Speedtest(self.conf.speedtest_server)
                 test.run()
 
