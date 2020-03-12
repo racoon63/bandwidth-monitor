@@ -53,24 +53,6 @@ class Main(object):
 
         return
 
-    def _leading_zero(self, number):
-        """ Helper function to create a clean time format. """
-
-        if len(str(number)) == 1:
-            return "{}{}".format(0, number)
-        else:
-            return number
-
-    def _get_timestamp(self):
-        c_year   = self._leading_zero(time.localtime().tm_year)
-        c_month  = self._leading_zero(time.localtime().tm_mon)
-        c_day    = self._leading_zero(time.localtime().tm_mday)
-        c_hour   = self._leading_zero(time.localtime().tm_hour)
-        c_minute = self._leading_zero(time.localtime().tm_min)
-        c_second = self._leading_zero(time.localtime().tm_sec)
-
-        return "{}-{}-{} {}:{}:{}".format(c_year, c_month, c_day, c_hour, c_minute, c_second)
-
     def run(self):
         try:
             log.info("Bandwidth-Monitor started successfully")
@@ -81,8 +63,7 @@ class Main(object):
                 test = Speedtest(self.conf.speedtest_server)
                 test.run()
 
-                ts = self._get_timestamp()
-                data = test.get_stat_map()
+                data = test.get_results()
                 self.db.insert(data)
 
                 time.sleep(self.conf.interval - ((time.time() - starttime) % self.conf.interval))
@@ -90,3 +71,9 @@ class Main(object):
         except KeyboardInterrupt:
             log.info("Bandwidth-Monitor was stopped by user")
             sys.exit(0)
+
+        except Exception as err:
+            self._set_up_down_zero()
+            log.error("Could not measure bandwidth")
+            log.exception(err)
+            self._set_up_down_zero()
