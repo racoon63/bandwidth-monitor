@@ -144,11 +144,10 @@ docker-compose up -d
 
 * config fle changes on the fly
 * Monitoring over web interface (e.g. Grafana)
-* Info about successful measurement
 
 ## Known bugs
 
-* Time values of logger and data is not the same
+None
 
 ## Maintainer
 
