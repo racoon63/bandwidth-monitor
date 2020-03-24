@@ -7,7 +7,7 @@ import hashlib
 import os
 import sys
 
-from .database import mongo, tiny
+from .database import mongo, tiny, influx
 from .logger import log
 
 class Defaults:
@@ -351,6 +351,10 @@ class Config(object):
                 if self.dbhost == "" or self.dbuser == "" or self.dbpassword == "":
                     raise ValueError
 
+            if self.dbtype == "influxdb":
+                if self.dbhost == "" or self.dbuser == "" or self.dbpassword == "":
+                    raise ValueError
+
             if self.logpath == "":
                 raise ValueError
 
@@ -388,5 +392,8 @@ class Config(object):
 
         if self.dbtype == "mongodb":
             self.dbdriver = mongo.Mongo(self.dbhost, self.dbuser, self.dbpassword)
+
+        if self.dbtype == "influxdb":
+            self.dbdriver = influx.Influx(self.dbhost, self.dbuser, self.dbpassword)
         
         return
