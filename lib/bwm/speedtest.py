@@ -98,7 +98,7 @@ class Speedtest(object):
         self.download  = round(((self.results["download"] / 1024) / 1024), 2)
         self.upload    = round(((self.results["upload"] / 1024) / 1024), 2)
         
-        self.server_city    = self.results["server"]["name"]
+        self.server_city    = self.results["server"]["city"]
         self.server_country = self.results["server"]["country"]
         self.server_host    = self.results["server"]["host"]
         self.server_id      = self.results["server"]["id"]
