@@ -9,6 +9,7 @@ import time
 from .config import Config
 from .logger import log
 from .speedtest import Speedtest
+from.speedtest import NoInternetConnection
 
 
 class Main(object):
@@ -61,19 +62,22 @@ class Main(object):
                 starttime = time.time()
 
                 test = Speedtest(self.conf.speedtest_server)
-                test.run()
+                
+                try:
+                    test.run()
+                except NoInternetConnection as err:
+                    log.error("Could not measure bandwidth")
+                    log.error(err)
+                finally:
+                    data = test.get_results()
+                    self.db.insert(data)
 
-                data = test.get_results()
-                self.db.insert(data)
-
-                time.sleep(self.conf.interval - ((time.time() - starttime) % self.conf.interval))
-
+                    time.sleep(self.conf.interval - ((time.time() - starttime) % self.conf.interval))
+        
         except KeyboardInterrupt:
             log.info("Bandwidth-Monitor was stopped by user")
             sys.exit(0)
 
         except Exception as err:
-            self._set_up_down_zero()
             log.error("Could not measure bandwidth")
             log.exception(err)
-            self._set_up_down_zero()

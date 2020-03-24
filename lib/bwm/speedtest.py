@@ -118,9 +118,14 @@ class Speedtest(object):
         port = 80
         socket.setdefaulttimeout(5)
    
-        ip = socket.gethostbyname(url)
-        s = socket.create_connection((ip, port))
-        s.close()
+        try:
+            ip = socket.gethostbyname(url)
+            s = socket.create_connection((ip, port))
+        except Exception as err:
+            return False
+        else:
+            s.close()
+            return True
             
     def _set_up_down_zero(self):
         self.download  = 0.0
