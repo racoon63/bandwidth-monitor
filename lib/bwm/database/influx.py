@@ -23,7 +23,7 @@ class Influx(object):
     def _check(self):
 
         try:
-            client = influxdb.InfluxDBClient(host=self.host, port=8086,username=self.username, password=self.password)
+            client = influxdb.InfluxDBClient(self.host, 8086, self.username, self.password, self.db_name)
 
         except Exception as err:
             log.debug()
@@ -35,7 +35,7 @@ class Influx(object):
 
         try:
             log.debug("Login to database server and create session")
-            client = influxdb.InfluxDBClient(host=self.host, port=8086,username=self.username, password=self.password)
+            client = influxdb.InfluxDBClient(self.host, 8086, self.username, self.password, self.db_name)
         
         except Exception as err:
             log.debug("Could not create a connection to influx server")
@@ -102,6 +102,8 @@ class Influx(object):
                    "ping": data["ping"]
                 }
             }]
+
+            log.debug(json_body)
 
             if client.write_points(json_body):
                 client.close()

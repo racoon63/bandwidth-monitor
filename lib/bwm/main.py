@@ -79,12 +79,5 @@ class Main(object):
             sys.exit(0)
 
         except Exception as err:
-<<<<<<< HEAD
             log.error("Could not measure bandwidth")
             log.exception(err)
-=======
-            #self._set_up_down_zero()
-            log.error("Could not measure bandwidth")
-            log.exception(err)
-            #self._set_up_down_zero()
->>>>>>> Added InfluxDB DataModule
