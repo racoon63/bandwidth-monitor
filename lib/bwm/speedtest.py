@@ -2,8 +2,9 @@
 
 __author__ = 'racoon63 <racoon63@gmx.net>'
 
-import socket
+import datetime
 import json
+import socket
 import subprocess
 import sys
 
@@ -51,6 +52,7 @@ class Speedtest(object):
     def run(self):
 
         if not self._has_connectivity():
+            self._set_up_down_zero(self)
             raise NoInternetConnection("No internet connection")
         else:
             log.info("Measuring ...")
@@ -98,7 +100,7 @@ class Speedtest(object):
         self.download  = round(((self.results["download"] / 1024) / 1024), 2)
         self.upload    = round(((self.results["upload"] / 1024) / 1024), 2)
         
-        self.server_city    = self.results["server"]["city"]
+        self.server_city    = self.results["server"]["name"]
         self.server_country = self.results["server"]["country"]
         self.server_host    = self.results["server"]["host"]
         self.server_id      = self.results["server"]["id"]
@@ -130,4 +132,7 @@ class Speedtest(object):
     def _set_up_down_zero(self):
         self.download  = 0.0
         self.upload    = 0.0
+
+        dateTimeObj = datetime.datetime.now()
+        self.timestamp = dateTimeObj.strftime("%Y-%m-%d %H:%M:%S")
         return
