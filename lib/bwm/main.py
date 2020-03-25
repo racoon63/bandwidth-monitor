@@ -54,30 +54,39 @@ class Main(object):
 
         return
 
+    def _record(self, data):
+        self.db.insert(data)
+        return
+
+    def _wait(self, starttime):
+        time.sleep(self.conf.interval - ((time.time() - starttime) % self.conf.interval))
+        return
+
     def run(self):
-        try:
+        
             log.info("Bandwidth-Monitor started successfully")
             while True:
-
-                starttime = time.time()
-
-                test = Speedtest(self.conf.speedtest_server)
-                
                 try:
+                    starttime = time.time()
+
+                    test = Speedtest(self.conf.speedtest_server)    
                     test.run()
+
                 except NoInternetConnection as err:
-                    log.error("Could not measure bandwidth")
-                    log.error(err)
-                finally:
+                    log.exception(err)
                     data = test.get_results()
-                    self.db.insert(data)
+                    self._record(data)
+                    self._wait(starttime)                    
 
-                    time.sleep(self.conf.interval - ((time.time() - starttime) % self.conf.interval))
-        
-        except KeyboardInterrupt:
-            log.info("Bandwidth-Monitor was stopped by user")
-            sys.exit(0)
+                except KeyboardInterrupt:
+                    log.info("Bandwidth-Monitor was stopped by user")
+                    sys.exit(0)
 
-        except Exception as err:
-            log.error("Could not measure bandwidth")
-            log.exception(err)
+                except Exception as err:
+                    log.error("Could not measure bandwidth")
+                    log.exception(err)
+                
+                else:
+                    data = test.get_results()
+                    self._record(data)
+                    self._wait(starttime)
