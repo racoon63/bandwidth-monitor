@@ -66,6 +66,7 @@ class Config(object):
                         raise Exception("Config could not be created")
 
             else:
+                self._set_defaults()
                 self._read()
                 self._set_config_vals()
                 self._set_env_vals()
@@ -183,6 +184,7 @@ class Config(object):
             
             if self.config.has_option(section, name) and self.config[section][name] != "":
                 log.debug("Option '{}' is set and not empty".format(name))
+                log.debug("Option '%s' is: %s", name, self._get_option_val(section, name))
                 return True
             else:
                 log.debug("Option '{}' is not set or empty".format(name))
@@ -265,8 +267,6 @@ class Config(object):
             
             if self._is_env_set("SPEEDTEST-SERVER"):
                 self.speedtest_server = self._get_env_val("SPEEDTEST-SERVER")
-            else:
-                self.speedtest_server = self.defaults.speedtest_server
 
             if self._is_env_set("INTERVAL"):
                 self.interval = self._get_env_val("INTERVAL")
@@ -275,38 +275,24 @@ class Config(object):
 
             if self._is_env_set("DBTYPE"):
                 self.dbtype = self._get_env_val("DBTYPE")
-            else:
-                self.dbtype = self.defaults.dbtype
 
             if self._is_env_set("DATAPATH"):
                 self.datapath = self._get_env_val("DATAPATH")
-            else:
-                self.datapath = self.defaults.datapath
 
             if self._is_env_set("DBHOST"):
                 self.dbhost = self._get_env_val("DBHOST")
-            else:
-                self.dbhost = self.defaults.dbhost
 
             if self._is_env_set("DBUSER"):
                 self.dbuser = self._get_env_val("DBUSER")
-            else:
-                self.dbuser = self.defaults.dbuser
 
             if self._is_env_set("DBPASSWORD"):
                 self.dbpassword = self._get_env_val("DBPASSWORD")
-            else:
-                self.dbpassword = self.defaults.dbpassword
 
             if self._is_env_set("LOGPATH"):
                 self.logpath = self._get_env_val("LOGPATH")
-            else:
-                self.logpath = self.defaults.logpath
 
             if self._is_env_set("LOGLEVEL"):
                 self.loglevel = self._get_env_val("LOGLEVEL")
-            else:
-                self.loglevel = self.defaults.loglevel
 
         except Exception as err:
             log.exception(err)
@@ -395,5 +381,5 @@ class Config(object):
 
         if self.dbtype == "influxdb":
             self.dbdriver = influx.Influx(self.dbhost, self.dbuser, self.dbpassword)
-        
+
         return

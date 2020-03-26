@@ -18,6 +18,7 @@ class Main(object):
         
         self.workdir = workdir
         self._create_dir_tree()
+        log.info("Reading config")
         self.conf = Config(self.workdir)
         self.db = self.conf.dbdriver
 
