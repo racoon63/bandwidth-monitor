@@ -326,7 +326,7 @@ class Config(object):
             if self.interval == "" or self.interval < 30:
                 raise ValueError
 
-            if self.dbtype == "" or self.dbtype != "tinydb" and self.dbtype != "mongodb":
+            if self.dbtype == "" or self.dbtype != "tinydb" and self.dbtype != "mongodb" and self.dbtype != "influxdb":
                 raise ValueError
 
             if self.dbtype == "tinydb":
