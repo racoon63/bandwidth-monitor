@@ -147,7 +147,7 @@ docker-compose up -d
 
 ## Known bugs
 
-None
+* Logging can not be changed by the given `config.ini`
 
 ## Maintainer
 
