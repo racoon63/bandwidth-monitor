@@ -218,14 +218,14 @@ class Config(object):
             if self._is_option_set("Database", "datapath"):
                 self.datapath = self._get_option_val("Database", "datapath")
 
-            if self._is_option_set("Database", "host"):
-                self.dbhost = self._get_option_val("Database", "host")
+            if self._is_option_set("Database", "dbhost"):
+                self.dbhost = self._get_option_val("Database", "dbhost")
 
-            if self._is_option_set("Database", "user"):
-                self.dbuser = self._get_option_val("Database", "user")
+            if self._is_option_set("Database", "dbuser"):
+                self.dbuser = self._get_option_val("Database", "dbuser")
 
-            if self._is_option_set("Database", "password"):
-                self.dbpassword = self._get_option_val("Database", "password")
+            if self._is_option_set("Database", "dbpassword"):
+                self.dbpassword = self._get_option_val("Database", "dbpassword")
 
             if self._is_option_set("log", "logpath"):
                 self.logpath = self._get_option_val("log", "logpath")
