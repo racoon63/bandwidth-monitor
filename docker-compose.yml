@@ -2,82 +2,50 @@ version: '3.1'
 
 services:
   bwm:
-    image: racoon/bandwidth-monitor
+    image: racoon/bandwidth-monitor:nightly
     restart: always
     depends_on: 
-      - influx-db
+      - influx
     networks:
       - bwm
     environment:
-      DBTYPE: influx
-      DBHOST: influx-db
+      DBTYPE: influxdb
+      DBHOST: influx
       DBUSER: bwm
       DBPASSWORD: bwm
-  influx-db:
+    volumes:
+      - ./log:/bwm/log
+      - ./lib:/bwm/lib
+  influx:
     image: influxdb:latest
-    ports:
-      - '8086:8086'
+    networks:
+      - bwm
     volumes:
       - influxdb-storage:/var/lib/influxdb
     environment:
-      - INFLUXDB_DB=bwm-db
-      - INFLUXDB_USER=${INFLUXDB_USERNAME}
-      - INFLUXDB_PASSWORD=${INFLUXDB_PASSWORD}
-  chronograf:
-    image: chronograf:latest
-    ports:
-      - '8888:8888'
-    volumes:
-      - chronograf-storage:/var/lib/chronograf
-    depends_on:
-      - influxdb
-    environment:
-      - INFLUXDB_URL=http://influxdb:8086
-      - INFLUXDB_USERNAME=${INFLUXDB_USERNAME}
-      - INFLUXDB_PASSWORD=${INFLUXDB_PASSWORD}
+      - INFLUXDB_DB=bwm
+      - INFLUXDB_USER=bwm
+      - INFLUXDB_PASSWORD=bwm
   grafana:
     image: grafana/grafana:latest
     ports:
       - '3000:3000'
+    networks:
+      - bwm
     volumes:
       - grafana-storage:/var/lib/grafana
       - ./grafana-provisioning/:/etc/grafana/provisioning
     depends_on:
-      - influxdb
+      - influx
     environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_SECURITY_ADMIN_USER=bwm
+      - GF_SECURITY_ADMIN_PASSWORD=bwm
 
-
-
-
-  # mongo:
-  #   image: mongo
-  #   restart: always
-  #   networks:
-  #     - bwm
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: bwm
-  #     MONGO_INITDB_ROOT_PASSWORD: bwm
-
-  # mongo-express:
-  #   image: mongo-express
-  #   restart: always
-  #   depends_on: 
-  #     - mongo
-  #   networks:
-  #     - bwm
-  #   ports:
-  #     - 8081:8081
-  #   environment:
-  #     ME_CONFIG_MONGODB_ADMINUSERNAME: bwm
-  #     ME_CONFIG_MONGODB_ADMINPASSWORD: bwm
-
-
-
-
-
-
+  ubuntu:
+    image: ubuntu
+    networks:
+      - bwm
+    entrypoint: sleep 500000
 
 networks:
   bwm:

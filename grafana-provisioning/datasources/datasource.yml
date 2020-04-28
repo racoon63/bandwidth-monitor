@@ -6,6 +6,6 @@ datasources:
     database: bwm 
     user: bwm 
     password: bwm
-    url: http://influxdb:8086
+    url: http://influx:8086
     isDefault: true
     editable: true
