@@ -60,12 +60,14 @@ workflows:
     jobs:
       - lint_pylint
       - build-nightly:
+          context: docker-publisher
           requires:
             - lint_pylint
           filters:
             branches:
               only: 31-pipeline-switch
       - publish-nightly:
+          context: docker-publisher
           requires:
             - build-nightly
           filters:
