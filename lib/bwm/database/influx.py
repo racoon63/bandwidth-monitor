@@ -15,7 +15,7 @@ class Influx(object):
         self.username = username
         self.password = password
 
-        self.db_name              = "bwm"
+        self.db_name = "bwm"
 
         self._check()
         
@@ -88,22 +88,20 @@ class Influx(object):
                   "server_latency": data["server"]["latency"],
                   "server_sponsor": data["server"]["sponsor"],
                   "server_url1": data["server"]["url"],
-                  "server_url2": data["server"]["url2"],
+                  #"server_url2": data["server"]["url2"],
                   "client_country": data["client"]["country"],
                   "client_ip": data["client"]["ip"],
                   "client_isp": data["client"]["isp"],
-                  "client_isp_rating": data["client"]["isprating"],
+                  "client_isp_rating": data["client"]["isp-rating"],
                   "client_rating": data["client"]["rating"]
                 },
-                "time": date["timestamp"],
+                "time": data["timestamp"],
                 "fields": {
                    "download": data["download"],
                    "upload": data["upload"],
                    "ping": data["ping"]
                 }
             }]
-
-            log.debug(json_body)
 
             if client.write_points(json_body):
                 client.close()
@@ -120,10 +118,7 @@ class Influx(object):
             log.exception(err)
 
         
-
-
         else:
             log.info("Recorded data successfully")
-            log.debug("Object ID: {}".format(identifier.inserted_id))
             self._close(client)
             return
