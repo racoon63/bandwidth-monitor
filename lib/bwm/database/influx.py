@@ -15,7 +15,7 @@ class Influx(object):
         self.username = username
         self.password = password
 
-        self.db_name              = "bwm"
+        self.db_name  = "bwm"
 
         self._check()
         
@@ -94,6 +94,7 @@ class Influx(object):
                   "client_isp": data["client"]["isp"],
                   "client_isp_rating": data["client"]["isprating"],
                   "client_rating": data["client"]["rating"]
+                  "identifier" : data["timestamp"]
                 },
                 "time": date["timestamp"],
                 "fields": {
@@ -124,6 +125,6 @@ class Influx(object):
 
         else:
             log.info("Recorded data successfully")
-            log.debug("Object ID: {}".format(identifier.inserted_id))
+            log.debug("Object ID: {}".format(data["timestamp"))
             self._close(client)
             return
