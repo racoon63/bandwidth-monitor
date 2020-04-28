@@ -93,7 +93,7 @@ class Influx(object):
                   "client_ip": data["client"]["ip"],
                   "client_isp": data["client"]["isp"],
                   "client_isp_rating": data["client"]["isp-rating"],
-                  "client_rating": data["client"]["rating"]
+                  "client_rating": data["client"]["rating"],
                   "identifier" : data["timestamp"]
                 },
                 "time": data["timestamp"],
