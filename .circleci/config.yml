@@ -1,15 +1,18 @@
 version: 2
 
 jobs:
-  lint:
+  lint_pylint:
     docker:
-      - image: racoon/pylama:latest
+      - image: circleci/python:latest
     working_directory: /code
     steps:
       - checkout
       - run:
-          name: Lint code
-          command: pylama /code
+          name: Install pylint
+          command: pip3 install pylint pylint-fail-under
+      - run:
+          name: Linting code
+          command: find /code -type f -name "*.py" | xargs pylint-fail-under --rcfile=/etc/pylintrc "$@"
   
   # build:
   #   working_directory: ~/bwm
@@ -35,4 +38,4 @@ workflows:
   build:
     jobs:
       # - build
-      - lint
+      - lint_pylint
