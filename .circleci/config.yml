@@ -11,7 +11,7 @@ jobs:
           command: pip3 install pylint pylint-fail-under && ls -l
       - run:
           name: Linting code
-          command: find ./ -type f -name "*.py" | xargs pylint-fail-under --rcfile=/etc/pylintrc "$@"
+          command: find ./ -type f -name "*.py" | xargs pylint-fail-under --fail-under 8.0
   
   # build:
   #   working_directory: ~/bwm
