@@ -8,11 +8,12 @@ jobs:
       - checkout
       - run:
           name: Install pylint
-          command: pip3 install pylint pylint-fail-under && ls -l
+          command: pip3 install pylint pylint-fail-under
       - run:
           name: Linting code
-          command: find ./ -type f -name "*.py" | xargs pylint-fail-under --fail-under 8.0
+          command: pylint-fail-under --fail-under 8.0 bwm && find ./bwm/ -type f -name "*.py" | xargs pylint-fail-under --fail-under 8.0
   
+
   # build:
   #   working_directory: ~/bwm
   #   machine: true
