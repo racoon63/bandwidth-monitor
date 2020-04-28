@@ -3,7 +3,7 @@ version: 2
 jobs:
   lint:
     docker:
-      - image: racoon/pylint:latest
+      - image: racoon/pylama:latest
     working_directory: /code
     steps:
       - checkout
