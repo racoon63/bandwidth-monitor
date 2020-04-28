@@ -41,12 +41,6 @@ services:
       - GF_SECURITY_ADMIN_USER=bwm
       - GF_SECURITY_ADMIN_PASSWORD=bwm
 
-  ubuntu:
-    image: ubuntu
-    networks:
-      - bwm
-    entrypoint: sleep 500000
-
 networks:
   bwm:
 
