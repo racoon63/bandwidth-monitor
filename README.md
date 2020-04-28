@@ -148,6 +148,7 @@ docker-compose up -d
 ## Known bugs
 
 * Logging can not be changed by the given `config.ini`
+* Switch to another docker container image builder cause of long container image times
 
 ## Maintainer
 
