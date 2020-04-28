@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  test:
+  lint:
     docker:
       - image: racoon/pylint:latest
     working_directory: /code
