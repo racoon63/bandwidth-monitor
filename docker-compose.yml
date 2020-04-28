@@ -13,9 +13,6 @@ services:
       DBHOST: influx
       DBUSER: bwm
       DBPASSWORD: bwm
-    volumes:
-      - ./log:/bwm/log
-      - ./lib:/bwm/lib
   influx:
     image: influxdb:latest
     networks:
