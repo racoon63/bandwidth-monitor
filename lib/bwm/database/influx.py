@@ -121,6 +121,6 @@ class Influx(object):
         
         else:
             log.info("Recorded data successfully")
-            log.debug("Object ID: {}".format(data["timestamp"])
+            log.debug("Object ID: {}".format(data["timestamp"]))
             self._close(client)
             return
