@@ -65,7 +65,7 @@ workflows:
               only: 31-pipeline-switch
       - publish-nightly:
           requires:
-            - build
+            - build-nightly
           filters:
             branches:
-              only: master
+              only: 31-pipeline-switch
