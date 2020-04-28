@@ -10,8 +10,11 @@ jobs:
           name: Install pylint
           command: pip3 install pylint pylint-fail-under
       - run:
-          name: Linting code
-          command: pylint-fail-under --fail_under 8 bwm && find ./bwm/ -type f -name "*.py" | xargs pylint-fail-under --fail_under 8
+          name: Linting main service file
+          command: pylint-fail-under --fail_under 5 bwm
+      - run:
+          name: Linting bandwidth-monitor libs
+          command: find ./bwm/ -type f -name "*.py" | xargs pylint-fail-under --fail_under 5
 
   # build:
   #   working_directory: ~/bwm
