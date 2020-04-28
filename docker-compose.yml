@@ -18,7 +18,7 @@ services:
     networks:
       - bwm
     volumes:
-      - influxdb-storage:/var/lib/influxdb
+      - bwm:/var/lib/influxdb
     environment:
       - INFLUXDB_DB=bwm
       - INFLUXDB_USER=bwm
@@ -41,4 +41,4 @@ networks:
   bwm:
 
 volumes:
-  influxdb-storage:
+  bwm:
