@@ -30,7 +30,6 @@ services:
     networks:
       - bwm
     volumes:
-      - grafana-storage:/var/lib/grafana
       - ./grafana-provisioning/:/etc/grafana/provisioning
     depends_on:
       - influx
@@ -44,6 +43,3 @@ networks:
 volumes:
   bwm:
   influxdb-storage:
-  chronograf-storage:
-  grafana-storage:
-    
