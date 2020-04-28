@@ -65,11 +65,11 @@ workflows:
             - lint_pylint
           filters:
             branches:
-              only: 31-pipeline-switch
+              only: dev
       - publish-nightly:
           context: docker-publisher
           requires:
             - build-nightly
           filters:
             branches:
-              only: 31-pipeline-switch
+              only: dev
