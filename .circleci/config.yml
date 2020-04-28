@@ -51,7 +51,7 @@ jobs:
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
-            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
             docker push $IMAGE_NAME:nightly
 
 workflows:
@@ -60,6 +60,8 @@ workflows:
     jobs:
       - lint_pylint
       - build-nightly:
+          requires:
+            - lint_pylint
           filters:
             branches:
               only: 31-pipeline-switch
