@@ -107,7 +107,12 @@ class Speedtest(object):
         self.server_latency = self.results["server"]["latency"]
         self.server_sponsor = self.results["server"]["sponsor"]
         self.server_url     = self.results["server"]["url"]
-        self.server_url2    = self.results["server"]["url2"]
+        
+        try:
+            self.server_url2    = self.results["server"]["url2"]
+        except KeyError:
+            log.info("Key url2 is not available")
+            pass
         
         self.client_country   = self.results["client"]["country"]
         self.client_ip        = self.results["client"]["ip"]
