@@ -9,7 +9,7 @@ import time
 from .config import Config
 from .logger import log
 from .speedtest import Speedtest
-from.speedtest import NoInternetConnection
+from .speedtest import NoInternetConnection
 
 
 class Main(object):
