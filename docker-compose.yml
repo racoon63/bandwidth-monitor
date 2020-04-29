@@ -1,41 +1,41 @@
 version: '3.1'
 
 services:
-
   bwm:
-    image: racoon/bandwidth-monitor
+    image: racoon/bandwidth-monitor:nightly
     restart: always
     depends_on: 
-      - mongo
+      - influx
     networks:
       - bwm
     environment:
-      DBTYPE: mongodb
-      DBHOST: mongo
+      DBTYPE: influxdb
+      DBHOST: influx
       DBUSER: bwm
       DBPASSWORD: bwm
-
-  mongo:
-    image: mongo
-    restart: always
+  influx:
+    image: influxdb:latest
     networks:
       - bwm
+    volumes:
+      - bwm:/var/lib/influxdb
     environment:
-      MONGO_INITDB_ROOT_USERNAME: bwm
-      MONGO_INITDB_ROOT_PASSWORD: bwm
-
-  mongo-express:
-    image: mongo-express
-    restart: always
-    depends_on: 
-      - mongo
-    networks:
-      - bwm
+      - INFLUXDB_DB=bwm
+      - INFLUXDB_USER=bwm
+      - INFLUXDB_PASSWORD=bwm
+  grafana:
+    image: grafana/grafana:latest
     ports:
-      - 8081:8081
+      - '3000:3000'
+    networks:
+      - bwm
+    volumes:
+      - ./grafana-provisioning/:/etc/grafana/provisioning
+    depends_on:
+      - influx
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: bwm
-      ME_CONFIG_MONGODB_ADMINPASSWORD: bwm
+      - GF_SECURITY_ADMIN_USER=bwm
+      - GF_SECURITY_ADMIN_PASSWORD=bwm
 
 networks:
   bwm:

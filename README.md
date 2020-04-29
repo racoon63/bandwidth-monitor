@@ -3,7 +3,7 @@
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/racoon/bandwidth-monitor)
 ![Docker Image Name](https://img.shields.io/badge/docker%20image-racoon%2Fbandwidth--monitor-blue)
 
-Bandwidth-Monitor is a tool to measure and monitor your latency and bandwidth. This tool stores the measured data in JSON or in a MongoDB database. You can use Bandwidth-Monitor e.g. to determine the average internet-speed or measure the bandwidth from your Notebook at a certain place. Currently the measurements uses the [`speedtest-cli`](https://pypi.org/project/speedtest-cli/) python library.
+Bandwidth-Monitor is a tool to measure and monitor your latency and bandwidth. This tool stores the measured data in JSON (TinyDB) or in a MongoDB database. You can use Bandwidth-Monitor e.g. to determine the average internet-speed or measure the bandwidth from your Notebook at a certain place. Bandwidth-Monitor uses the [`speedtest-cli`](https://pypi.org/project/speedtest-cli/) python library for the measurements.
 
 ## Tested Platforms
 
@@ -29,9 +29,9 @@ Install the dependencies with:
 sudo pip3 install -r requirements.txt
 ```
 
-Create a `config.ini` according to the [configuration](#configuration) section.
+Create a `config.ini` according to the [configuration](#configuration) section. This is optional. If you don't want to provide a config, the service will create a default config.
 
-When you didn't define a datapath, the data will be stored relatively to the bandwidth-monitor directory in: `../data/bwm.json`
+When you didn't define a datapath, the data will be stored relatively to the bandwidth-monitor directory in: `data/bwm.json`
 
 ## Configuration
 
@@ -83,14 +83,14 @@ Or you just use the config skeleton [here](https://github.com/racoon63/bandwidth
 
 ## Run
 
-After all the requirements have been met you can run the service either directly from the CLI or create a docker container for it.
+After all the requirements have been met, you can run the service either directly from the CLI or create a docker container for it.
 
 ### CLI
 
-To run this tool directly from your command-line, switch into the `bandwidth-monitor` directory (where the `main.py` is placed) and run the following command on your machine to start the bandwidth-monitor:
+To run this tool directly from your command-line, switch into the `bandwidth-monitor` directory (where the `bwm` file is placed) and run the following command on your machine to start the bandwidth-monitor:
 
 ```bash
-python3 main.py
+python3 bwm
 ```
 
 ### Docker
@@ -101,7 +101,7 @@ To run this service in a docker container you can
 * create a `config.ini` and map it into the docker container or
 * just create a volume and run a new docker instance.
 
-To build the `Dockerfile` by yourself just run:
+To build the `Dockerfile` by yourself, just run:
 
 ```bash
 docker build -t <YOUR-TAG> .
@@ -134,7 +134,7 @@ docker run -d \
 
 ### Docker-Compose
 
-If you want to store your data in a MongoDB database and run everything in a container environment you can use the `docker-compose.yml` file to start the services. Run it with:
+If you want to store your data in a MongoDB database and run everything in a container environment you can use the `docker-compose.yml` file to start the services. Start all service by running:
 
 ```bash
 docker-compose up -d
@@ -147,7 +147,8 @@ docker-compose up -d
 
 ## Known bugs
 
-None
+* Logging can not be changed by the given `config.ini`
+* Switch to another docker container image builder cause of long container image times
 
 ## Maintainer
 

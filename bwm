@@ -7,10 +7,11 @@ from lib.bwm import main
 
 
 if __name__ == "__main__":
-    
+
     workdir = os.path.dirname(os.path.abspath(__file__))
-    
+
+    logger.setup(loglevel="DEBUG", logpath=workdir + "/log")
     bandwidth_monitor = main.Main(workdir)
-    logger.setup("DEBUG", "log/bwm.log")
+
     logger.log.debug("Workdir is: %s", workdir)
     bandwidth_monitor.run()
