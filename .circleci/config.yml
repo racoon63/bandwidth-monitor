@@ -17,11 +17,8 @@ jobs:
           name: Install pylint
           command: pip3 install pylint pylint-fail-under
       - run:
-          name: Linting main service file
-          command: pylint-fail-under --fail_under 5 bwm
-      - run:
           name: Linting bandwidth-monitor libs
-          command: find ./lib/bwm/ -type f -name "*.py" | xargs pylint-fail-under --fail_under 4
+          command: find ./app -type f -name "*.py" | xargs pylint-fail-under --fail_under 4
 
   build-nightly:
     executor: docker-publisher
