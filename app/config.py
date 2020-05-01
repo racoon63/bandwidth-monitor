@@ -1,16 +1,15 @@
-__author__ = "racoon63 <racon63@gmx.net>"
+""" Provides configuration feature for bwm service. """
 
 from os import environ
 import configparser
 
-from log import Log
-
 
 class Config:
-    """Class that stores config values for the bwm service."""
+    """Config class stores config values for the bwm service."""
     def __init__(self):
         self.config_file_path = "config.ini"
-        self.config_file = configparser.ConfigParser(empty_lines_in_values=False)
+        self.config_file = configparser.ConfigParser(
+            empty_lines_in_values=False)
 
         self.speedtest_server = None
         self.interval = 60
@@ -23,6 +22,7 @@ class Config:
         self.logpath = "log/bwm.log"
 
     def get_env_conf(self):
+        """ Sets config values from available environment variables. """
         try:
             self.speedtest_server = environ["SPEEDTEST_SERVER"]
             self.interval = environ["INTERVAL"]
@@ -37,6 +37,7 @@ class Config:
             pass
 
     def get_file_conf(self):
+        """ Sets config values from the config.ini file. """
         try:
             self.config_file.read(self.config_file_path)
 

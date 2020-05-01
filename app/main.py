@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
 
-__author__ = "racoon63 <racoon63@gmx.net>"
+""" Bandwidth-Monitor is a tool to measure your internet speed. """
 
-from .bwm import BandwidthMonitor
+from bwm import BandwidthMonitor
+from log import logger
 
+def main():
+    """ This is the entrypoint for the Bandwidth-Monitor service. """
+    bwm = BandwidthMonitor()
+    try:
+        logger.info("Started Bandwidth-Monitor service")
+        bwm.run()
+    except KeyboardInterrupt:
+        logger.info("Bandwidth-Monitor service was terminated by user")
 
 if __name__ == "__main__":
-
-    bwm = BandwidthMonitor()
-    bwm.run()
+    main()

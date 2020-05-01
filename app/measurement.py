@@ -1,6 +1,7 @@
-__author__ = "racoon63 <racoon63@gmx.net>"
+from datetime import datetime
 
 from speedtest import Speedtest
+
 
 class Measurement:
     def __init__(self, servers=[]):
@@ -16,11 +17,9 @@ class Measurement:
             s.upload()
             return s.results.dict()
         except Exception:
-            
-            return { 
-                # TODO: Add timestamp in the following format: "2020-04-30T20:32:10.779485Z"
-                "timestamp": None,
-                "ping": None, 
+            return {
+                "timestamp": datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+                "ping": None,
                 "download": 0.0,
                 "upload": 0.0,
                 "server": {

@@ -1,23 +1,23 @@
-__author__ = "racoon63 <racon63@gmx.net>"
-
-from time import sleep, time
+# from time import sleep, time
+import time
 
 from config import Config
-from log import Log
+from log import logger
 from measurement import Measurement
 from storage import Storage
 
 
 class BandwidthMonitor:
+    """ BandwidthMonitor class is the core class of the bwm service. """
     def __init__(self):
         self.conf = Config()
-        self.st = Speedtest()
+        self.msment = Measurement()
         self.backend = Storage()
 
     def run(self):
         while True:
-            starttime = time()
-            results = self.st.measure()
-            self.backend.save(results)
-            # TODO: Integrate interval as float
-            sleep(60.0 - ((time() - starttime) % 60.0))
+            starttime = time.time()
+            results = self.msment.measure()
+            print(results)
+            # self.backend.save(results)
+            time.sleep(self.conf.interval - ((time.time() - starttime) % self.conf.interval))
