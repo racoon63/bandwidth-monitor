@@ -1,22 +1,26 @@
+""" Provides bandwidth measurement functionality for bwm service. """
+
 from datetime import datetime
 
-from speedtest import Speedtest
+from speedtest import Speedtest, SpeedtestException
 
 
 class Measurement:
-    def __init__(self, servers=[]):
-        self.servers = []
+    """ Measurement class provides bandwidth measurement capability. """
+    def __init__(self, servers=None):
+        self.servers = servers
 
     def measure(self):
-        s = Speedtest()
+        """ Returns a dict with the measured results. """
+        sptest = Speedtest()
 
         try:
-            s.get_servers(self.servers)
-            s.get_best_server()
-            s.download()
-            s.upload()
-            return s.results.dict()
-        except Exception:
+            sptest.get_servers(self.servers)
+            sptest.get_best_server()
+            sptest.download()
+            sptest.upload()
+            return sptest.results.dict()
+        except SpeedtestException:
             return {
                 "timestamp": datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
                 "ping": None,

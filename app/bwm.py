@@ -1,8 +1,8 @@
-# from time import sleep, time
+""" Core component of the Bandwidth-Monitor. """
+
 import time
 
 from config import Config
-from log import logger
 from measurement import Measurement
 from storage import Storage
 
@@ -15,6 +15,7 @@ class BandwidthMonitor:
         self.backend = Storage()
 
     def run(self):
+        """ Runs all tasks that belong to the service. """
         while True:
             starttime = time.time()
             results = self.msment.measure()

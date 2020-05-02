@@ -1,3 +1,5 @@
+""" Provides a custom logger with that logs to stdout and a log file. """
+
 import logging
 import os
 
@@ -18,7 +20,6 @@ def configure_logger(loglevel="info", logpath="log"):
     except FileExistsError:
         pass
 
-    """Configures the handler and formatter for custom logger."""
     level = {
         "debug":    logging.DEBUG,
         "info":     logging.INFO,
@@ -27,7 +28,8 @@ def configure_logger(loglevel="info", logpath="log"):
         "critical": logging.CRITICAL
     }
 
-    formatter = logging.Formatter('%(asctime)-22s %(levelname)-11s %(message)s', datefmt="%Y-%m-%dT%H:%M:%SZ")
+    formatter = logging.Formatter('%(asctime)-22s %(levelname)-11s %(message)s',
+                                  datefmt="%Y-%m-%dT%H:%M:%SZ")
 
     output_handler = logging.StreamHandler()
     output_handler.setFormatter(formatter)
