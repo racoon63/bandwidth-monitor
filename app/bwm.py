@@ -9,16 +9,16 @@ from storage import Storage
 
 class BandwidthMonitor:
     """ BandwidthMonitor class is the core class of the bwm service. """
-    def __init__(self):
-        self.conf = Config()
-        self.msment = Measurement()
-        self.backend = Storage()
+    conf = Config()
+    msment = Measurement()
+    backend = Storage()
 
-    def run(self):
+    @classmethod
+    def run(cls):
         """ Runs all tasks that belong to the service. """
         while True:
             starttime = time.time()
-            results = self.msment.measure()
+            results = cls.msment.measure()
             print(results)
             # self.backend.save(results)
-            time.sleep(self.conf.interval - ((time.time() - starttime) % self.conf.interval))
+            time.sleep(cls.conf.interval - ((time.time() - starttime) % cls.conf.interval))

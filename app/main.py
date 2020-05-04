@@ -7,10 +7,9 @@ from log import logger
 
 def main():
     """ This is the entrypoint for the Bandwidth-Monitor service. """
-    bwm = BandwidthMonitor()
     try:
         logger.info("Started Bandwidth-Monitor service")
-        bwm.run()
+        BandwidthMonitor.run()
     except KeyboardInterrupt:
         logger.info("Bandwidth-Monitor service was terminated by user")
 
