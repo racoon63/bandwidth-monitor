@@ -20,8 +20,6 @@ class Measurement:
             sptest.download()
             sptest.upload()
             return sptest.results.dict()
-        except KeyboardInterrupt:
-            raise KeyboardInterrupt
         except SpeedtestException:
             return {
                 "timestamp": datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
