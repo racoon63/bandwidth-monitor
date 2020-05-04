@@ -1,29 +1,20 @@
 """ Provides configuration feature for bwm service. """
 
-from os import environ
 import configparser
+from os import environ
+from os.path import isfile
 
+from log import logger
 
 class Config:
-    """Config class stores config values for the bwm service."""
+    """ Config class stores config values for the bwm service. """
     def __init__(self, config_file_path="config.ini"):
         self.config_file_path = config_file_path
-
-        self.set_defaults()
-        self.get_file_conf()
-        self.get_env_conf()
-
-    def set_defaults(self):
-        """ Sets the default variable values. """
-        self.speedtest_server = None
-        self.interval = 60
-        self.dbtype = "tinydb"
-        self.datapath = "data/bwm.json"
-        self.dbhost = None # TODO: Provide default host
-        self.dbuser = "bwm"
-        self.dbpassword = "bwm"
-        self.loglevel = "info"
-        self.logpath = "log/bwm.log"
+        try:
+            self.get_file_conf()
+            self.get_env_conf()
+        except ValueError as err:
+            logger.error(err)
 
     def get_env_conf(self):
         """ Sets config values from available environment variables. """
@@ -54,8 +45,8 @@ class Config:
             self.dbhost = config_file["Database"]["dbhost"]
             self.dbuser = config_file["Database"]["dbuser"]
             self.dbpassword = config_file["Database"]["dbpassword"]
-            self.loglevel = config_file["log"]["loglevel"]
-            self.logpath = config_file["log"]["logpath"]
+            self.loglevel = config_file["Logging"]["loglevel"]
+            self.logpath = config_file["Logging"]["logpath"]
         except configparser.ParsingError:
             pass
         except configparser.NoSectionError:
@@ -66,92 +57,128 @@ class Config:
     @property
     def speedtest_server(self):
         """ Returns the speedtest server config variable. """
-        return self.speedtest_server
+        return self._speedtest_server
 
     @speedtest_server.setter
     def speedtest_server(self, value):
         """ Sets the speedtest server config variable. """
-        if value == "auto" or value > 0 and value < 50000:
-            self.speedtest_server = value
+        if value is None or not value:
+            self._speedtest_server = None
+        elif int(value) < 0 or int(value) > 50000:
+            raise ValueError("Speedtest server is not valid.")
         else:
-            raise KeyError("Speedtest server is not valid.")
+            self._speedtest_server = value
 
     @property
     def interval(self):
         """ Returns the interval config variable. """
-        return self.interval
+        return self._interval
 
     @interval.setter
     def interval(self, value):
         """ Sets the interval config variable. """
-        self.interval = value
-    
+        if value is None or not value:
+            self._interval = 60
+        elif value and value < 30:
+            raise ValueError("Interval can not be less than 30.")
+        else:
+            self._interval = value
+
     @property
     def dbtype(self):
         """ Returns the dbtype config variable. """
-        return self.dbtype
+        return self._dbtype
 
     @dbtype.setter
     def dbtype(self, value):
         """ Sets the dbtype config variable. """
-        self.dbtype = value
+        if value is None or not value:
+            self._dbtype = "tinydb"
+        elif value != "tinydb" or value != "mongodb" or value != "influxdb":
+            raise ValueError("dbtype have to be: tinydb, mongodb or influxdb.")
+        else:
+            self._dbtype = value
 
     @property
     def datapath(self):
         """ Returns the datapath config variable. """
-        return self.datapath
+        return self._datapath
 
     @datapath.setter
     def datapath(self, value):
         """ Sets the datapath config variable. """
-        self.datapath = value
+        if value is None or not value:
+            self._datapath = "data/bwm.json"
+        elif not isfile(value):
+            raise ValueError("Datapath can not be found.")
+        else:
+            self._datapath = value
 
     @property
     def dbhost(self):
         """ Returns the dbhost config variable. """
-        return self.dbhost
+        return self._dbhost
 
     @dbhost.setter
     def dbhost(self, value):
         """ Sets the dbhost config variable. """
-        self.dbhost = value
+        if value is None or not value:
+            self._dbhost = "bwm"
+        else:
+            self._dbhost = value
 
     @property
     def dbuser(self):
         """ Returns the dbuser config variable. """
-        return self.dbuser
+        return self._dbuser
 
     @dbuser.setter
     def dbuser(self, value):
         """ Sets the dbuser config variable. """
-        self.dbuser = value
+        if value is None or not value:
+            self._dbuser = "bwm"
+        else:
+            self._dbuser = value
 
     @property
     def dbpassword(self):
         """ Returns the dbpassword config variable. """
-        return self.dbpassword
+        return self._dbpassword
 
     @dbpassword.setter
     def dbpassword(self, value):
         """ Sets the dbpassword config variable. """
-        self.dbpassword = value
+        if value is None or not value:
+            self._dbpassword = "bwm"
+        else:
+            self._dbpassword = value
 
     @property
     def loglevel(self):
         """ Returns the loglevel config variable. """
-        return self.loglevel
+        return self._loglevel
 
     @loglevel.setter
     def loglevel(self, value):
         """ Sets the loglevel config variable. """
-        self.loglevel = value
+        if value is None or not value:
+            self._loglevel = "info"
+        elif value.lower() not in ["info", "warning", "error", "fatal", "critical"]:
+            raise ValueError("No valid loglevel specified.")
+        else:
+            self._loglevel = value
 
     @property
     def logpath(self):
         """ Returns the logpath config variable. """
-        return self.logpath
+        return self._logpath
 
     @logpath.setter
     def logpath(self, value):
         """ Sets the logpath config variable. """
-        self.logpath = value
+        if value is None or not value:
+            self._logpath = "log/bwm.log"
+        elif not isfile(value):
+            raise ValueError("Logpath can not be found.")
+        else:
+            self._logpath = value

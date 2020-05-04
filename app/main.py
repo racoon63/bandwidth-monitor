@@ -11,7 +11,7 @@ def main():
         logger.info("Started Bandwidth-Monitor service")
         BandwidthMonitor.run()
     except KeyboardInterrupt:
-        logger.info("Bandwidth-Monitor service was terminated by user")
+        logger.info("Bandwidth-Monitor service was stopped by user")
 
 if __name__ == "__main__":
     main()
