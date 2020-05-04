@@ -9,6 +9,7 @@ from log import logger
 class Config:
     """ Config class stores config values for the bwm service. """
     def __init__(self, config_file_path="config.ini"):
+        logger.debug("Getting config")
         self.config_file_path = config_file_path
         try:
             self.get_file_conf()
@@ -68,6 +69,7 @@ class Config:
             raise ValueError("Speedtest server is not valid.")
         else:
             self._speedtest_server = value
+        logger.debug("Speedtest server is: {}".format(self.speedtest_server))
 
     @property
     def interval(self):
@@ -83,6 +85,7 @@ class Config:
             raise ValueError("Interval can not be less than 30.")
         else:
             self._interval = value
+        logger.debug("Interval is: {}".format(self.interval))
 
     @property
     def dbtype(self):
@@ -98,6 +101,7 @@ class Config:
             raise ValueError("dbtype have to be: tinydb, mongodb or influxdb.")
         else:
             self._dbtype = value
+        logger.debug("DBtype is: {}".format(self.dbtype))
 
     @property
     def datapath(self):
@@ -113,6 +117,7 @@ class Config:
             raise ValueError("Datapath can not be found.")
         else:
             self._datapath = value
+        logger.debug("Datapath is: {}".format(self.datapath))
 
     @property
     def dbhost(self):
@@ -126,6 +131,7 @@ class Config:
             self._dbhost = "bwm"
         else:
             self._dbhost = value
+        logger.debug("DBhost is: {}".format(self.dbhost))
 
     @property
     def dbuser(self):
@@ -139,6 +145,7 @@ class Config:
             self._dbuser = "bwm"
         else:
             self._dbuser = value
+        logger.debug("DBuser is: {}".format(self.dbuser))
 
     @property
     def dbpassword(self):
@@ -152,6 +159,7 @@ class Config:
             self._dbpassword = "bwm"
         else:
             self._dbpassword = value
+        logger.debug("DBpassword is: {}".format(self.dbpassword))
 
     @property
     def loglevel(self):
@@ -167,6 +175,7 @@ class Config:
             raise ValueError("No valid loglevel specified.")
         else:
             self._loglevel = value
+        logger.debug("Loglevel is: {}".format(self.loglevel))
 
     @property
     def logpath(self):
@@ -182,3 +191,4 @@ class Config:
             raise ValueError("Logpath can not be found.")
         else:
             self._logpath = value
+        logger.debug("Logpath is: {}".format(self.logpath))
