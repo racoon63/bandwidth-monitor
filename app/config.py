@@ -18,7 +18,7 @@ class Config:
             self.print_config()
         except Exception as err:
             logger.critical("Config could not be processed correctly.")
-            logger.exception(err)
+            logger.error(err)
             sys.exit(1)
 
     def get_file_conf(self):
@@ -63,20 +63,20 @@ class Config:
     def get_env_conf(self):
         """ Sets config values from available environment variables. """
         env_vars = [
-            ["SPEEDTEST_SERVER", self.speedtest_server],
-            ["INTERVAL", self.interval],
-            ["DBTYPE", self.dbtype],
-            ["DATAPATH", self.datapath],
-            ["DBHOST", self.dbhost],
-            ["DBUSER", self.dbuser],
-            ["DBPASSWORD", self.dbpassword],
-            ["LOGLEVEL", self.loglevel],
-            ["LOGPATH", self.logpath]
+            ["SPEEDTEST_SERVER", "speedtest_server"],
+            ["INTERVAL", "interval"],
+            ["DBTYPE", "dbtype"],
+            ["DATAPATH", "datapath"],
+            ["DBHOST", "dbhost"],
+            ["DBUSER", "dbuser"],
+            ["DBPASSWORD", "dbpassword"],
+            ["LOGLEVEL", "loglevel"],
+            ["LOGPATH", "logpath"]
         ]
 
         for var in env_vars:
             try:
-                var[1] = os.environ[var[0]]
+                setattr(self, var[1], os.environ[var[0]])
             except KeyError:
                 logger.debug("Environment variable {} is not set".format(var[0]))
 
