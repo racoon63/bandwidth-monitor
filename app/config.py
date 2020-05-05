@@ -110,7 +110,7 @@ class Config:
     @property
     def interval(self):
         """ Returns the interval config variable. """
-        return self._interval
+        return int(self._interval)
 
     @interval.setter
     def interval(self, value):
