@@ -11,12 +11,19 @@ def configure_logger(loglevel="info", logpath="log"):
 
     logfilepath = logpath + "/bwm.log"
 
+    env_vars = [
+        ["LOGPATH", logpath],
+        ["LOGLEVEL", loglevel]
+    ]
+
+    for var in env_vars:
+        try:
+            setattr(object, var[1], os.environ[var[0]])
+        except KeyError:
+            pass
+
     try:
         os.mkdir("log")
-        loglevel = os.environ["LOGLEVEL"]
-        logpath = os.environ["LOGPATH"]
-    except KeyError:
-        pass
     except FileExistsError:
         pass
 
