@@ -36,9 +36,8 @@ class Tiny(Storage):
         try:
             self.client = TinyDB(datapath, indent=4)
             self.table = self.client.table(name="bwm")
-            self.client.purge_table("_default")
+            self.client.drop_table("_default")
         except Exception as err:
-            logger.error("Iein tinydb fehler")
             logger.exception(err)
 
     def save(self, data: dict):
@@ -47,9 +46,8 @@ class Tiny(Storage):
             self.table.insert(data)
 
             if "_default" in self.client.tables():
-                self.client.purge_table("_default")
+                self.client.drop_table("_default")
         except Exception as err:
-            print("influx issue")
             logger.exception(err)
 
     def cleanup(self):
@@ -73,8 +71,8 @@ class Influx(Storage):
         """ Stores given data in influx database. """
         try:
             self.client.write_points(data)
-        except influxdb.exceptions.InfluxDBClientError:
-            print("duno")
+        except influxdb.exceptions.InfluxDBClientError as err:
+            logger.exception(err)
 
     def cleanup(self):
         """ Closes an influx client connection. """
