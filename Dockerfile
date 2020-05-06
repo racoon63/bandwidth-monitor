@@ -1,8 +1,6 @@
-FROM python:3.8-alpine
+FROM python:3.8.2-alpine
 
 WORKDIR /bwm
-
-
 
 COPY requirements.txt /bwm/requirements.txt
 COPY config.ini /bwm/config.ini
