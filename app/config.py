@@ -132,8 +132,8 @@ class Config:
         """ Sets the dbtype config variable. """
         if value is None or not value:
             self._dbtype = "tinydb"
-        elif value != "tinydb" or value != "mongodb" or value != "influxdb":
-            raise ValueError("dbtype have to be: tinydb, mongodb or influxdb.")
+        elif value not in ["tinydb", "mongodb", "influxdb"]:
+            raise ValueError("dbtype has to be: tinydb or influxdb.")
         else:
             self._dbtype = value
 
