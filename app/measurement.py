@@ -4,6 +4,8 @@ from datetime import datetime
 
 from speedtest import Speedtest, SpeedtestException
 
+from log import logger
+
 
 class Measurement:
     """ Measurement class provides bandwidth measurement capability. """
@@ -12,6 +14,7 @@ class Measurement:
 
     def measure(self):
         """ Returns a dict with the measured results. """
+        logger.info("Measuring...")
         sptest = Speedtest()
 
         try:
@@ -19,8 +22,10 @@ class Measurement:
             sptest.get_best_server()
             sptest.download()
             sptest.upload()
+            logger.info("Measurement finished")
             return sptest.results.dict()
         except SpeedtestException:
+            logger.error("Could not measure bandwidth")
             return {
                 "timestamp": datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
                 "ping": None,
