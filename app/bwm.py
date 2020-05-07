@@ -6,9 +6,11 @@ from config import Config
 from measurement import Measurement
 from storage import StorageInterface
 
+from log import logger
+
 
 class BandwidthMonitor:
-    """ BandwidthMonitor class is the core class of the bwm service. """
+    """ BandwidthMonitor is the core class of the bwm service. """
     conf = Config()
     msment = Measurement()
     storage_handler = StorageInterface(datapath=conf.datapath,
@@ -22,6 +24,7 @@ class BandwidthMonitor:
     def run(cls):
         """ Runs all tasks that belong to the service. """
         while True:
+            logger.info("Started Bandwidth-Monitor service")
             starttime = time.time()
             results = cls.msment.measure()
             cls.storage_handler.store(cls.conf.dbtype, results)

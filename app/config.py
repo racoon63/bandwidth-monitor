@@ -57,7 +57,9 @@ class Config:
             try:
                 setattr(self, var[2], config_file[var[0]][var[1]])
             except KeyError:
-                logger.debug("Option {} is not present in {}".format(var[1], self.config_file_path))
+                logger.debug("Option {} is not present in {}".format(
+                    var[1],
+                    self.config_file_path))
                 setattr(self, var[2], None)
 
     def get_env_conf(self):
