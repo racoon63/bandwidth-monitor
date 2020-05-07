@@ -53,11 +53,9 @@ jobs:
 
 workflows:
   version: 2
-  lint:
-    jobs:
-      - lint_pylint
   build:
     jobs:
+      - lint_pylint
       - build-nightly:
           context: docker-publisher
           requires:
