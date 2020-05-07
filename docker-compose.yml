@@ -30,7 +30,7 @@ services:
     networks:
       - bwm
     volumes:
-      - ./grafana-provisioning/:/etc/grafana/provisioning
+      - ./templates/grafana/:/etc/grafana/provisioning
     depends_on:
       - influx
     environment:
