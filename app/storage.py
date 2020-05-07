@@ -3,6 +3,8 @@
 import abc
 import os
 
+# TODO: Replace influxdb lib by: https://github.com/influxdata/influxdb-client-python
+# import influxdb_client
 import influxdb
 from tinydb import TinyDB
 
@@ -63,16 +65,43 @@ class Influx(Storage):
                                                   dbpassword,
                                                   dbname,
                                                   timeout=10,
-                                                  retries=0)
-        except influxdb.exceptions.InfluxDBServerError:
-            logger.error("Could not establish connection to database. Retrying")
+                                                  retries=1)
+        except Exception:
+            logger.error("Could not establish connection to database.")
 
     def save(self, data: dict):
         """ Stores given data in influx database. """
         try:
-            self.client.write_points(data)
+            print(data)
+            json_body = [{
+                "measurement": "speedtest_result",
+                "tags": {
+                    #"server_city": data["server"]["city"],
+                    "server_country": data["server"]["country"],
+                    "server_host": data["server"]["host"],
+                    "server_id": data["server"]["id"],
+                    "server_latency": data["server"]["latency"],
+                    "server_sponsor": data["server"]["sponsor"],
+                    "server_url1": data["server"]["url"],
+                    #"server_url2": data["server"]["url2"],
+                    "client_country": data["client"]["country"],
+                    "client_ip": data["client"]["ip"],
+                    "client_isp": data["client"]["isp"],
+                    "client_isp_rating": data["client"]["isprating"],
+                    "client_rating": data["client"]["rating"],
+                    "identifier" : data["timestamp"]
+                },
+                "time": data["timestamp"],
+                "fields": {
+                    "download": data["download"],
+                    "upload": data["upload"],
+                    "ping": data["ping"]
+                }
+            }]
         except influxdb.exceptions.InfluxDBClientError as err:
             logger.exception(err)
+        else:
+            self.client.write_points(json_body)
 
     def cleanup(self):
         """ Closes an influx client connection. """
