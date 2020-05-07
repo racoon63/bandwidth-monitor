@@ -1,0 +1,821 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "$$hashKey": "object:33",
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "cacheTimeout": null,
+      "datasource": null,
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 0,
+        "y": 0
+      },
+      "id": 10,
+      "links": [],
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 1073741824,
+            "min": 1,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "bps"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.0",
+      "targets": [
+        {
+          "alias": "Max/12h",
+          "groupBy": [
+            {
+              "params": [
+                "12h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "speedtest_result",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT max(\"download\"), max(\"upload\") AS \"upload\" FROM \"speedtest_result\" WHERE $timeFilter GROUP BY time(12h) fill(null)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "download"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              },
+              {
+                "params": [
+                  "download"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Max Download Rate 12h",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": null,
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 4,
+        "y": 0
+      },
+      "id": 11,
+      "links": [],
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 1073741824,
+            "min": 1,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "title": "",
+            "unit": "bps"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.7.0",
+      "targets": [
+        {
+          "alias": "Max/12h",
+          "groupBy": [
+            {
+              "params": [
+                "12h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "speedtest_result",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT max(\"download\"), max(\"upload\") AS \"upload\" FROM \"speedtest_result\" WHERE $timeFilter GROUP BY time(12h) fill(null)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "upload"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              },
+              {
+                "params": [
+                  "download"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Max Upload Rate 12h",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "aliasColors": {
+        "Download-Rate": "dark-blue",
+        "speedtest_result.down": "blue"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 10,
+      "fillGradient": 10,
+      "gridPos": {
+        "h": 8,
+        "w": 16,
+        "x": 8,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 2,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null as zero",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "6.7.0",
+      "pointradius": 0.5,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Download-Rate",
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "speedtest_result",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "download"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "down"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Speedtest-Download",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:125",
+          "decimals": null,
+          "format": "bps",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:126",
+          "format": "percent",
+          "label": null,
+          "logBase": 1,
+          "max": "100",
+          "min": "0",
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "columns": [],
+      "datasource": null,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 16,
+        "w": 8,
+        "x": 0,
+        "y": 7
+      },
+      "id": 13,
+      "pageSize": null,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "$$hashKey": "object:4611",
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "$$hashKey": "object:4612",
+          "alias": "",
+          "align": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "Download",
+          "thresholds": [
+            "600",
+            "1000"
+          ],
+          "type": "number",
+          "unit": "bps"
+        },
+        {
+          "$$hashKey": "object:5122",
+          "alias": "",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(50, 172, 45, 0.97)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Upload",
+          "thresholds": [
+            "20",
+            "50"
+          ],
+          "type": "number",
+          "unit": "bps"
+        },
+        {
+          "$$hashKey": "object:5133",
+          "alias": "",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": null,
+          "mappingType": 1,
+          "pattern": "Ping",
+          "thresholds": [
+            "10",
+            "80"
+          ],
+          "type": "number",
+          "unit": "ms"
+        }
+      ],
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "speedtest_result",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "download"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "Download"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "upload"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "Upload"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "ping"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "Ping"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Measurements",
+      "transform": "table",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "aliasColors": {
+        "Upload-Rate": "dark-yellow",
+        "speedtest_result.upload": "yellow"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 10,
+      "fillGradient": 10,
+      "gridPos": {
+        "h": 7,
+        "w": 16,
+        "x": 8,
+        "y": 8
+      },
+      "hiddenSeries": false,
+      "id": 6,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null as zero",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 0.5,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Upload-Rate",
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "speedtest_result",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "upload"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "upload"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Speedtest Upload",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:204",
+          "format": "bps",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:205",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "Ping in ms": "dark-purple"
+      },
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 10,
+      "fillGradient": 10,
+      "gridPos": {
+        "h": 8,
+        "w": 16,
+        "x": 8,
+        "y": 15
+      },
+      "hiddenSeries": false,
+      "id": 4,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "6.7.0",
+      "pointradius": 0.5,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Ping in ms",
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "speedtest_result",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"ping\") AS \"ping\" FROM \"speedtest_result\" WHERE $timeFilter GROUP BY time(1m) fill(null)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "ping"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "ping"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Ping",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:572",
+          "format": "ms",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:573",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 22,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-12h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "BWM-Dashboard",
+  "uid": "JUyDCZeZz",
+  "variables": {
+    "list": []
+  },
+  "version": 2
+}
